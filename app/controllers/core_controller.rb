@@ -33,8 +33,5 @@ class CoreController < ApplicationController
   def canvas
     @id = params[:id]
     @token = @@access_token
-
-    # core = RubySpark::Core.new(params[:id], @@access_token)
-    # @name = core.info
   end
 end

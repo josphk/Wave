@@ -3,26 +3,33 @@ var pointer = $('.pointer');
 var wrapper = $('.canvas-wrapper');
 var canvas = $('.canvas')[0];
 var ctx = canvas.getContext('2d');
-var multiple = 0;
-var startX = 0;
-var startY = 0;
-var endX = 0;
-var endY = 0;
+var startX = 0; var startY = 0;
+var endX = 0; var endY = 0;
+var grad;
 
-canvas.width = wrapper.width();
-canvas.height = wrapper.height();
+// canvas.width = wrapper.width();
+// canvas.height = wrapper.height();
+
+function gradient() {
+  grad = ctx.createLinearGradient(startX, startY, endX, endY);
+  grad.addColorStop(0.1, 'white');
+  grad.addColorStop(1, 'black');
+  return grad;
+}
 
 function line() {
   if (startX != endX && startY != endY) {
-    // multiple += 0.1;
-    // if (multiple > 1) multiple = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.moveTo(startX, startY);
     ctx.lineTo(endX, endY);
-    // ctx.lineTo(startX + (endX - startX) * multiple,
-    //          startY + (endY - startY) * multiple);
+    ctx.strokeStyle = gradient();
     ctx.stroke();
   }
+}
+
+function init() {
+  canvas.width = wrapper.width();
+  canvas.height = wrapper.height();
 }
 
 eventSource.addEventListener('Coordinates', function(e) {
@@ -33,13 +40,11 @@ eventSource.addEventListener('Coordinates', function(e) {
   var xPercent = parsedData.X / 10;
   var yPercent = parsedData.Y / 7;
 
-  // canvas.width = wrapper.width();
-  // canvas.height = wrapper.height();
+  init();
   pointer.animate({
     'left': xPercent+'%',
     'top': yPercent+'%' },
     {
-      duration: 700,
       progress: function() {
         endX = pointer.position().left + 5;
         endY = pointer.position().top + 5;
