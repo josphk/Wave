@@ -1,0 +1,8 @@
+<% @cores.each do |core| %>
+  <div class="core">
+    <div class="name">Name: <%= core["name"] %></div>
+
+    <%= link_to "Canvas", canvas_path(id: core["id"]) %>
+
+  </div>
+<% end %>

@@ -1,0 +1,16 @@
+var eventSource = new EventSource("https://api.particle.io/v1/devices/<%= @id %>/events/?access_token=<%= @token %>")
+var prevX = 0;
+var prevY = 0;
+
+eventSource.addEventListener('Coordinates', function(e) {
+  var rawData = JSON.parse(e.data);
+  var parsedData = JSON.parse(rawData.data);
+  $('.x').html(parsedData.X);
+  $('.y').html(parsedData.Y);
+  var xPercent = parsedData.X / 10;
+  var yPercent = parsedData.Y / 7;
+
+  $('.pointer').animate({
+    'left': xPercent+'%',
+    'top': yPercent+'%'});
+}, false)

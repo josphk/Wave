@@ -1,0 +1,32 @@
+<h1>Canvas</h1>
+
+<div> X Coordinate: </div>
+<div class="x"></div>
+
+<div> Y Coordinate: </div>
+<div class="y"></div>
+
+<div class="canvas">
+  <div class="pointer"></div>
+</div>
+
+<style>
+  .canvas {
+    width: auto;
+    height: 300px;
+    position: relative;
+  }
+
+  .pointer {
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+  }
+</style>
+
+<%= javascript_tag do %>
+  <%= render partial: 'canvas.js.erb' %>
+<% end %>

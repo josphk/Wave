@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  root 'pages#index'
+  root 'core#index'
+  post 'authenticate', to: 'core#authenticate'
+  get 'canvas', to: 'core#canvas'
+  get 'login', to: 'core#login'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
