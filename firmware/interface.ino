@@ -8,6 +8,9 @@
 
 PVision ircam;
 byte result;
+int xCoord = 0;
+int yCoord = 0;
+int counter = 0;
 char coordinates[64];
 
 void setup()
@@ -26,19 +29,26 @@ void loop()
   }
   delay(1000);*/
   result = ircam.read();
+  counter++;
 
-  if (result & BLOB1)
-  {
-    Serial.print("BLOB1 detected. X:");
-    Serial.print(ircam.Blob1.X);
-    Serial.print(" Y:");
-    Serial.print(ircam.Blob1.Y);
-    Serial.print(" Size:");
-    Serial.println(ircam.Blob1.Size);
-
-    sprintf(coordinates, "{\"X\": %u, \"Y\": %u}", ircam.Blob1.X, ircam.Blob1.Y);
-    Spark.publish("Coordinates", coordinates);
+  if (result & BLOB1) {
+    /*Serial.print(" Size:");
+    Serial.println(ircam.Blob1.Size);*/
+    xCoord = ircam.Blob1.X;
+    yCoord = ircam.Blob1.Y;
   }
+
+  Serial.print("BLOB1 detected. X:");
+  Serial.print(xCoord);
+  Serial.print(" Y:");
+  Serial.println(yCoord);
+
+  if (counter == 26) {
+    sprintf(coordinates, "{\"X\": %u, \"Y\": %u}", xCoord, yCoord);
+    Spark.publish("Coordinates", coordinates);
+    counter %= 26;
+  }
+
 /*
   if (result & BLOB2)
   {
@@ -69,5 +79,5 @@ void loop()
   }*/
 
   // Short delay...
-  delay(2000);
+  delay(50);
 }

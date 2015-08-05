@@ -1,6 +1,29 @@
-var eventSource = new EventSource("https://api.particle.io/v1/devices/<%= @id %>/events/?access_token=<%= @token %>")
-var prevX = 0;
-var prevY = 0;
+var eventSource = new EventSource("https://api.particle.io/v1/devices/<%= @id %>/events/?access_token=<%= @token %>");
+var pointer = $('.pointer');
+var wrapper = $('.canvas-wrapper');
+var canvas = $('.canvas')[0];
+var ctx = canvas.getContext('2d');
+var multiple = 0;
+var startX = 0;
+var startY = 0;
+var endX = 0;
+var endY = 0;
+
+canvas.width = wrapper.width();
+canvas.height = wrapper.height();
+
+function line() {
+  if (startX != endX && startY != endY) {
+    // multiple += 0.1;
+    // if (multiple > 1) multiple = 1;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    // ctx.lineTo(startX + (endX - startX) * multiple,
+    //          startY + (endY - startY) * multiple);
+    ctx.stroke();
+  }
+}
 
 eventSource.addEventListener('Coordinates', function(e) {
   var rawData = JSON.parse(e.data);
@@ -10,7 +33,20 @@ eventSource.addEventListener('Coordinates', function(e) {
   var xPercent = parsedData.X / 10;
   var yPercent = parsedData.Y / 7;
 
-  $('.pointer').animate({
+  // canvas.width = wrapper.width();
+  // canvas.height = wrapper.height();
+  pointer.animate({
     'left': xPercent+'%',
-    'top': yPercent+'%'});
+    'top': yPercent+'%' },
+    {
+      duration: 700,
+      progress: function() {
+        endX = pointer.position().left + 5;
+        endY = pointer.position().top + 5;
+        line(); },
+      complete: function() {
+        startX = endX;
+        startY = endY; }
+    }
+  );
 }, false)
