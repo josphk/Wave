@@ -1,0 +1,26 @@
+var eventSource = new EventSource("https://api.particle.io/v1/devices/<%= @id %>/events/?access_token=<%= @token %>");
+<%= render partial: 'canvas.js.erb' %>
+
+eventSource.addEventListener('Coordinates', function(e) {
+  var rawData = JSON.parse(e.data);
+  var parsedData = JSON.parse(rawData.data);
+  $('.x').html(parsedData.X);
+  $('.y').html(parsedData.Y);
+  var xPercent = parsedData.X / 10;
+  var yPercent = parsedData.Y / 7;
+
+  init();
+  pointer.animate({
+    'left': xPercent+'%',
+    'top': yPercent+'%' },
+    {
+      progress: function() {
+        endX = pointer.position().left + 5;
+        endY = pointer.position().top + 5;
+        line(); },
+      complete: function() {
+        startX = endX;
+        startY = endY; }
+    }
+  );
+}, false)
