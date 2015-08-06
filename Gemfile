@@ -21,11 +21,20 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+# For user authorization
+gem 'sorcery'
 # Style with bourbon and neat
 gem 'bourbon'
 gem 'neat'
 # For accessing the Cloud API
 gem 'httparty'
+
+# Integrating Babel JS
+gem 'sprockets', '>=3.0.0'
+gem 'sprockets-es6', require: 'sprockets/es6'
+
+# Use Puma as app server
+gem 'puma'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

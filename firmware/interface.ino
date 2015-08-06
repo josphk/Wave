@@ -43,10 +43,10 @@ void loop()
   Serial.print(" Y:");
   Serial.println(yCoord);
 
-  if (counter == 26) {
+  if (counter == 23) {
     sprintf(coordinates, "{\"X\": %u, \"Y\": %u}", xCoord, yCoord);
     Spark.publish("Coordinates", coordinates);
-    counter %= 26;
+    counter %= 23;
   }
 
 /*

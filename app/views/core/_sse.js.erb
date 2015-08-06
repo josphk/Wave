@@ -7,13 +7,14 @@ eventSource.addEventListener('Coordinates', function(e) {
   $('.x').html(parsedData.X);
   $('.y').html(parsedData.Y);
   var xPercent = parsedData.X / 10;
-  var yPercent = parsedData.Y / 7;
+  var yPercent = parsedData.Y / 8;
 
   init();
   pointer.animate({
     'left': xPercent+'%',
     'top': yPercent+'%' },
     {
+      duration: 200,
       progress: function() {
         endX = pointer.position().left + 5;
         endY = pointer.position().top + 5;
