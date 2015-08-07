@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   has_many :trackers
+  has_many :friendships
+  has_many :friends, through: :friendships
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -18,5 +20,13 @@ class User < ActiveRecord::Base
 
   def validate_password!
     errors.add(:password, "must include at least 8 characters and one number and letter") if password !~ /(?=.*[a-zA-Z])(?=.*[0-9]).{8,}/
+  end
+
+  def added_friends
+    self.friends.joins(:friendships).where('friendships.accepted = ?', true)
+  end
+
+  def pending_friends
+    self.friends.joins(:friendships).where('friendships.accepted = ?', false)
   end
 end

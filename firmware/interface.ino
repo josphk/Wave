@@ -36,15 +36,18 @@ void loop()
     Serial.println(ircam.Blob1.Size);*/
     xCoord = ircam.Blob1.X;
     yCoord = ircam.Blob1.Y;
+    size = ircam.Blob1.Size;
   }
 
   Serial.print("BLOB1 detected. X:");
   Serial.print(xCoord);
   Serial.print(" Y:");
   Serial.println(yCoord);
+  Serial.print(" Size:");
+  Serial.println(size);
 
   if (counter == 23) {
-    sprintf(coordinates, "{\"X\": %u, \"Y\": %u}", xCoord, yCoord);
+    sprintf(coordinates, "{\"X\": %u, \"Y\": %u, \"Size\": %u}", xCoord, yCoord, size);
     Spark.publish("Coordinates", coordinates);
     counter %= 23;
   }

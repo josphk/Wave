@@ -1,3 +1,35 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+
+  & .update-photo {
+    @include box-sizing(border-box);
+    @include align-items(flex-end);
+    @include display(flex);
+    @include flex-direction(row);
+    @include justify-content(center);
+    @include transition(bottom 0.5s $ease-out-quart);
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    z-index: 10;
+    bottom: -50px;
+    background-color: rgba(10, 10, 20, 0.5);
+
+    & p {
+      color: white;
+    }
+  }
+}
+
+.avatar:hover {
+  & .update-photo {
+    bottom: 0;
+  }
+}
