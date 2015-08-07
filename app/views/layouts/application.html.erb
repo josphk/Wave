@@ -10,7 +10,17 @@
 
 <div class="nav">
   <ul class="links">
+    <li><h3><%= link_to "Web Motion", root_url %></h3></li>
     <% if logged_in? %>
+      <li>
+        <%= link_to user_path(current_user), id: 'avatar' do %>
+          <%= image_tag image_path(current_user.avatar.medium) %>
+        <% end %>
+      </li>
+        <ul class="user-links hidden">
+          <li><%= link_to "Profile", user_path(current_user)%></li>
+          <li><%= link_to "My Trackers", user_trackers_path(current_user) %></li>
+        </ul>
       <li><%= link_to "Logout", :logout %></li>
     <% else %>
       <li><%= link_to "Sign Up", new_user_path %></li>

@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150806174728) do
     t.string   "access_token"
     t.string   "crypted_password"
     t.string   "salt"
+    t.string   "avatar"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_me_token"

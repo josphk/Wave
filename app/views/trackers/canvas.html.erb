@@ -1,0 +1,16 @@
+<h1>Canvas</h1>
+
+<div> X Coordinate: </div>
+<div class="x"></div>
+
+<div> Y Coordinate: </div>
+<div class="y"></div>
+
+<div class="canvas-wrapper">
+  <canvas class="canvas"></canvas>
+  <div class="pointer"></div>
+</div>
+
+<%= javascript_tag do %>
+  <%= render partial: 'sse.js.erb' %>
+<% end %>

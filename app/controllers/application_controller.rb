@@ -30,4 +30,9 @@ class ApplicationController < ActionController::Base
       password: password
     }
   end
+
+  def registered?(id)
+    Tracker.exists?(core_id: id)
+  end
+  helper_method :registered?
 end

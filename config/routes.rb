@@ -1,13 +1,20 @@
 Rails.application.routes.draw do
 
   root 'core#index'
-  post 'authenticate', to: 'core#authenticate'
-  get 'canvas', to: 'core#canvas'
-  get 'log', to: 'core#login'
 
-  resources :users, only: [:new, :create] do
+  resources :users, only: [:new, :create, :show] do
     collection do
       post 'create_with_particle', to: 'users#create_with_particle'
+    end
+
+    resources :trackers, only: [:index, :create, :destroy] do
+      member do
+        get 'canvas', to: 'trackers#canvas'
+      end
+
+      collection do
+        post 'authenticate', to: 'trackers#authenticate'
+      end
     end
   end
 

@@ -24,6 +24,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # For user authorization
 gem 'sorcery'
 
+# For avatars
+gem 'carrierwave'
+gem 'mini_magick'
+
 # Style with bourbon and neat
 gem 'bourbon'
 gem 'neat'

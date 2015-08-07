@@ -1,0 +1,21 @@
+<%= form_tag authenticate_user_trackers_path(current_user) do %>
+
+  <%= hidden_field_tag :client_id, 'particle' %>
+  <%= hidden_field_tag :client_secret, 'particle' %>
+  <%= hidden_field_tag :grant_type, 'password' %>
+
+  <div class="field">
+    <%= label_tag :username %> <br>
+    <%= text_field_tag :username %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :password %> <br>
+    <%= password_field_tag :password %>
+  </div>
+
+  <div class="submit">
+    <%= submit_tag "Connect" %>
+  </div>
+
+<% end %>
