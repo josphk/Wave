@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'pg'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
@@ -21,13 +20,20 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+
 # For user authorization
 gem 'sorcery'
+
 # Style with bourbon and neat
 gem 'bourbon'
 gem 'neat'
+
 # For accessing the Cloud API
 gem 'httparty'
+
+# For testing
+gem 'factory_girl_rails'
+gem 'rspec-rails'
 
 # Integrating Babel JS
 gem 'sprockets', '>=3.0.0'
@@ -46,9 +52,13 @@ gem 'puma'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'pry-rails'
   gem 'quiet_assets'
   gem 'better_errors'
   gem 'spring'
 end
 
+group :production do
+  gem 'pg'
+end

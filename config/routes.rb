@@ -3,7 +3,17 @@ Rails.application.routes.draw do
   root 'core#index'
   post 'authenticate', to: 'core#authenticate'
   get 'canvas', to: 'core#canvas'
-  get 'login', to: 'core#login'
+  get 'log', to: 'core#login'
+
+  resources :users, only: [:new, :create] do
+    collection do
+      post 'create_with_particle', to: 'users#create_with_particle'
+    end
+  end
+
+  resources :user_sessions, only: [:new, :create, :destroy]
+  get 'login', to: 'user_sessions#new', as: :login
+  get 'logout', to: 'user_sessions#destroy', as: :logout
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
