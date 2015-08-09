@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root 'core#index'
+  root 'pages#index'
 
   resources :users, only: [:new, :create, :show] do
     collection do
@@ -9,16 +9,20 @@ Rails.application.routes.draw do
 
     resources :trackers, only: [:index, :create, :destroy] do
       member do
-        get 'canvas', to: 'trackers#canvas'
+        get 'test', to: 'trackers#test'
       end
 
       collection do
         post 'authenticate', to: 'trackers#authenticate'
       end
     end
+
+    resources :stats, only: [:create, :show]
+    get 'progress', to: 'stats#index'
+    get 'test', to: 'stats#new'
   end
 
-  resources :user_sessions, only: [:new, :create, :destroy]
+  resources :user_sessions, only: :create
   get 'login', to: 'user_sessions#new', as: :login
   get 'logout', to: 'user_sessions#destroy', as: :logout
 

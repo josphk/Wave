@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WebInterfacer</title>
-  <%= Gon::Base.render_data %>
+  <title>Wave</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <%= Gon::Base.render_data %>
 
-<div class="nav">
-  <ul class="links">
-    <li><h3><%= link_to "Web Motion", root_url %></h3></li>
-    <% if logged_in? %>
-      <li>
-        <%= link_to user_path(current_user), id: 'avatar' do %>
-          <%= image_tag image_path(current_user.avatar.medium) %>
-        <% end %>
-      </li>
+  <div class="nav">
+    <ul class="links">
+      <li><h3><%= link_to "Wave", root_url %></h3></li>
+      <% if logged_in? %>
+        <li>
+          <%= link_to user_path(current_user), id: 'avatar' do %>
+            <%= image_tag image_path(current_user.avatar.medium) %>
+          <% end %>
+        </li>
         <ul class="user-links hidden">
           <li><%= link_to "Profile", user_path(current_user)%></li>
           <li><%= link_to "My Trackers", user_trackers_path(current_user) %></li>
+          <li><%= link_to "My Progress", user_progress_path(current_user) %></li>
+          <li><%= link_to "Logout", :logout %></li>
         </ul>
-      <li><%= link_to "Logout", :logout %></li>
-    <% else %>
-      <li><%= link_to "Sign Up", new_user_path %></li>
-      <li><%= link_to "Login", :login %></li>
-    <% end %>
-  </ul>
-</div>
+        <li><%= link_to "Test", user_test_path(current_user) %></li>
 
-<div class="notice">
-  <p id="notice"><%= flash[:notice] %></p>
-  <p id="alert"><%= flash[:alert] %></p>
-</div>
+      <% else %>
+        <li><%= link_to "Sign Up", new_user_path %></li>
+        <li><%= link_to "Login", :login %></li>
+      <% end %>
+    </ul>
+  </div>
 
-<%= yield %>
+  <div class="notice">
+    <p id="notice"><%= flash[:notice] %></p>
+    <p id="alert"><%= flash[:alert] %></p>
+  </div>
+
+  <%= yield %>
 
 </body>
 </html>

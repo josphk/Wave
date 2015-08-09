@@ -9,7 +9,7 @@
         <% unless registered? tracker["id"] %>
           <%= link_to "Add Tracker", user_trackers_path(id: tracker["id"]), method: :post %>
         <% else %>
-          <%= link_to "Test", canvas_user_tracker_path(current_user, Tracker.find_by(core_id: tracker["id"]).id) %>
+          <%= link_to "Test", test_user_tracker_path(current_user, Tracker.find_by(core_id: tracker["id"]).id) %>
         <% end %>
       </div>
     <% end %>

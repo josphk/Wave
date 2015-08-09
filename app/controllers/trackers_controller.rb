@@ -30,8 +30,8 @@ class TrackersController < ApplicationController
     end
   end
 
-  def canvas
-    @tracker = Tracker.find(params[:id])
+  def test
+    @tracker = current_user.trackers.find(params[:id])
     gon.id = @tracker.core_id
     gon.token = current_user.access_token
   end

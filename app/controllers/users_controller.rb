@@ -42,6 +42,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @stats = @user.stats.order(created_at: :desc)
   end
 
   private
