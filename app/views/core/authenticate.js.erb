@@ -1,7 +1,0 @@
-<% if @token == nil %>
-  $('.error').html('Username or password was incorrect. Please try again.').css('color', 'red');
-<% else %>
-  $('.error').html('');
-  $('.login').css('display', 'none');
-  $('.cores').html("<%= j(render 'core') %>");
-<% end %>

@@ -31,9 +31,9 @@ class TrackersController < ApplicationController
   end
 
   def canvas
-    tracker = Tracker.find(params[:id])
-    @id = tracker.core_id
-    @token = current_user.access_token
+    @tracker = Tracker.find(params[:id])
+    gon.id = @tracker.core_id
+    gon.token = current_user.access_token
   end
 
   def destroy
