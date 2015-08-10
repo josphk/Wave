@@ -17,6 +17,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_tracker_authenticated
+    if current_user.trackers.empty?
+      redirect_to user_trackers_path(current_user), alert: "Register a motion tracker first"
+    end
+  end
+
   def get_current_url
     session[:current_url] = request.original_url
   end

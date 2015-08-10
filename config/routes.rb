@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   root 'pages#index'
 
   resources :users, only: [:new, :create, :show] do
+    member do
+      post 'add', to: 'friendships#create'
+      post 'accept', to: 'friendships#accept'
+    end
+
     collection do
       post 'create_with_particle', to: 'users#create_with_particle'
     end
@@ -17,6 +22,7 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :friendships, only: [:destroy]
     resources :stats, only: [:create, :show]
     get 'progress', to: 'stats#index'
     get 'test', to: 'stats#new'

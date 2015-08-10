@@ -16,7 +16,9 @@
   <% else %>
     <div>Sign in with Particle IO</div>
     <ul class="form-errors">
-      <li class="error-messages"><%= flash[:particle_error] %></div></li>
+      <% if flash[:particle_error] %>
+        <li class="error-messages"><%= flash[:particle_error] %></div></li>
+      <% end %>
     </ul>
     <%= render 'particle_form' %>
   <% end %>

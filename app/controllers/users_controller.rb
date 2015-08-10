@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_logout, except: :show
-  skip_before_filter :get_current_url
+  skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
 
   def new
@@ -43,6 +43,10 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @stats = @user.stats.order(created_at: :desc)
+    if logged_in?
+      @friendship = current_user.friendships.find_by_friend_id(@user.id)
+      @inverse_friendship = current_user.inverse_friendships.find_by_user_id(@user.id)
+    end
   end
 
   private

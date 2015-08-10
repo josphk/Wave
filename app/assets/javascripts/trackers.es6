@@ -1,61 +1,43 @@
 $(document).on('ready page:load', function() {
-
-  // Canvas Script
-  var pointer = $('.pointer');
-  var wrapper = $('.canvas-wrapper');
-  var canvas = $('.canvas')[0];
-  if (canvas != undefined) var ctx = canvas.getContext('2d');
-  var startX = 0; var startY = 0;
-  var endX = 0; var endY = 0;
-  var grad;
-
-  function gradient() {
-    grad = ctx.createLinearGradient(startX, startY, endX, endY);
-    grad.addColorStop(0.1, 'white');
-    grad.addColorStop(1, 'black');
-    return grad;
+  $(window).resize(resizeCanvas)
+  function resizeCanvas() {
+    var canvasWidth = $('.test-canvas').width()
   }
 
-  function line() {
-    if (startX != endX && startY != endY) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(endX, endY);
-      ctx.strokeStyle = gradient();
-      ctx.stroke();
-    }
-  }
+  // SVG Script
+  var testCanvas = d3.select('.test-canvas')
+  var canvasWidth = $('.test-canvas').width()
+  var canvasHeight = $('.test-canvas').height()
+  var pointer
 
-  function init() {
-    canvas.width = wrapper.width();
-    canvas.height = wrapper.height();
+  function makePointer(cx, cy, r) {
+    var data = [{'x': cx, 'y': cy, 'r': r}]
+    var pointer =  testCanvas.selectAll('circle').data(data).enter().append('circle');
+    pointer.attr('cx', function(d) { return d.x })
+           .attr('cy', function(d) { return d.y })
+           .attr('r', function(d) { return d.r })
+    return pointer
   }
 
   // Tracker Script
   var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`);
 
   eventSource.addEventListener('Coordinates', function(e) {
-    var rawData = JSON.parse(e.data);
-    var parsedData = JSON.parse(rawData.data);
-    $('.x').html(parsedData.X);
-    $('.y').html(parsedData.Y);
-    var xPercent = parsedData.X / 10;
-    var yPercent = parsedData.Y / 8;
+    var rawData = JSON.parse(e.data)
+    var parsedData = JSON.parse(rawData.data)
+    $('.x').html(parsedData.X)
+    $('.y').html(parsedData.Y)
+    $('.size').html(parsedData.Size)
+    var x = canvasWidth * parsedData.X / 1000
+    var y = canvasHeight * parsedData.Y / 800
+    var r = parsedData.Size * 7
 
-    init();
-    pointer.animate({
-      'left': xPercent+'%',
-      'top': yPercent+'%' },
-      {
-        duration: 200,
-        progress: function() {
-          endX = pointer.position().left + 5;
-          endY = pointer.position().top + 5;
-          line(); },
-        complete: function() {
-          startX = endX;
-          startY = endY; }
-      }
-    );
+    if (pointer === undefined) pointer = makePointer(x, y, r)
+
+    pointer.transition().attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
   }, false)
 })
+
+/*
+
+ */

@@ -1,4 +1,6 @@
 class StatsController < ApplicationController
+  before_action :require_tracker_authenticated, only: :new
+
   def index
     stats = current_user.stats.all
     @average_times = []
