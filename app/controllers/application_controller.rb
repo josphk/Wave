@@ -48,4 +48,11 @@ class ApplicationController < ActionController::Base
       @inverse_friendship = current_user.inverse_friendships.find_by_user_id(user.id)
     end
   end
+
+  def get_stats(user)
+    @stats = user.stats.order(created_at: :desc)
+    @average_times = []
+    @accuracy_rates = []
+    @stats.each { |stat| @average_times << stat.average_time; @accuracy_rates << stat.accuracy }
+  end
 end

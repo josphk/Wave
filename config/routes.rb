@@ -24,7 +24,6 @@ Rails.application.routes.draw do
 
     resources :friendships, only: [:destroy]
     resources :stats, only: [:create, :show]
-    get 'progress', to: 'stats#index'
     get 'test', to: 'stats#new'
   end
 

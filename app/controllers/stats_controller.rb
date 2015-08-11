@@ -1,14 +1,6 @@
 class StatsController < ApplicationController
   before_action :require_tracker_authenticated, only: :new
 
-  def index
-    stats = current_user.stats.all
-    @average_times = []
-    @accuracy_rates = []
-
-    stats.each { |stat| @average_times << stat.average_time; @accuracy_rates << stat.accuracy }
-  end
-
   def new
     @stat = Stat.new
     # @tracker = current_user.trackers.find(params[:id])

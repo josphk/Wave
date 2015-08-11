@@ -42,8 +42,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @stats = @user.stats.order(created_at: :desc)
     get_friendships(@user)
+    get_stats(@user)
   end
 
   private

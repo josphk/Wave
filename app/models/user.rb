@@ -56,4 +56,8 @@ class User < ActiveRecord::Base
     end
     return pending_friends
   end
+
+  def friends?(user)
+    self.accepted_friends.include?(user) || self.accepted_inverse_friends.include?(user)
+  end
 end

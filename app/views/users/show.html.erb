@@ -12,3 +12,9 @@
     <%= render 'friend_status' %>
   </div>
 <% end %>
+
+<% if !current_user.nil? %>
+  <div class="progress">
+    <%= render 'progress' %>
+  </div>
+<% end %>
