@@ -20,14 +20,13 @@ class StatsController < ApplicationController
     @stat = Stat.new(stat_params)
 
     respond_to do |format|
-      format.html {
-        if @stat.save
-          redirect_to user_stat_path(current_user, @stat)
-        else
-          render :new
-        end
-      }
-      format.js {}
+      if @stat.save
+        format.html { redirect_to user_stat_path(current_user, @stat) }
+        format.js
+      else
+        format.html { render :new }
+        format.js {}
+      end
     end
   end
 

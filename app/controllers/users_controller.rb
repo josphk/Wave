@@ -43,10 +43,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @stats = @user.stats.order(created_at: :desc)
-    if logged_in?
-      @friendship = current_user.friendships.find_by_friend_id(@user.id)
-      @inverse_friendship = current_user.inverse_friendships.find_by_user_id(@user.id)
-    end
+    get_friendships(@user)
   end
 
   private

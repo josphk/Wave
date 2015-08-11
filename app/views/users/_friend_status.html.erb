@@ -1,0 +1,16 @@
+<% if current_user.accepted_friends.include?(@user) || current_user.accepted_inverse_friends.include?(@user) %>
+  <p>Friends</p>
+<% elsif current_user.pending_friends.include?(@user) %>
+  <p class="status">Awaiting Response</p>
+  <ul class="options hidden">
+    <li><%= link_to 'Cancel Request', user_friendship_path(@user, @friendship), method: :delete, remote: true %></li>
+  </ul>
+<% elsif current_user.pending_inverse_friends.include?(@user) %>
+  <p class="status">Respond to Friend Request</p>
+  <ul class="options hidden">
+    <li><%= link_to 'Accept Request', accept_user_path(@user), method: :post, remote: true %></li>
+    <li><%= link_to 'Cancel Request', user_friendship_path(@user, @inverse_friendship), method: :delete, remote: true %></li>
+  </ul>
+<% else %>
+  <%= link_to 'Add Friend', add_user_path(@user), method: :post, remote: true %>
+<% end %>

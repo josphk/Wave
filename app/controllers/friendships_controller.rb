@@ -1,19 +1,18 @@
 class FriendshipsController < ApplicationController
+  before_action :get_user, except: :destroy
   skip_before_filter :get_current_url
 
   def create
-    @friend_request = current_user.friendships.new(friend_id: params[:friend_id])
+    @friend_request = current_user.friendships.new(friend_id: params[:id])
 
     respond_to do |format|
-      format.html {
-        if @friend_request.save
-          redirect_to session[:current_url], alert: "Friend request sent"
-        else
-          render session[:current_url]
-        end
-      }
-
-      format.js {}
+      if @friend_request.save
+        format.html { redirect_to session[:current_url], alert: "Friend request sent" }
+        format.js { get_friendships(@user) }
+      else
+        format.html { render session[:current_url] }
+        format.js { get_friendships(@user) }
+      end
     end
   end
 
@@ -23,18 +22,23 @@ class FriendshipsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to session[:current_url], alert: "You are now friends" }
-      format.js {}
+      format.js { get_friendships(@user) }
     end
   end
 
   def destroy
-    # @friendships = current_user.friendships.push(current_user.inverse_friendships)
+    @user = User.find(params[:user_id])
     @friendship = Friendship.find(params[:id])
     @friendship.destroy
 
     respond_to do |format|
       format.html { redirect_to session[:current_url], alert: "Friend request cancelled" }
-      format.js {}
+      format.js { get_friendships(@user) }
     end
+  end
+
+  private
+  def get_user
+    @user = User.find(params[:id])
   end
 end

@@ -41,4 +41,11 @@ class ApplicationController < ActionController::Base
     Tracker.exists?(core_id: id)
   end
   helper_method :registered?
+
+  def get_friendships(user)
+    if logged_in?
+      @friendship = current_user.friendships.find_by_friend_id(user.id)
+      @inverse_friendship = current_user.inverse_friendships.find_by_user_id(user.id)
+    end
+  end
 end

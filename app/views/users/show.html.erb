@@ -9,21 +9,6 @@
 
 <% unless @user == current_user || current_user.nil? %>
   <div class="friend-status">
-    <% if current_user.accepted_friends.include?(@user) || current_user.accepted_inverse_friends.include?(@user) %>
-      <p>Friends</p>
-    <% elsif current_user.pending_friends.include?(@user) %>
-      <p class="respond">Awaiting Response</p>
-      <ul>
-        <li><%= link_to 'Cancel Request', user_friendship_path(@user, @friendship), method: :delete  %></li>
-      </ul>
-    <% elsif current_user.pending_inverse_friends.include?(@user) %>
-      <p class="respond">Respond to Friend Request</p>
-      <ul>
-        <li><%= link_to 'Accept Request', accept_user_path(@user), method: :post  %></li>
-        <li><%= link_to 'Cancel Request', user_friendship_path(@user, @inverse_friendship), method: :delete  %></li>
-      </ul>
-    <% else %>
-      <%= link_to 'Add Friend', add_user_path(friend_id: @user), method: :post %>
-    <% end %>
+    <%= render 'friend_status' %>
   </div>
 <% end %>
