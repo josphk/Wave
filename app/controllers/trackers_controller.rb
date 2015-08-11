@@ -32,8 +32,8 @@ class TrackersController < ApplicationController
 
   def test
     @tracker = current_user.trackers.find(params[:id])
-    gon.id = @tracker.core_id
-    gon.token = current_user.access_token
+    gon.test_id = @tracker.core_id
+    gon.test_token = current_user.access_token
   end
 
   def destroy
