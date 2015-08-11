@@ -1,0 +1,6 @@
+<% @stats.first(5).each do |stat| %>
+  <div class="stat">
+    <p>Average Times: <%= stat.average_time %></p>
+    <p>Accuracy: <%= stat.accuracy %></p>
+  </div>
+<% end %>
