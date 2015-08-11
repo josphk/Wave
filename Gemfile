@@ -28,6 +28,9 @@ gem 'sorcery'
 gem 'carrierwave'
 gem 'mini_magick'
 
+# For file uploads with AJAX
+gem 'remotipart'
+
 # Style with bourbon and neat
 gem 'bourbon'
 gem 'neat'

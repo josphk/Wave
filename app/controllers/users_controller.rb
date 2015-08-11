@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_logout, except: :show
+  before_action :require_logout, except: [:show, :update_avatar]
+  before_action :get_user, only: [:show, :update_avatar]
   skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
 
@@ -41,13 +42,32 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     get_friendships(@user)
     get_stats(@user)
+  end
+
+  def update_avatar
+    respond_to do |format|
+      if @user.update_attributes(avatar_params)
+        format.html { redirect_to session[:current_url], alert: "Avatar updated" }
+        format.js {}
+      else
+        format.html { render session[:current_url], alert: "Update failed" }
+        format.js {}
+      end
+    end
   end
 
   private
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+  end
+
+  def avatar_params
+    params.require(:user).permit(:avatar)
+  end
+
+  def get_user
+    @user = User.find(params[:id])
   end
 end

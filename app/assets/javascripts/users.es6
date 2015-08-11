@@ -4,4 +4,11 @@ $(document).on('ready page:load', function() {
   }, function() {
     $('.options').addClass('hidden')
   })
+
+  $('.update-photo').on('click', function() {
+    $('#user_avatar').click()
+  })
+    $('#user_avatar').change(function() {
+      $('#edit-avatar').submit()
+    })
 })

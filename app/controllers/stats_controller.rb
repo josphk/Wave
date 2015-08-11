@@ -6,6 +6,7 @@ class StatsController < ApplicationController
     # @tracker = current_user.trackers.find(params[:id])
     # gon.id = @tracker.core_id
     # gon.token = current_user.access_token
+    # TODO: Make auto-generating target test
   end
 
   def create

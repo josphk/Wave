@@ -156,6 +156,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
     rdoc (4.2.0)
+    remotipart (1.2.1)
     request_store (1.2.0)
     rspec-core (3.3.2)
       rspec-support (~> 3.3.0)
@@ -230,6 +231,7 @@ DEPENDENCIES
   puma
   quiet_assets
   rails (= 4.2.3)
+  remotipart
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

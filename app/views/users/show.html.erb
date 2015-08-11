@@ -1,6 +1,18 @@
 <div class="avatar">
-  <%= image_tag image_path(@user.avatar.profile) %>
-  <div class="update-photo"><p>Update Photo</p></div>
+  <div class="image">
+    <%= image_tag image_path(@user.avatar.profile) %>
+  </div>
+  <% if @user == current_user %>
+    <div class="update-photo">
+      <p>Update Photo</p>
+    </div>
+    <div class="hidden">
+      <%= form_for @user, url: update_avatar_user_path(@user), html: { id: 'edit-avatar' }, multipart: true, remote: true do |f| %>
+        <%= f.file_field :avatar %>
+        <%= f.submit 'Update Photo' %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <div class="name">
