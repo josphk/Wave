@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <%= javascript_include_tag 'https://cdn.firebase.com/js/client/2.2.9/firebase.js' %>
 </head>
 <body>
   <%= Gon::Base.render_data %>
@@ -39,5 +40,23 @@
 
   <%= yield %>
 
+  <% if logged_in? %>
+    <%= javascript_tag do %>
+      function getTrackers() {
+        var ids = []
+        <% current_user.tracker_ids.each do |id| %>
+          ids.push("<%= id %>")
+        <% end %>
+        return ids
+      }
+      var trackers = getTrackers()
+
+      var currentUser = {
+        "firstName" : "<%= current_user.first_name %>",
+        "lastName" : "<%= current_user.last_name %>",
+        "trackers" : trackers
+      }
+    <% end %>
+  <% end %>
 </body>
 </html>

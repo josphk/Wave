@@ -1,0 +1,4 @@
+class TrackerSessionsController < ApplicationController
+
+
+end

@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
-  has_many :trackers
-  has_many :stats
-  has_many :friendships
+  has_many :trackers, dependent: :destroy
+  has_many :stats, dependent: :destroy
+  has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
-  has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id
+  has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id, dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user
 
   validates :first_name, presence: true
@@ -59,5 +59,11 @@ class User < ActiveRecord::Base
 
   def friends?(user)
     self.accepted_friends.include?(user) || self.accepted_inverse_friends.include?(user)
+  end
+
+  def tracker_ids
+    ids = []
+    self.trackers.each { |tracker| ids << tracker.core_id }
+    return ids
   end
 end

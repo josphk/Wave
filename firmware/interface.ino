@@ -14,6 +14,8 @@ char coordinates[64];
 void setup() {
   Serial.begin(38400);
   ircam.init();
+  Spark.publish("login");
+  delay(1000);
 }
 
 void loop() {

@@ -5,10 +5,10 @@ $(document).on('ready page:load', function() {
   }
 
   // SVG Script
-  var testCanvas = d3.select('.canvas')
-  var canvasWidth = $('.canvas').width()
-  var canvasHeight = $('.canvas').height()
-  var pointer
+  var testCanvas = d3.select('.canvas'),
+      canvasWidth = $('.canvas').width(),
+      canvasHeight = $('.canvas').height(),
+      pointer
 
   function makePointer(cx, cy, r) {
     var data = [{'x': cx, 'y': cy, 'r': r}]
@@ -16,10 +16,9 @@ $(document).on('ready page:load', function() {
     pointer.attr('cx', function(d) { return d.x })
            .attr('cy', function(d) { return d.y })
            .attr('r', function(d) { return d.r })
+           .attr('fill', '202020')
     return pointer
   }
-
-  // function
 
   // Tracker Script
   var testTracker = function(e) {
@@ -28,10 +27,9 @@ $(document).on('ready page:load', function() {
     $('.x').html(parsedData.X)
     $('.y').html(parsedData.Y)
     $('.size').html(parsedData.Size)
-    var x = canvasWidth * parsedData.X / 1000
-    var y = canvasHeight * parsedData.Y / 800
-    var r = parsedData.Size * 7
-    console.log('fire')
+    var x = canvasWidth * parsedData.X / 1000,
+        y = canvasHeight * parsedData.Y / 800,
+        r = parsedData.Size * 7
 
     if (pointer === undefined) pointer = makePointer(x, y, r)
 
@@ -45,7 +43,3 @@ $(document).on('ready page:load', function() {
     eventSource.removeEventListener('Coordinates', testTracker, false)
   })
 })
-
-/*
-
- */
