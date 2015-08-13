@@ -34,10 +34,11 @@ ActiveRecord::Schema.define(version: 20150809051915) do
   add_index "stats", ["user_id"], name: "index_stats_on_user_id"
 
   create_table "trackers", force: :cascade do |t|
+    t.string   "name",       default: "My Wave Tracker"
     t.string   "core_id"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   create_table "users", force: :cascade do |t|

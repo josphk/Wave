@@ -35,7 +35,7 @@ gem 'remotipart'
 gem 'bourbon'
 gem 'neat'
 
-# For accessing the Cloud API
+# For accessing the Particle Cloud API
 gem 'httparty'
 
 # For testing
@@ -45,6 +45,12 @@ gem 'rspec-rails'
 # Integrating Babel JS
 gem 'sprockets', '>=3.0.0'
 gem 'sprockets-es6', require: 'sprockets/es6'
+
+# Integrating Firebase
+gem 'firebase'
+
+# For app config
+gem 'figaro'
 
 # For transferring rails variables to javascript
 gem 'gon'

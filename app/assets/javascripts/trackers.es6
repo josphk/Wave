@@ -16,7 +16,7 @@ $(document).on('ready page:load', function() {
     pointer.attr('cx', function(d) { return d.x })
            .attr('cy', function(d) { return d.y })
            .attr('r', function(d) { return d.r })
-           .attr('fill', '202020')
+           .attr('fill', '#202020')
     return pointer
   }
 

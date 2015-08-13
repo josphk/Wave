@@ -15,7 +15,7 @@ class StatsController < ApplicationController
     respond_to do |format|
       if @stat.save
         format.html { redirect_to user_stat_path(current_user, @stat) }
-        format.js
+        format.js {}
       else
         format.html { render :new }
         format.js {}

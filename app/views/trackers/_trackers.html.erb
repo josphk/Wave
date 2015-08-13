@@ -1,0 +1,28 @@
+<h3>You currently have <%= pluralize(@trackers.size - current_user.trackers.size, 'unregistered Wave Tracker') %></h3>
+
+<% @trackers.each do |tracker| %>
+  <div class="tracker">
+    <% unless registered? tracker["id"] %>
+      <%= form_tag user_trackers_path, remote: true do %>
+        <div class="particle-name">
+          <p>Particle Name: <%= tracker["name"] %></p>
+        </div>
+        <div class="field">
+          <%= label_tag :name %>
+          <%= text_field_tag :name, nil, placeholder: 'My Wave Tracker' %>
+          <%= hidden_field_tag :core_id, tracker["id"] %>
+        </div>
+        <div class="submit">
+          <%= submit_tag 'Add Tracker' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="name">
+        <p>Name: <%= Tracker.find_by(core_id: tracker["id"]).name %></p>
+      </div>
+      <div class="submit">
+        <%= link_to "Test", test_user_tracker_path(current_user, Tracker.find_by(core_id: tracker["id"]).id) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

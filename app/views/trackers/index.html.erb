@@ -1,25 +1,10 @@
 <h1>My Wave Trackers</h1>
 
-<div class="error"></div>
 <div class="trackers">
   <% if @trackers %>
-    <% @trackers.each do |tracker| %>
-      <div class="tracker">
-        <div class="name">Name: <%= tracker["name"] %></div>
-        <% unless registered? tracker["id"] %>
-          <%= link_to "Add Tracker", user_trackers_path(id: tracker["id"]), method: :post %>
-        <% else %>
-          <%= link_to "Test", test_user_tracker_path(current_user, Tracker.find_by(core_id: tracker["id"]).id) %>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render 'trackers' %>
   <% else %>
     <div>Sign in with Particle IO</div>
-    <ul class="form-errors">
-      <% if flash[:particle_error] %>
-        <li class="error-messages"><%= flash[:particle_error] %></div></li>
-      <% end %>
-    </ul>
     <%= render 'particle_form' %>
   <% end %>
 </div>

@@ -1,4 +1,0 @@
-class TrackerSessionsController < ApplicationController
-
-
-end

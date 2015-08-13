@@ -1,4 +1,5 @@
 $(document).on('ready page:load', function() {
+  console.log(currentUser.onlineTracker)
   $(window).resize(resizeCanvas)
   function resizeCanvas() {
     var canvasWidth = $('.canvas').width()
@@ -19,8 +20,6 @@ $(document).on('ready page:load', function() {
     return pointer
   }
 
-  // function
-
   // Tracker Script
   var waveTracker = function(e) {
     var rawData = JSON.parse(e.data)
@@ -32,15 +31,15 @@ $(document).on('ready page:load', function() {
         y = canvasHeight * parsedData.Y / 800,
         r = parsedData.Size * 7
 
-    if (pointer === undefined) pointer = makePointer(x, y, r)
+    if (pointer === undefined) pointer = makeCircle(x, y, r)
 
     pointer.transition().attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
   }
 
-  var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.wave_id }/events/?access_token=${ gon.wave_token }`)
-  eventSource.addEventListener('Coordinates', waveTracker, false)
+    var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`)
+    eventSource.addEventListener('Coordinates', waveTracker, false)
 
-  $(window).on('page:before-change', function() {
-    eventSource.removeEventListener('Coordinates', waveTracker, false)
-  })
+    $(window).on('page:before-change', function() {
+      eventSource.removeEventListener('Coordinates', waveTracker, false)
+    })
 })

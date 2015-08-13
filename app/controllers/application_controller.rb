@@ -55,4 +55,8 @@ class ApplicationController < ActionController::Base
     @accuracy_rates = []
     @stats.each { |stat| @average_times << stat.average_time; @accuracy_rates << stat.accuracy }
   end
+
+  def firebase()
+    @firebase = Firebase::Client.new(ENV['firebase_url'])
+  end
 end

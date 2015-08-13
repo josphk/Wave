@@ -1,8 +1,8 @@
 class TrackersController < ApplicationController
+  before_action :get_trackers, only: :index
+  before_action :firebase, only: :create
+
   def index
-    @trackers = if current_user.access_token
-      HTTParty.get('https://api.particle.io/v1/devices', query: {access_token: current_user.access_token})
-    end
   end
 
   def authenticate
@@ -14,19 +14,23 @@ class TrackersController < ApplicationController
       @trackers = HTTParty.get('https://api.particle.io/v1/devices', query: {access_token: token})
       redirect_to user_trackers_url(current_user)
     else
-      flash.now[:particle_error] = "Username or password was incorrect. Please try again."
+      flash.now[:alert] = "Username or password was incorrect. Please try again."
       render :index
     end
   end
 
   def create
-    @tracker = current_user.trackers.build(core_id: params[:id])
+    @tracker = current_user.trackers.build(tracker_params)
+    response = @firebase.push('wave_trackers', { coreid: @tracker.core_id, status: 'online', published_at: Firebase::ServerValue::TIMESTAMP})
 
-    if @tracker.save
-      redirect_to user_trackers_path(current_user)
-    else
-      flash.now[:alert] = "An error occured"
-      render user_trackers_path(current_user)
+    respond_to do |format|
+      if response.success? && @tracker.save
+        format.html { redirect_to user_trackers_path(current_user) }
+        format.js { get_trackers }
+      else
+        format.html { render user_trackers_path(current_user), alert: 'An error occured' }
+        format.js { flash.now[:alert] = 'An error occured'}
+      end
     end
   end
 
@@ -42,6 +46,17 @@ class TrackersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to root_url }
       format.js   {}
+    end
+  end
+
+  private
+  def tracker_params
+    params.permit(:core_id, :name)
+  end
+
+  def get_trackers
+    @trackers = if current_user.access_token
+      HTTParty.get('https://api.particle.io/v1/devices', query: {access_token: current_user.access_token})
     end
   end
 end

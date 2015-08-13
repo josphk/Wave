@@ -16,7 +16,7 @@ class UsersController < ApplicationController
       auto_login(@user)
       redirect_to root_url
     else
-      @user.save
+      @user.save # throws validation errors
       @user.validate_password!
       render :new
     end
