@@ -38,8 +38,6 @@
     <p id="alert"><%= flash[:alert] %></p>
   </div>
 
-  <%= yield %>
-
   <% if logged_in? %>
     <%= javascript_tag do %>
       var loggedIn = true
@@ -70,5 +68,8 @@
       var currentUser = undefined
     <% end %>
   <% end %>
+
+  <%= yield %>
+
 </body>
 </html>

@@ -1,5 +1,4 @@
 $(document).on('ready page:load', function() {
-  console.log(currentUser.onlineTracker)
   $(window).resize(resizeCanvas)
   function resizeCanvas() {
     var canvasWidth = $('.canvas').width()

@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def require_tracker_authenticated
     if current_user.trackers.empty?
-      redirect_to user_trackers_path(current_user), alert: "Register a motion tracker first"
+      redirect_to user_trackers_path(current_user), alert: "Register a Wave Tracker first"
     end
   end
 
