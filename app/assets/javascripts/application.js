@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require firebase.js
+//= require spark.min.js
 //= require d3.min.js
 //= require jquery.remotipart
 //= require_tree .

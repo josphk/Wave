@@ -5,8 +5,6 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <%= javascript_include_tag 'https://cdn.firebase.com/js/client/2.2.9/firebase.js' %>
-  <%= javascript_include_tag 'https://cdn.jsdelivr.net/sparkjs/0.5.9/spark.min.js' %>
 </head>
 <body>
   <%= Gon::Base.render_data %>
@@ -38,9 +36,12 @@
     <p id="alert"><%= flash[:alert] %></p>
   </div>
 
-  <% if logged_in? %>
-    <%= javascript_tag do %>
-      var loggedIn = true
+  <%= javascript_tag do %>
+    var currentUser
+    var loggedIn
+
+    <% if logged_in? %>
+      loggedIn = true
 
       function getTrackers() {
         var ids = []
@@ -49,23 +50,23 @@
         <% end %>
         return ids
       }
-      var trackers = getTrackers()
 
-      var currentUser = {
-        "firstName" : "<%= current_user.first_name %>",
-        "lastName" : "<%= current_user.last_name %>",
-        "trackers" : trackers,
-        "onlineTracker" : undefined,
-        "token" : "<%= current_user.access_token %>"
+      function initUser() {
+        currentUser = {
+          "firstName" : "<%= current_user.first_name %>",
+          "lastName" : "<%= current_user.last_name %>",
+          "trackers" : getTrackers(),
+          "onlineTracker" : undefined,
+          "token" : "<%= current_user.access_token %>"
+        }
+        spark.accessToken = currentUser.token
       }
 
+      if (currentUser === undefined) initUser()
+
       var firebaseUrl = "<%= ENV["firebase_url"] %>"
-      spark.accessToken = currentUser.token
-    <% end %>
-  <% else %>
-    <%= javascript_tag do %>
-      var loggedIn = false
-      var currentUser = undefined
+    <% else %>
+      loggedIn = false
     <% end %>
   <% end %>
 
