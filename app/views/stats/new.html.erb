@@ -1,7 +1,17 @@
 <h1>Test</h1>
 
 <%= javascript_tag do %>
-  initStat()
+  <%= render partial: 'shared/svg.js.erb' %>
+  function init() {
+    var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`)
+    eventSource.addEventListener('Coordinates', waveTracker, false)
+
+    $(window).on('page:before-change', function() {
+      eventSource.close()
+    })
+  }
+
+  if (currentUser.onlineTracker !== undefined) init()
 <% end %>
 
 <div> X Coordinate: </div>

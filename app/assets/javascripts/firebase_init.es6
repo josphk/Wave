@@ -29,6 +29,7 @@ $(document).on('ready', function() {
       if (notifyTrackerStatus(currentUser.trackers, added)) {
         alert('Tracker is online')
         currentUser.onlineTracker = added.val().coreid
+        if (svg) init()
       }
     });
 

@@ -1,5 +1,21 @@
 <h1>Canvas</h1>
 
+<%= javascript_tag do %>
+  <%= render partial: 'shared/svg.js.erb' %>
+  function init() {
+    var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
+    eventSource.addEventListener('Coordinates', waveTracker, false)
+
+    $(window).on('page:before-change', function() {
+      eventSource.close()
+    })
+  }
+
+  spark.getDevice(gon.id, function(err, device) {
+    if (device.connected) init()
+  })
+<% end %>
+
 <div> X Coordinate: </div>
 <div class="x"></div>
 
