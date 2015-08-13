@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   def registered?(id)
-    Tracker.exists?(core_id: id)
+    current_user.trackers.exists?(core_id: id)
   end
   helper_method :registered?
 

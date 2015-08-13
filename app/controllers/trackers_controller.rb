@@ -1,6 +1,6 @@
 class TrackersController < ApplicationController
   before_action :get_trackers, only: :index
-  before_action :firebase, only: :create
+  before_action :firebase, only: [:create, :destroy]
 
   def index
   end
@@ -41,11 +41,12 @@ class TrackersController < ApplicationController
   end
 
   def destroy
+    @tracker = Tracker.find(params[:id])
     @tracker.destroy
 
     respond_to do |format|
       format.html { redirect_to root_url }
-      format.js   {}
+      format.js { get_trackers }
     end
   end
 

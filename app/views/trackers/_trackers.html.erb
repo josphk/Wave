@@ -18,10 +18,13 @@
       <% end %>
     <% else %>
       <div class="name">
-        <p>Name: <%= Tracker.find_by(core_id: tracker["id"]).name %></p>
+        <p>Name: <%= current_user.trackers.find_by(core_id: tracker["id"]).name %></p>
       </div>
       <div class="submit">
-        <%= link_to "Test", test_user_tracker_path(current_user, Tracker.find_by(core_id: tracker["id"]).id) %>
+        <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id) %>
+      </div>
+      <div class="delete">
+        <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete, remote: true %>
       </div>
     <% end %>
   </div>
