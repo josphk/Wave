@@ -5,8 +5,16 @@
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
   function init() {
-    canvas.selectAll('*').remove()
     trackerOffline = false
+    clear()
+    materialBorder()
+    start('#b6f5cb', '#befed2')
+
+
+    $('.wave-test-start, .canvas-text').one('click', function() {
+      clear()
+      pulse(75, 700, 300, false, '#b6f5cb', '#befed2')
+    })
 
     var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`)
     eventSource.addEventListener('Coordinates', waveTracker, false)
@@ -15,7 +23,6 @@
       eventSource.close()
     })
   }
-
-  if (currentUser.onlineTracker !== undefined) init()
-  if (trackerOffline) trackerStatus(canvasWidth, canvasHeight)
+  init()
+  // checkStatus(currentUser.onlineTracker)
 <% end %>

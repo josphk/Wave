@@ -5,7 +5,7 @@
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
   function init() {
-    canvas.selectAll('*').remove()
+    clear()
     trackerOffline = false
 
     var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
@@ -16,8 +16,5 @@
     })
   }
 
-  spark.getDevice(gon.id, function(err, device) {
-    if (device.connected) init()
-    else trackerStatus(canvasWidth, canvasHeight)
-  })
+  checkStatus(gon.id)
 <% end %>

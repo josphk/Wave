@@ -10,9 +10,9 @@
 
   & .update-photo {
     @include box-sizing(border-box);
-    @include align-items(flex-end);
     @include display(flex);
     @include flex-direction(row);
+    @include align-items(center);
     @include justify-content(center);
     @include transition(bottom 0.5s $ease-out-quart);
     position: absolute;

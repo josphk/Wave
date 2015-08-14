@@ -9,7 +9,7 @@ $(document).on('ready', function() {
     }
 
     function refreshDatabase(loggedInTracker) {
-      firebase.child('wave_trackers').once('value', function(all) {
+      firebase.child('wave_motions').once('value', function(all) {
         all.forEach(function(oldTracker) {
           logoutTrackers(oldTracker)
           if (oldTracker.val().coreid === loggedInTracker.val().coreid && oldTracker.key() !== loggedInTracker.key())
@@ -37,7 +37,7 @@ $(document).on('ready', function() {
       })
     }
 
-    firebase.child('wave_trackers').on('child_added', function(added) {
+    firebase.child('wave_motions').on('child_added', function(added) {
       refreshDatabase(added)
       if (notifyTrackerStatus(currentUser.trackers, added)) {
         notifyAnimation('online')
@@ -46,7 +46,7 @@ $(document).on('ready', function() {
       }
     });
 
-    firebase.child('wave_trackers').on('child_removed', function(removed) {
+    firebase.child('wave_motions').on('child_removed', function(removed) {
       if (notifyTrackerStatus(currentUser.trackers, removed)) {
         notifyAnimation('offline')
         currentUser.onlineTracker = undefined

@@ -1,6 +1,8 @@
 // Global Variables and Styles //
 
 $em-base: 14px;
+$canvas-text-start: #506c59;
+$canvas-text-asleep: #b3b3b3;
 
 .hidden {
   display: none;
@@ -47,13 +49,49 @@ $em-base: 14px;
 // Canvas Styling //
 
 .canvas-container {
+  @include display(flex);
+  @include flex-direction(row);
+  @include align-items(center);
+  @include justify-content(center);
+
+  width: 100%;
+  min-width: 550px;
+  height: 550px;
   padding: 50px;
 }
 
 .canvas {
-  @include box-sizing(border-box);
   @include material-borders;
 
   width: 100%;
-  height: 500px;
+  height: 100%;
 }
+
+.canvas-text {
+  font-family: 'quicksand';
+  font-weight: 400;
+  font-size: 2em;
+  cursor: pointer;
+
+  &.start {
+    fill: $canvas-text-start;
+  }
+
+  &.asleep {
+    fill: $canvas-text-asleep;
+  }
+}
+
+.wave-test-start {
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
