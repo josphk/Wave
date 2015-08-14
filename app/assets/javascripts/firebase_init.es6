@@ -24,10 +24,23 @@ $(document).on('ready', function() {
       }
     }
 
+    function notifyAnimation(status) {
+      $('.tracker-status').html(`<li>Wave Motion is ${ status }</li>`)
+      $('.tracker-status').addClass('notify').css('opacity', 1).delay(2000).queue(function() {
+        $(this).removeClass('notify').delay(1).queue(function() {
+          // $('.logo').removeClass('red')
+
+          $(this).addClass('unnotify').removeClass('notify').delay(2000).queue(function() {
+            $(this).removeClass('unnotify').css('opacity', 0).dequeue()
+          }).dequeue()
+        }).dequeue()
+      })
+    }
+
     firebase.child('wave_trackers').on('child_added', function(added) {
       refreshDatabase(added)
       if (notifyTrackerStatus(currentUser.trackers, added)) {
-        alert('Tracker is online')
+        notifyAnimation('online')
         currentUser.onlineTracker = added.val().coreid
         if (svg) init()
       }
@@ -35,8 +48,9 @@ $(document).on('ready', function() {
 
     firebase.child('wave_trackers').on('child_removed', function(removed) {
       if (notifyTrackerStatus(currentUser.trackers, removed)) {
-        alert('Tracker is offline')
+        notifyAnimation('offline')
         currentUser.onlineTracker = undefined
+        if (svg) trackerStatus(canvasWidth, canvasHeight)
       }
     })
   }

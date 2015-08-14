@@ -8,34 +8,6 @@
 </head>
 <body>
   <%= Gon::Base.render_data %>
-
-  <div class="nav">
-    <ul class="links">
-      <li><h3><%= link_to "Wave", root_url %></h3></li>
-      <% if logged_in? %>
-        <li>
-          <%= link_to user_path(current_user), id: 'avatar' do %>
-            <%= image_tag image_path(current_user.avatar.medium) %>
-          <% end %>
-        </li>
-        <ul class="user-links hidden">
-          <li><%= link_to "Profile", user_path(current_user)%></li>
-          <li><%= link_to "My Wave Trackers", user_trackers_path(current_user) %></li>
-          <li><%= link_to "Logout", :logout %></li>
-        </ul>
-        <li><%= link_to "Test", user_test_path(current_user) %></li>
-
-      <% else %>
-        <li><%= link_to "Sign Up", new_user_path %></li>
-        <li><%= link_to "Login", :login %></li>
-      <% end %>
-    </ul>
-  </div>
-
-  <div class="flash">
-    <p id="alert"><%= flash[:alert] %></p>
-  </div>
-
   <%= javascript_tag do %>
     var svg = false
     var currentUser
@@ -70,6 +42,36 @@
       loggedIn = false
     <% end %>
   <% end %>
+
+  <div class="nav">
+    <ul class="links">
+      <li class="logo"><h3><%= link_to "Wave", root_url %></h3></li>
+      <ul class="tracker-status">
+      </ul>
+      <% if logged_in? %>
+        <li>
+          <%= link_to user_path(current_user), id: 'avatar' do %>
+            <%= image_tag image_path(current_user.avatar.medium) %>
+          <% end %>
+        </li>
+        <ul class="user-links hidden">
+          <li><%= link_to "Profile", user_path(current_user)%></li>
+          <li><%= link_to "My Wave Trackers", user_trackers_path(current_user) %></li>
+          <li><%= link_to "Logout", :logout %></li>
+        </ul>
+        <li><%= link_to "Test", user_test_path(current_user) %></li>
+
+      <% else %>
+        <li><%= link_to "Sign Up", new_user_path %></li>
+        <li><%= link_to "Login", :login %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="flash">
+    <p id="alert"><%= flash[:alert] %></p>
+  </div>
+
 
   <%= yield %>
 

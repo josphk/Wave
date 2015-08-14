@@ -1,8 +1,13 @@
 <h1>Canvas</h1>
 
+<%= render 'shared/canvas' %>
+
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
   function init() {
+    canvas.selectAll('*').remove()
+    trackerOffline = false
+
     var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
     eventSource.addEventListener('Coordinates', waveTracker, false)
 
@@ -13,18 +18,6 @@
 
   spark.getDevice(gon.id, function(err, device) {
     if (device.connected) init()
+    else trackerStatus(canvasWidth, canvasHeight)
   })
 <% end %>
-
-<div> X Coordinate: </div>
-<div class="x"></div>
-
-<div> Y Coordinate: </div>
-<div class="y"></div>
-
-<div> Size: </div>
-<div class="size"></div>
-
-<div class="canvas-container">
-  <svg class="canvas"></svg>
-</div>

@@ -1,4 +1,4 @@
-<h3>You currently have <%= pluralize(@trackers.size - current_user.trackers.size, 'unregistered Wave Tracker') %></h3>
+<h3>You currently have <%= pluralize(@trackers.size - current_user.trackers.size, 'unregistered Wave Motion') %></h3>
 
 <% @trackers.each do |tracker| %>
   <div class="tracker">
@@ -9,11 +9,11 @@
         </div>
         <div class="field">
           <%= label_tag :name %>
-          <%= text_field_tag :name, nil, placeholder: 'My Wave Tracker' %>
+          <%= text_field_tag :name, nil, placeholder: 'My Wave Motion' %>
           <%= hidden_field_tag :core_id, tracker["id"] %>
         </div>
         <div class="submit">
-          <%= submit_tag 'Add Tracker' %>
+          <%= submit_tag 'Add' %>
         </div>
       <% end %>
     <% else %>

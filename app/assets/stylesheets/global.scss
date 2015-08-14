@@ -1,4 +1,10 @@
+// Global Variables and Styles //
+
 $em-base: 14px;
+
+.hidden {
+  display: none;
+}
 
 // Mixins //
 
@@ -8,8 +14,34 @@ $em-base: 14px;
   border-radius: 1px;
 }
 
-.hidden {
-  display: none;
+// Animation Keyframes //
+
+@include keyframes(fadeIn) {
+  from {
+    @include transform(translateY(-20px));
+    opacity: 0;
+  }
+  to {
+    @include transform(translateY(0));
+    opacity: 1;
+  }
+}
+
+// Navigation //
+
+.tracker-status {
+  opacity: 0;
+}
+
+.notify {
+  @include animation(fadeIn 0.75s $ease-out-quart);
+  opacity: 1;
+}
+
+.unnotify {
+  @include animation(fadeIn 2s $ease-in-quart);
+  @include animation-direction(reverse);
+  opacity: 0;
 }
 
 // Canvas Styling //
