@@ -1,12 +1,12 @@
-// Global Variables and Styles //
+// Global Variables //
 
-$em-base: 14px;
-$canvas-text-start: #506c59;
-$canvas-text-asleep: #b3b3b3;
+$dark-gray: #333 !default;
+$light-gray: #ddd !default;
 
-.hidden {
-  display: none;
-}
+$em-base: 14px !default;
+$base-font-size: 1em !default;
+$base-font-color: $dark-gray !default;
+$base-line-height: 1.5em !default;
 
 // Mixins //
 
@@ -14,6 +14,40 @@ $canvas-text-asleep: #b3b3b3;
   border: 0.5px solid #ddd;
   box-shadow: 0px 1px 2px #aaa;
   border-radius: 1px;
+}
+
+@mixin rotate-forever {
+  0%    { @include transform(rotate(0deg)); }
+  100%  { @include transform(rotate(360deg)); }
+}
+@-webkit-keyframes rotate-forever { @include rotate-forever; }
+   @-moz-keyframes rotate-forever { @include rotate-forever; }
+        @keyframes rotate-forever { @include rotate-forever; }
+
+// Global Styles //
+//
+body {
+  color: $base-font-color;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+}
+
+.hidden {
+  display: none;
+}
+
+.loading {
+  @include animation-duration(1.5s);
+  @include animation-iteration-count(infinite);
+  @include animation-name(rotate-forever);
+  @include animation-timing-function(linear);
+  @include size(75px);
+  @include position(absolute, 50% 0 0 50%);
+  margin: -37.5px 0 0 -37.5px;
+  border: 5px solid #eee;
+  border-right-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 // Animation Keyframes //
@@ -46,7 +80,7 @@ $canvas-text-asleep: #b3b3b3;
   opacity: 0;
 }
 
-// Canvas Styling //
+// Canvas Styling with Modal //
 
 .canvas-container {
   @include display(flex);
@@ -55,25 +89,24 @@ $canvas-text-asleep: #b3b3b3;
   @include justify-content(center);
 
   width: 100%;
-  min-width: 550px;
-  height: 550px;
-  padding: 50px;
+  height: 100%;
 }
 
 .canvas {
-  @include material-borders;
-
   width: 100%;
   height: 100%;
 }
 
 .canvas-text {
+  $canvas-text-start: #506c59;
+  $canvas-text-asleep: #b3b3b3;
+
   font-family: 'quicksand';
   font-weight: 400;
   font-size: 2em;
-  cursor: pointer;
 
   &.start {
+    cursor: pointer;
     fill: $canvas-text-start;
   }
 
@@ -85,6 +118,117 @@ $canvas-text-asleep: #b3b3b3;
 .wave-test-start {
   cursor: pointer;
 }
+
+.modal {
+  $base-border-color: #dcdcdc !default;
+  $base-border-radius: 3px !default;
+  $base-background-color: #fff !default;
+  $action-color: #477dca !default;
+  $medium-screen: em(640) !default;
+  $large-screen: em(860) !default;
+  $modal-padding: 3em;
+  $modal-background: $base-background-color;
+  $modal-close-color: $light-gray;
+
+  .modal-state {
+    display: none;
+  }
+
+  .modal-fade-screen { // overlay
+    @include transition(opacity 0.25s ease);
+    @include position(fixed, 0);
+    background-color: rgba(#000, 0.8);
+    opacity: 0;
+    padding: 4em;
+    text-align: left;
+    visibility: hidden;
+    z-index: 100;
+
+    // @include media($medium-screen)
+    // @include media($large-screen)
+  }
+
+  .modal-close {
+    @include position(absolute, ($modal-padding /2) ($modal-padding /2) null null);
+    @include size(1.5em);
+    cursor: pointer;
+
+    &:after,
+    &:before {
+      @include position(absolute, 3px 3px 0 50%);
+      @include transform(rotate(45deg));
+      @include size(0.15em 1.5em);
+      background: $modal-close-color;
+      content: '';
+      display: block;
+      margin: -3px 0 0 -1px;
+    }
+
+    &:hover:after,
+    &:hover:before {
+      background: darken($modal-close-color, 10%);
+    }
+
+    &:before {
+      @include transform(rotate(-45deg));
+    }
+  }
+
+  .modal-inner {
+    @include transition(opacity 0.25s ease);
+    background: $modal-background;
+    border-radius: $base-border-radius;
+    margin-top: 0;
+    margin: auto;
+    width: 100%;
+    min-width: 550px;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+
+    h1 {
+      color: $base-font-color;
+      margin-bottom: 0 0 0.6em 0;
+      text-align: left;
+      text-transform: capitalize;
+    }
+
+    p {
+      color: $base-font-color;
+      line-height: $base-line-height;
+    }
+
+    .modal-content {
+      color: $base-font-color;
+      height: 100%;
+    }
+
+    a.cta {
+      color: $base-background-color;
+      display: inline-block;
+      margin-right: 0.5em;
+      margin-top: 1em;
+
+      &:last-child {
+        padding: 0 2em;
+      }
+    }
+  }
+
+  .modal-state:checked + .modal-fade-screen {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-state:checked + .modal-fade-screen .modal-inner {
+    height: 100%
+  }
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
 
 
 

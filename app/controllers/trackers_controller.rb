@@ -1,5 +1,6 @@
 class TrackersController < ApplicationController
   before_action :get_trackers, only: :index
+  before_action :registered_trackers, only: :index
   before_action :firebase, only: [:create, :destroy]
 
   def index
@@ -26,7 +27,7 @@ class TrackersController < ApplicationController
     respond_to do |format|
       if response.success? && @tracker.save
         format.html { redirect_to user_trackers_path(current_user) }
-        format.js { get_trackers }
+        format.js { get_trackers; registered_trackers }
       else
         format.html { render user_trackers_path(current_user), alert: 'An error occured' }
         format.js { flash.now[:alert] = 'An error occured'}
@@ -38,6 +39,10 @@ class TrackersController < ApplicationController
     @tracker = current_user.trackers.find(params[:id])
     gon.id = @tracker.core_id
     gon.token = current_user.access_token
+
+    respond_to do |format|
+      format.html { render layout: !request.xhr?; gon.id; gon.token }
+    end
   end
 
   def destroy
@@ -46,7 +51,7 @@ class TrackersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to root_url }
-      format.js { get_trackers }
+      format.js { get_trackers; registered_trackers }
     end
   end
 
@@ -59,5 +64,9 @@ class TrackersController < ApplicationController
     @trackers = if current_user.access_token
       HTTParty.get('https://api.particle.io/v1/devices', query: {access_token: current_user.access_token})
     end
+  end
+
+  def registered_trackers
+    @registered_trackers = @trackers.size - current_user.trackers.size
   end
 end

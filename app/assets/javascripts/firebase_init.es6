@@ -3,8 +3,13 @@ $(document).on('ready', function() {
     var firebase = new Firebase(firebaseUrl)
 
     function logoutTrackers(tracker) {
-      spark.getDevice(tracker.val().coreid, function(err, device) {
-        if (!device.connected) tracker.ref().remove()
+      var url = 'https://api.spark.io/v1/devices/' + tracker.val().coreid + '?access_token=' + currentUser.token
+
+      $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(data) { if (!data.connected) tracker.ref().remove() },
+        dataType: 'json'
       })
     }
 
@@ -50,7 +55,7 @@ $(document).on('ready', function() {
       if (notifyTrackerStatus(currentUser.trackers, removed)) {
         notifyAnimation('offline')
         currentUser.onlineTracker = undefined
-        if (svg) trackerStatus(canvasWidth, canvasHeight)
+        if (svg) trackerAsleep(canvasWidth, canvasHeight)
       }
     })
   }

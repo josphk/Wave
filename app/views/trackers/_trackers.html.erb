@@ -1,9 +1,11 @@
-<h3>You currently have <%= pluralize(@trackers.size - current_user.trackers.size, 'unregistered Wave Motion') %></h3>
+<% if @registered_trackers != 0  %>
+  <h3>You currently have <%= pluralize(@registered_trackers, 'unregistered Wave Motion') %></h3>
+<% end %>
 
 <% @trackers.each do |tracker| %>
   <div class="tracker">
     <% unless registered? tracker["id"] %>
-      <%= form_tag user_trackers_path, remote: true do %>
+      <%= form_tag user_trackers_path do %>
         <div class="particle-name">
           <p>Particle Name: <%= tracker["name"] %></p>
         </div>
@@ -21,7 +23,16 @@
         <p>Name: <%= current_user.trackers.find_by(core_id: tracker["id"]).name %></p>
       </div>
       <div class="submit">
-        <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id) %>
+        <div class="modal">
+          <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), remote: true, 'data-type' => :html %>
+          <input class="hidden modal-state" id="modal-1" type="checkbox" />
+          <div class="modal-fade-screen">
+            <div class="modal-inner">
+              <div class="modal-close" for="modal-1"></div>
+              <div class="modal-content"></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="delete">
         <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete, remote: true %>

@@ -3,10 +3,10 @@ class StatsController < ApplicationController
 
   def new
     @stat = Stat.new
-    # @tracker = current_user.trackers.find(params[:id])
-    # gon.id = @tracker.core_id
-    # gon.token = current_user.access_token
-    # TODO: Make auto-generating target test
+
+    respond_to do |format|
+      format.html { render layout: !request.xhr? }
+    end
   end
 
   def create

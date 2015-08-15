@@ -1,28 +1,86 @@
-<h1>Test</h1>
-
-<%= render 'shared/canvas' %>
+<div class="canvas-container">
+  <svg class="canvas"></svg>
+</div>
 
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
+
+  var counter = 0,
+      t1, t2,
+      coordinates,
+      timeData = [],
+      accuracyData = []
+
+  function generateTarget(width, height, waveColor, circleColor) {
+    var s = (Math.random() * 75) + 25,
+        r = s + 25,
+        x = Math.random() * (width - (2 * r)) + r,
+        y = Math.random() * (height - (2 * r)) + r
+    pulse(x, y, s, r, 300, 3000, true, waveColor, circleColor)
+
+    var coordinates = new Object()
+    coordinates['x'] = x; coordinates['y'] = y; coordinates['r'] = r
+    return coordinates
+  }
+
   function init() {
     trackerOffline = false
+    var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`)
+
     clear()
-    materialBorder()
     start('#b6f5cb', '#befed2')
 
+    var waveTracker = function(e) {
+      var rawData = JSON.parse(e.data),
+          parsedData = JSON.parse(rawData.data),
+          x = width * parsedData.X / 1000,
+          y = height * parsedData.Y / 800,
+          r = parsedData.Size * 7
+      var minDistance = r + coordinates.r,
+          newDistance = distance(x, y, coordinates.x, coordinates.y)
+
+      if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
+      pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
+
+      setTimeout(function() {
+        if (newDistance < minDistance) {
+          t2 = performance.now()
+          timeData.push(timer(t1, t2))
+          accuracyData.push(accuracy(newDistance, minDistance + 10))
+          pointer = undefined
+          clear()
+          test(5)
+        }
+      }, 500)
+    }
+
+    function test(iterations) {
+      var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2']
+      var circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ]
+      if (counter == iterations) {
+        eventSource.close()
+        submitResults(timeData, accuracyData)
+        return
+      } else {
+        t1 = performance.now()
+        coordinates = generateTarget(width, height, circleColor[counter % 5], waveColor[counter % 5])
+        eventSource.addEventListener('Coordinates', waveTracker, false)
+        counter++
+      }
+    }
 
     $('.wave-test-start, .canvas-text').one('click', function() {
       clear()
-      pulse(75, 700, 300, false, '#b6f5cb', '#befed2')
+      pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
+      setTimeout(function() { test(5) }, 2000)
     })
 
-    var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`)
-    eventSource.addEventListener('Coordinates', waveTracker, false)
+    $(".modal-fade-screen, .modal-close").on("click", function() {
+      if (!$('#modal-1').checked) eventSource.close()
+    });
 
-    $(window).on('page:before-change', function() {
-      eventSource.close()
-    })
+    $(window).on('page:before-change', function() { eventSource.close() })
   }
-  init()
-  // checkStatus(currentUser.onlineTracker)
+
+  checkStatus(currentUser.onlineTracker, currentUser.token)
 <% end %>

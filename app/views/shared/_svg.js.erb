@@ -2,7 +2,8 @@ svg = true
 var trackerOffline = true
 
 $(window).resize(function() {
-  var width = $('.canvas').width()
+  width = $('.canvas').width()
+  height = $('.canvas').height()
   canvas.attr('width', width)
         .attr('height', width / aspect)
 })
@@ -18,17 +19,32 @@ function clear() {
   canvas.selectAll('*').remove()
 }
 
-function checkStatus(id) {
-  spark.getDevice(id, function(err, device) {
-    if (device !== null && device.connected) init()
-    else trackerStatus(width, height)
+function checkStatus(id, accessToken) {
+  var url = 'https://api.spark.io/v1/devices/' + id + '?access_token=' + accessToken
+
+  $.ajax({
+    type: 'GET',
+    url: url,
+    beforeSend: function() {
+      $('.modal-inner').append('<div class="loading"></div>')
+    },
+    success: function(data) {
+      $('.modal-inner .loading').remove()
+      if (data.connected) init()
+      else trackerAsleep(width, height)
+    },
+    error: function() {
+      $('.modal-inner .loading').remove()
+      trackerAsleep(width, height)
+    },
+    dataType: 'json'
   })
 }
 
-function trackerStatus(width, height) {
+function trackerAsleep(width, height) {
   trackerOffline = true
 
-  pulse(40, 50, 150, true, '#f5f5f5', '#f5f5f5')
+  pulse(width / 2, height / 2, 40, 50, 150, 5000, true, '#f5f5f5', '#f5f5f5')
   var status = canvas.append('text')
   .text('Your Wave Motion seems to be asleep')
         .attr('class', 'canvas-text asleep')
@@ -48,46 +64,46 @@ function makeCircle(cx, cy, r, color) {
   return circle
 }
 
-function materialBorder() {
-  var defs = canvas.append('defs')
-  var filter = defs.append('filter')
-                   .attr('id', 'material')
-                   .attr('height', '150%')
+// function materialBorder() {
+//   var defs = canvas.append('defs')
+//   var filter = defs.append('filter')
+//                    .attr('id', 'material')
+//                    .attr('height', '150%')
 
-  filter.append('feGaussianBlur')
-        .attr('in', 'SourceGraphic')
-        .attr('stdDeviation', 1)
-        .attr('result', 'blur')
+//   filter.append('feGaussianBlur')
+//         .attr('in', 'SourceGraphic')
+//         .attr('stdDeviation', 1)
+//         .attr('result', 'blur')
 
-  filter.append('feOffset')
-        .attr('in', 'blur')
-        .attr('dx', 1)
-        .attr('dy', 1)
-        .attr('result', 'offsetBlur')
+//   filter.append('feOffset')
+//         .attr('in', 'blur')
+//         .attr('dx', 1)
+//         .attr('dy', 1)
+//         .attr('result', 'offsetBlur')
 
-  filter.append('feColorMatrix')
-        .attr('in', 'offsetBlur')
-        .attr('type', 'matrix')
-        .attr('values', '0.4 0 0 0 0 0 0.4 0 0 0 0 0 0.4 0 0 0 0 0 1 0')
-        .attr('result', 'offsetBlurColor')
+//   filter.append('feColorMatrix')
+//         .attr('in', 'offsetBlur')
+//         .attr('type', 'matrix')
+//         .attr('values', '0.4 0 0 0 0 0 0.4 0 0 0 0 0 0.4 0 0 0 0 0 1 0')
+//         .attr('result', 'offsetBlurColor')
 
-  var feMerge = filter.append('feMerge')
+//   var feMerge = filter.append('feMerge')
 
-  feMerge.append('feMergeNode')
-         .attr('in', 'offsetBlurColor')
-  feMerge.append('feMergeNode')
-         .attr('in', 'SourceGraphic')
-}
+//   feMerge.append('feMergeNode')
+//          .attr('in', 'offsetBlurColor')
+//   feMerge.append('feMergeNode')
+//          .attr('in', 'SourceGraphic')
+// }
 
-function pulse(initSize, circleMax, waveMax, infinite, circleColor, waveColor, circleClass) {
-  var wave = makeCircle(width / 2, height / 2, 0, waveColor)
-  var circle = makeCircle(width / 2, height / 2, 50, circleColor)
+function pulse(x, y, initSize, circleMax, waveMax, waveSpeed, infinite, circleColor, waveColor, circleClass) {
+  var wave = makeCircle(x, y, 0, waveColor)
+  var circle = makeCircle(x, y, 50, circleColor)
       circle.attr('class', circleClass)
 
   function wavePulse() {
     wave.attr('r', initSize)
         .attr('opacity', 0.7)
-        .transition().duration(5000).ease('cubic-out')
+        .transition().duration(waveSpeed).ease('cubic-out')
         .attr('r', waveMax)
         .attr('opacity', 0)
   }
@@ -117,7 +133,7 @@ function pulse(initSize, circleMax, waveMax, infinite, circleColor, waveColor, c
 }
 
 function start(buttonColor, waveColor) {
-  pulse(75, 85, 700, true, buttonColor, waveColor, 'wave-test-start')
+  pulse(width / 2, height / 2, 75, 85, 700, 5000, true, buttonColor, waveColor, 'wave-test-start')
   var text =  canvas.append('text').text('Start')
              .attr('class', 'canvas-text start')
              .attr('x', width / 2)
@@ -125,18 +141,37 @@ function start(buttonColor, waveColor) {
              .style('text-anchor', 'middle')
 }
 
-// Tracker Script
-var waveTracker = function(e) {
-  var rawData = JSON.parse(e.data)
-  var parsedData = JSON.parse(rawData.data)
-  $('.x').html(parsedData.X)
-  $('.y').html(parsedData.Y)
-  $('.size').html(parsedData.Size)
-  var x = width * parsedData.X / 1000,
-      y = height * parsedData.Y / 800,
-      r = parsedData.Size * 7
-
-  if (pointer === undefined) pointer = makeCircle(x, y, r)
-
-  pointer.transition().attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
 }
+
+function timer(t1, t2) {
+  return t2 - t1
+}
+
+function accuracy(d1, d2) {
+  return (d2 - d1) / d2
+}
+
+function submitResults(timeData, accuracyData) {
+  function average(dataArray) {
+    var sum = dataArray.reduce(function(a, b) { return a + b })
+    return sum / dataArray.length
+  }
+
+  var averageTime = Math.round(average(timeData) * 100) / 100
+      averageAccuracy = Math.round(average(accuracyData) * 100) / 100
+
+  console.log(averageTime)
+  console.log(averageAccuracy)
+}
+
+
+
+
+
+
+
+
+
+

@@ -33,7 +33,6 @@
           "onlineTracker" : undefined,
           "token" : "<%= current_user.access_token %>"
         }
-        spark.accessToken = currentUser.token
       }
 
       if (currentUser === undefined) initUser()
@@ -60,8 +59,7 @@
           <li><%= link_to "My Wave Trackers", user_trackers_path(current_user) %></li>
           <li><%= link_to "Logout", :logout %></li>
         </ul>
-        <li><%= link_to "Test", user_test_path(current_user) %></li>
-
+        <li><%= render 'shared/tracker_modal' %></li>
       <% else %>
         <li><%= link_to "Sign Up", new_user_path %></li>
         <li><%= link_to "Login", :login %></li>

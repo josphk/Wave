@@ -1,20 +1,30 @@
-<h1>Canvas</h1>
-
-<%= render 'shared/canvas' %>
+<%= Gon::Base.render_data %>
+<div class="canvas-container">
+  <svg class="canvas"></svg>
+</div>
 
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
   function init() {
-    clear()
     trackerOffline = false
+    clear()
+    materialBorder()
+    start('#b6f5cb', '#befed2')
 
-    var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
-    eventSource.addEventListener('Coordinates', waveTracker, false)
+    $('.wave-test-start, .canvas-text').one('click', function() {
+      clear()
+      pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
+      clear()
 
-    $(window).on('page:before-change', function() {
-      eventSource.close()
+      var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
+      eventSource.addEventListener('Coordinates', waveTracker, false)
+
+      $(window).on('page:before-change', function() {
+        eventSource.close()
+      })
     })
-  }
 
-  checkStatus(gon.id)
+  }
+  // init()
+  checkStatus(gon.id, gon.token)
 <% end %>
