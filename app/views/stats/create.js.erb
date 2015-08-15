@@ -1,0 +1,3 @@
+<% if @user == current_user %>
+  $('.progress').html("<%= j(render 'stats/progress') %>")
+<% end %>

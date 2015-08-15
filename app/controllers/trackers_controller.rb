@@ -6,6 +6,12 @@ class TrackersController < ApplicationController
   def index
   end
 
+  def modal_index
+    respond_to do |format|
+      format.html { render layout: !request.xhr? }
+    end
+  end
+
   def authenticate
     params.except!(:utf8, :authenticity_token, :commit, :controller, :action)
     token = HTTParty.post('https://api.particle.io/oauth/token', body: params)["access_token"]
@@ -13,7 +19,11 @@ class TrackersController < ApplicationController
     if token != nil
       current_user.update_attributes(access_token: token)
       @trackers = HTTParty.get('https://api.particle.io/v1/devices', query: {access_token: token})
-      redirect_to user_trackers_url(current_user)
+
+      respond_to do |format|
+        format.html { redirect_to user_trackers_url(current_user) }
+        format.js {}
+      end
     else
       flash.now[:alert] = "Username or password was incorrect. Please try again."
       render :index
@@ -50,7 +60,7 @@ class TrackersController < ApplicationController
     @tracker.destroy
 
     respond_to do |format|
-      format.html { redirect_to root_url }
+      format.html { redirect_to user_trackers_path(current_user) }
       format.js { get_trackers; registered_trackers }
     end
   end
@@ -67,6 +77,8 @@ class TrackersController < ApplicationController
   end
 
   def registered_trackers
-    @registered_trackers = @trackers.size - current_user.trackers.size
+    @registered_trackers = if (@trackers && current_user.trackers)
+      @trackers.size - current_user.trackers.size
+    end
   end
 end

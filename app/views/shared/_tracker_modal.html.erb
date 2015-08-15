@@ -1,5 +1,9 @@
 <div class="modal">
-  <%= link_to "Test", user_test_path(current_user), remote: true, 'data-type' => :html %>
+  <% if current_user.trackers.any? %>
+    <%= link_to "Test", user_test_path(current_user), remote: true, 'data-type' => :html %>
+  <% else %>
+    <%= link_to "Test", sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %>
+  <% end %>
   <input class="hidden modal-state" id="modal-1" type="checkbox" />
   <div class="modal-fade-screen">
     <div class="modal-inner">

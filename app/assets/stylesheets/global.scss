@@ -103,7 +103,8 @@ body {
 
   font-family: 'quicksand';
   font-weight: 400;
-  font-size: 2em;
+  font-size: 2em; // add media query
+  fill: $base-font-color;
 
   &.start {
     cursor: pointer;

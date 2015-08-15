@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="delete">
-        <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete, remote: true %>
+        <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>
       </div>
     <% end %>
   </div>

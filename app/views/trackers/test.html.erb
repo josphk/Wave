@@ -8,23 +8,23 @@
   function init() {
     trackerOffline = false
     clear()
-    materialBorder()
     start('#b6f5cb', '#befed2')
 
     $('.wave-test-start, .canvas-text').one('click', function() {
       clear()
-      pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
-      clear()
+      // pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
 
-      var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
-      eventSource.addEventListener('Coordinates', waveTracker, false)
+      // var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
+      // eventSource.addEventListener('Coordinates', waveTracker, false)
 
-      $(window).on('page:before-change', function() {
-        eventSource.close()
-      })
+      // $(window).on('page:before-change', function() {
+      //   eventSource.close()
+      // })
+      //
+      results(10, 10)
     })
 
   }
-  // init()
-  checkStatus(gon.id, gon.token)
+  init()
+  // checkStatus(gon.id, gon.token)
 <% end %>

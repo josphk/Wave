@@ -55,7 +55,7 @@ $(document).on('ready', function() {
       if (notifyTrackerStatus(currentUser.trackers, removed)) {
         notifyAnimation('offline')
         currentUser.onlineTracker = undefined
-        if (svg) trackerAsleep(canvasWidth, canvasHeight)
+        if (svg) trackerAsleep()
       }
     })
   }

@@ -1,11 +1,11 @@
 <% if @user == current_user || current_user.friends?(@user) %>
-  <div class="long-term">
+  <div class="progress">
     <h3>Progress</h3>
-    <p>Average Times: <%= @average_times.first %></p>
-    <p>Accuracy: <%= @accuracy_rates.first %></p>
+    <p>Average Times: <%= @average_times %></p>
+    <p>Accuracy: <%= @accuracy_rates %></p>
   </div>
 
-  <div class="recent-activities">
+  <div class="recent-activities-container">
     <h3>Recent Activities</h3>
     <%= render 'stats/recent_activities' %>
   </div>
