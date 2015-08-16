@@ -1,3 +1,9 @@
 <% if @user == current_user %>
+  gon.watch('time', function(d) {
+    gon.time = d
+  })
+  gon.watch('accuracy', function(d) {
+    gon.accuracy = d
+  })
   $('.progress').html("<%= j(render 'stats/progress') %>")
 <% end %>

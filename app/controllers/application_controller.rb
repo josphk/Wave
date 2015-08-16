@@ -53,7 +53,12 @@ class ApplicationController < ActionController::Base
     @stats = user.stats.order(created_at: :desc)
     @average_times = []
     @accuracy_rates = []
-    @stats.each { |stat| @average_times << stat.average_time; @accuracy_rates << stat.accuracy }
+    @stats.reverse.each do |stat|
+      time_hash = {date: stat.created_at.to_i, time: stat.average_time}
+      accr_hash = {date: stat.created_at.to_i, accr: stat.accuracy}
+      @average_times << time_hash
+      @accuracy_rates << accr_hash
+    end
   end
 
   def firebase()

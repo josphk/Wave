@@ -44,6 +44,8 @@ class UsersController < ApplicationController
   def show
     get_friendships(@user)
     get_stats(@user)
+    gon.watch.time = @average_times
+    gon.watch.accuracy = @accuracy_rates
   end
 
   def update_avatar

@@ -32,7 +32,7 @@ class TrackersController < ApplicationController
 
   def create
     @tracker = current_user.trackers.build(tracker_params)
-    response = @firebase.push('wave_trackers', { coreid: @tracker.core_id, status: 'online', published_at: Firebase::ServerValue::TIMESTAMP})
+    response = @firebase.push('wave_motions', { coreid: @tracker.core_id, status: 'online', published_at: Firebase::ServerValue::TIMESTAMP})
 
     respond_to do |format|
       if response.success? && @tracker.save

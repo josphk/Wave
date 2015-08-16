@@ -14,7 +14,7 @@ class StatsController < ApplicationController
 
     respond_to do |format|
       if @stat.save
-        format.html { redirect_to user_stat_path(current_user, @stat) }
+        format.html { redirect_to user_path(current_user) }
         format.js {
           user_id = request.referer[/\d+$/, 0]
           @user = User.find(user_id)
