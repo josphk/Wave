@@ -110,7 +110,7 @@
 
       var focus = svg.append('g').append('circle').attr('class', 'focus').attr('r', 3).attr('fill', '#8ed89c').attr('transform', 'translate(' + x(data[data.length - 1].date) + ',' + y(data[data.length - 1].time) +')')
 
-      svg.append('rect').attr('width', w).attr('height', h).style('fill', 'none').style('pointer-events', 'all').on("mousemove", mousemove);
+      svg.append('rect').attr('width', w).attr('height', h).style('fill', 'none').style('pointer-events', 'all').on('mousemove', mousemove).on('click', update)
 
       var index = data.length - 1
 
@@ -123,6 +123,15 @@
         index = data.indexOf(d)
 
         focus.attr('transform', 'translate(' + x(d.date) + ',' + y(d.time) + ')')
+      }
+
+      function update() {
+        if (data == data1) {
+          data = data2
+          updateData(true, false)
+        } else {
+          data = data1; updateData(true, true)
+        }
       }
 
       function updateData(changed, time) {
@@ -140,6 +149,8 @@
           } else {
             updateAttributes(0.5, '#e57473', '#f58d9a', 'Accuracy')
           }
+          var d = data[index]
+          focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.time) + ')').ease('elastic', 2, 3.5)
         }
 
         x.domain([d3.time.day.offset(new Date, startDay), d3.time.day.offset(new Date, startDay + 2)]).nice(d3.time.day)
@@ -180,7 +191,7 @@
           updateData(true, true)
         } else if (e.which === 40) {
           data = data2; d = data[index]
-          e.preventDefault(true, false)
+          e.preventDefault()
           updateData(true, false)
         }
         focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.time) + ')').ease('elastic', 2, 3.5)
