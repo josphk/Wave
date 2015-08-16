@@ -28,7 +28,6 @@
       ]
 
       var data = data1
-      var time = true
 
       // .filter(function(d) {
       //   if (d.date < d3.time.day.offset(new Date(), -1)) return false
@@ -111,8 +110,7 @@
 
       var focus = svg.append('g').append('circle').attr('class', 'focus').attr('r', 3).attr('fill', '#8ed89c').attr('transform', 'translate(' + x(data[data.length - 1].date) + ',' + y(data[data.length - 1].time) +')')
 
-      svg.append('rect').attr('width', w).attr('height', h).style('fill', 'none').style('pointer-events', 'all')
-        .on("mousemove", mousemove);
+      svg.append('rect').attr('width', w).attr('height', h).style('fill', 'none').style('pointer-events', 'all').on("mousemove", mousemove);
 
       var index = data.length - 1
 
@@ -124,11 +122,10 @@
         d = x0 - d0.date > d1.date - x0 ? d1 : d0
         index = data.indexOf(d)
 
-        focus.select('circle.y').attr('transform', 'translate(' + x(d.date) + ',' + y(d.time) + ')')
+        focus.attr('transform', 'translate(' + x(d.date) + ',' + y(d.time) + ')')
       }
 
-
-      function updateData(time) {
+      function updateData(changed, time) {
         var svg = d3.select("body").transition()
 
         function updateAttributes(yScaleRoundUp, focusColor, lineColor, axisLabel) {
@@ -137,11 +134,12 @@
           svg.select('.line').attr('stroke', lineColor)
           svg.select('.y-label').text(axisLabel);
         }
-
-        if (time) {
-          updateAttributes(5, '#8ed89c', '#b6f5cb', 'Average Time')
-        } else {
-          updateAttributes(0.5, '#e57473', '#f58d9a', 'Accuracy')
+        if (changed) {
+          if (time) {
+            updateAttributes(5, '#8ed89c', '#b6f5cb', 'Average Time')
+          } else {
+            updateAttributes(0.5, '#e57473', '#f58d9a', 'Accuracy')
+          }
         }
 
         x.domain([d3.time.day.offset(new Date, startDay), d3.time.day.offset(new Date, startDay + 2)]).nice(d3.time.day)
@@ -166,7 +164,7 @@
             index--; d = data[index]
             if(x(d.date) < margin.left) {
               startDay--
-              updateData(time)
+              updateData(false)
             }
         } else if (e.which === 39) {
           e.preventDefault()
@@ -174,18 +172,16 @@
             index++; d = data[index]
             if (x(d.date) > w) {
               startDay++
-              updateData(time)
+              updateData(false)
             }
         } else if (e.which === 38) {
           e.preventDefault()
           data = data1; d = data[index]
-          time = true
-          updateData(time)
+          updateData(true, true)
         } else if (e.which === 40) {
           data = data2; d = data[index]
-          time = false
-          e.preventDefault()
-          updateData(time)
+          e.preventDefault(true, false)
+          updateData(true, false)
         }
         focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.time) + ')').ease('elastic', 2, 3.5)
       })
