@@ -114,7 +114,7 @@
       dataType: 'script',
       data: { waver_id: gon.userId },
       success: function() {
-        pushRef.remove()
+        seeRef.remove()
       }
     })
   }
@@ -126,7 +126,7 @@
   })
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
-    if (!$('#modal-1').checked) closeSession()
+    closeSession()
   });
 
   $(window).on('page:before-change', function() { closeSession() })
