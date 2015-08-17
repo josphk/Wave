@@ -114,10 +114,10 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
     $('.tooltip').animate({left: (x(d.date) - 10) + 'px'}, speed)
     if (data == timeD) {
       $('.tooltip').html(`<p>Date: ${ d.date.toDateString() }</p> <p>Average Time: ${ Math.round(d.value * 100) / 100 } s</p>`)
-      $('.tooltip').css('color', '#f4fff5').css('background-color', '#f4fff5')
+      $('.tooltip').css('color', '#f0fff0').css('background-color', '#f0fff0')
     } else {
       $('.tooltip').html(`<p>Date: ${ d.date.toDateString() }</p> <p>Accuracy: ${ d.value } %</p>`)
-      $('.tooltip').css('color', '#ffeff0').css('background-color', '#ffeff0')
+      $('.tooltip').css('color', '#fff0f0').css('background-color', '#fff0f0')
     }
   }
 

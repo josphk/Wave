@@ -51,6 +51,7 @@
       <ul class="tracker-status">
       </ul>
       <% if logged_in? %>
+        <li><%= render 'shared/search' %></li>
         <li>
           <%= link_to user_path(current_user), id: 'avatar' do %>
             <%= image_tag image_path(current_user.avatar.medium) %>

@@ -67,13 +67,14 @@
   border-radius: $base-border-radius;
   box-shadow: $tooltip-shadow;
   color: $tooltip-color;
-  font-size: 1em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
+  font-size: 0.85em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
   line-height: 1.5em;
   margin: 0 auto;
   width: $tooltip-max-width;
   left: 0px;
   padding: 1.2em;
   text-align: center;
+  font-family: 'quicksand';
   z-index: 10;
 
   p {

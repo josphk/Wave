@@ -1,0 +1,8 @@
+<%= form_tag users_path, method: :get, authentication: false , class: "user-search" do %>
+  <div class="search">
+    <%= text_field_tag :search, params[:search], placeholder: 'Search Wave' %>
+  </div>
+  <div class="search-submit">
+    <%= submit_tag "Search" %>
+  </div>
+<% end %>

@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
-  before_action :require_logout, except: [:show, :update_avatar]
+  before_action :require_logout, except: [:index, :show, :update_avatar]
   before_action :get_user, only: [:show, :update_avatar, :stats]
   skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
+
+  def index
+    @users = User.all.where("LOWER(first_name) LIKE LOWER(?)", "%#{params[:search]}%") if params[:search]
+  end
 
   def new
     @user = User.new

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root 'pages#index'
 
-  resources :users, only: [:new, :create, :show] do
+  resources :users, only: [:index, :new, :create, :show] do
     member do
       post 'add', to: 'friendships#create'
       post 'accept', to: 'friendships#accept'
