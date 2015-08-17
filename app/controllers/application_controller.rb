@@ -61,7 +61,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def firebase()
+  def firebase
     @firebase = Firebase::Client.new(ENV['firebase_url'])
   end
+
+  def get_friend_requests()
+    @requests = current_user.inverse_friendships.last(5)
+  end
+  helper_method :get_friend_requests
 end

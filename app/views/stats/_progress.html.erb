@@ -3,10 +3,30 @@
     <h3>Progress</h3>
 
     <div class="graph-flexbox">
-      <div class="tooltip-container">
-        <div class="tooltip"></div>
-      </div>
-      <div class="graph-container"></div>
+      <% if @user.stats.any? %>
+        <div class="tooltip-container">
+          <div class="tooltip"></div>
+        </div>
+        <div class="graph-container"></div>
+      <% else %>
+        <div>
+          <p>Looks like you haven't got any results yet...</p>
+          <div class="modal">
+            <% if current_user.trackers.any? %>
+              <%= link_to 'Start waving now!', user_test_path(current_user), remote: true, 'data-type' => :html %>
+            <% else %>
+              <%= link_to 'Start waving now!', sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %>
+            <% end %>
+            <input class="hidden modal-state" id="modal-1" type="checkbox" />
+            <div class="modal-fade-screen">
+              <div class="modal-inner">
+                <div class="modal-close" for="modal-1"></div>
+                <div class="modal-content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <%= javascript_tag do %>

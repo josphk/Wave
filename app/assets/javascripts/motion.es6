@@ -106,22 +106,22 @@ function initWave() {
     }, 500)
   }
 
-  $('.canvas').on('click', function(e) {
-    var x = e.pageX - $('.canvas').offset().left,
-        y = e.pageY - $('.canvas').offset().top,
-        r = 10
-    var minDistance = r + coordinates.r,
-        newDistance = distance(x, y, coordinates.x, coordinates.y)
+  // $('.canvas').on('click', function(e) {
+  //   var x = e.pageX - $('.canvas').offset().left,
+  //       y = e.pageY - $('.canvas').offset().top,
+  //       r = 10
+  //   var minDistance = r + coordinates.r,
+  //       newDistance = distance(x, y, coordinates.x, coordinates.y)
 
-    if (newDistance < minDistance) {
-      // eventSource.close()
-      t2 = performance.now()
-      timeData.push(timer(t1, t2))
-      accuracyData.push(accuracy(newDistance, minDistance))
-      clear()
-      test(5)
-    }
-  })
+  //   if (newDistance < minDistance) {
+  //     // eventSource.close()
+  //     t2 = performance.now()
+  //     timeData.push(timer(t1, t2))
+  //     accuracyData.push(accuracy(newDistance, minDistance))
+  //     clear()
+  //     test(5)
+  //   }
+  // })
 
   function test(iterations) {
     var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2']

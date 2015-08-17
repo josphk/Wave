@@ -1,8 +1,31 @@
 $(document).on('ready page:load', function() {
-  $('#avatar').on('click', function(e) {
-    e.preventDefault();
+  var firebase = new Firebase(firebaseUrl)
 
-    $('.user-links').toggleClass('hidden');
+  $('#avatar').on('click', function(e) {
+    e.preventDefault()
+    $('.user-links').toggleClass('hidden')
+  })
+
+  $('.notifications.friends').on('click', function(e) {
+    e.preventDefault();
+    $('.friend-requests').toggleClass('hidden')
+
+    if ($('.notifications.friends p').hasClass('notified')) {
+      if (!$('.friend-requests').hasClass('hidden')) {
+        var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('friend_requests').once('value', function(snapshot) {
+          snapshot.forEach(function(req){
+            req.forEach(function(r) {
+              r.ref().update({ 'checked': true }, function(error) { if (!error) $('.notifications.friends p').removeClass('notified') })
+            })
+          })
+        })
+      }
+    }
+  })
+
+  $('.notifications.messages').on('click', function(e) {
+    e.preventDefault()
+    $('.conversations').toggleClass('hidden')
   })
 
   $('.modal a[data-type=html]').on('ajax:success', function(e, d, s, x) {
@@ -18,12 +41,12 @@ $(document).on('ready page:load', function() {
   });
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
-    $(".modal-state:checked").prop("checked", false).change();
-    $("body").removeClass("modal-open");
+    $(".modal-state:checked").prop("checked", false).change()
+    $("body").removeClass("modal-open")
   });
 
   $(".modal-inner").on("click", function(e) {
-    e.stopPropagation();
+    e.stopPropagation()
   });
 })
 

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :new, :create, :show] do
     member do
+      get 'notify', to: 'users#notify'
       post 'add', to: 'friendships#create'
       post 'accept', to: 'friendships#accept'
       patch 'update_avatar', to: 'users#update_avatar'

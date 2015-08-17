@@ -9,7 +9,7 @@
   <p class="status">Respond to Friend Request</p>
   <ul class="options hidden">
     <li><%= link_to 'Accept Request', accept_user_path(@user), method: :post, remote: true %></li>
-    <li><%= link_to 'Cancel Request', user_friendship_path(@user, @inverse_friendship), method: :delete, remote: true %></li>
+    <li><%= link_to 'Delete Request', user_friendship_path(@user, @inverse_friendship), method: :delete, remote: true %></li>
   </ul>
 <% else %>
   <%= link_to 'Add Friend', add_user_path(@user), method: :post, remote: true %>

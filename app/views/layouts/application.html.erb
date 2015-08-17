@@ -54,13 +54,21 @@
         <li><%= render 'shared/search' %></li>
         <li>
           <%= link_to user_path(current_user), id: 'avatar' do %>
-            <%= image_tag image_path(current_user.avatar.medium) %>
+            <%= image_tag image_path(current_user.avatar.thumb) %>
           <% end %>
         </li>
         <ul class="user-links hidden">
           <li><%= link_to "Profile", user_path(current_user)%></li>
           <li><%= link_to "My Wave Motions", user_trackers_path(current_user) %></li>
           <li><%= link_to "Logout", :logout %></li>
+        </ul>
+        <li class="notifications friends"><p>Friend Requests</p></li>
+        <ul class="friend-requests hidden">
+          <%= render 'shared/friend_requests' %>
+        </ul>
+        <li class="notifications messages"><p>Messages</p></li>
+        <ul class="conversations hidden">
+          <%= render 'shared/conversations' %>
         </ul>
         <li><%= render 'shared/tracker_modal' %></li>
       <% else %>

@@ -1,0 +1,3 @@
+<% if logged_in? %>
+  $('.friend-requests').html("<%= j(render 'shared/friend_requests') %>")
+<% end %>

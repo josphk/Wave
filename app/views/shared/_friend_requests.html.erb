@@ -1,0 +1,14 @@
+<% if logged_in? %>
+  <% get_friend_requests.each do |request| %>
+    <% user = User.find(request.user_id) %>
+    <li>
+        <%= link_to user_path(user) do %>
+          <div>
+            <%= image_tag image_path(user.avatar.thumb) %> <%= user.first_name %> <%= user.last_name %></span>
+          </div>
+        <% end %>
+      <span><%= link_to 'Confirm', accept_user_path(user), method: :post, remote: true %></span>
+      <span><%= link_to 'Delete Request', user_friendship_path(user, request), method: :delete, remote: true %></span>
+    </li>
+  <% end %>
+<% end %>

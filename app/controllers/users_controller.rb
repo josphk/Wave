@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_logout, except: [:index, :show, :update_avatar]
+  before_action :require_logout, except: [:index, :show, :update_avatar, :notify]
   before_action :get_user, only: [:show, :update_avatar, :stats]
   skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
@@ -48,8 +48,7 @@ class UsersController < ApplicationController
   def show
     get_friendships(@user)
     get_stats(@user)
-    # gon.watch.time = @average_times
-    # gon.watch.accuracy = @accuracy_rates
+    gon.userId = @user.id
   end
 
   def update_avatar
@@ -61,6 +60,12 @@ class UsersController < ApplicationController
         format.html { render session[:current_url], alert: "Update failed" }
         format.js {}
       end
+    end
+  end
+
+  def notify
+    respond_to do |format|
+      format.js {}
     end
   end
 

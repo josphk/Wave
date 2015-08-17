@@ -1,12 +1,14 @@
 class FriendshipsController < ApplicationController
   before_action :get_user, except: :destroy
+  before_action :firebase
   skip_before_filter :get_current_url
 
   def create
     @friend_request = current_user.friendships.new(friend_id: params[:id])
+    response = @firebase.push("users/#{ params[:id] }/notifications/friend_requests/#{ current_user.id }", { checked: false, published_at: Firebase::ServerValue::TIMESTAMP })
 
     respond_to do |format|
-      if @friend_request.save
+      if response.success? && @friend_request.save
         format.html { redirect_to session[:current_url], alert: "Friend request sent" }
         format.js { get_friendships(@user) }
       else

@@ -38,6 +38,10 @@ body {
   display: none;
 }
 
+.notified {
+  color: red;
+}
+
 .loading {
   @include animation-duration(1.5s);
   @include animation-iteration-count(infinite);
