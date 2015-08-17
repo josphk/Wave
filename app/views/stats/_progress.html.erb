@@ -2,7 +2,12 @@
   <div class="progress">
     <h3>Progress</h3>
 
-    <div class="graph-container"></div>
+    <div class="graph-flexbox">
+      <div class="tooltip-container">
+        <div class="tooltip"></div>
+      </div>
+      <div class="graph-container"></div>
+    </div>
 
     <%= javascript_tag do %>
       getData(window.location.pathname)

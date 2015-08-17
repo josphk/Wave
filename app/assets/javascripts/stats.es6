@@ -25,16 +25,17 @@ function getData(userPath) {
   });
 }
 
-function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
+
+function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
   var data = timeD,
       startDay = -1
-  var margin = {top: 30, right: 20, bottom: 50, left: 50},
-      w = 700 - margin.left - margin.right,
-      h = 250 - margin.bottom - margin.top
+  var margin = {top: t, right: r, bottom: b, left: l},
+      w = width - margin.left - margin.right,
+      h = height - margin.bottom - margin.top
 
   var graph = d3.select('.graph')
               .attr('width', w + margin.left + margin.right)
-              .attr('h', h + margin.left + margin.right)
+              .attr('height', h + margin.left + margin.right)
 
   var svg = graph.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
@@ -95,6 +96,9 @@ function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
   var focus = svg.append('g').append('circle').attr('class', 'focus')
                  .attr('r', 3).attr('fill', '#8ed89c')
                  .attr('transform', 'translate(' + x(data[data.length - 1].date) + ',' + y(data[data.length - 1].value) +')')
+  updateTooltip(250, data[data.length - 1])
+
+  // $('.tooltip').css('left', -330 + x(data[data.length - 1].date) + 'px')
 
   var mouseBoundary = svg.append('rect')
                          .attr('width', w)
@@ -106,6 +110,17 @@ function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
 
   var bisectDate = d3.bisector(function(d) { return d.date }).left
 
+  function updateTooltip(speed, d) {
+    $('.tooltip').animate({left: (x(d.date) - 10) + 'px'}, speed)
+    if (data == timeD) {
+      $('.tooltip').html(`<p>Date: ${ d.date.toDateString() }</p> <p>Average Time: ${ Math.round(d.value * 100) / 100 } s</p>`)
+      $('.tooltip').css('color', '#f4fff5').css('background-color', '#f4fff5')
+    } else {
+      $('.tooltip').html(`<p>Date: ${ d.date.toDateString() }</p> <p>Accuracy: ${ d.value } %</p>`)
+      $('.tooltip').css('color', '#ffeff0').css('background-color', '#ffeff0')
+    }
+  }
+
   function mousemove() {
     var x0 = x.invert(d3.mouse(this)[0]),
     i = bisectDate(data, x0, 1),
@@ -115,6 +130,7 @@ function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
     index = data.indexOf(d)
 
     focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.value) + ')').ease('elastic', 2, 3.5)
+    updateTooltip(15, d)
   }
 
   function update() {
@@ -144,6 +160,7 @@ function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
       }
       var d = dat[i]
       focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.value) + ')').ease('elastic', 2, 3.5)
+      updateTooltip(250, d)
     }
 
     x.domain([d3.time.day.offset(new Date, startDay), d3.time.day.offset(new Date, startDay + 2)]).nice(d3.time.day)
@@ -166,13 +183,10 @@ function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
     var d
     if (e.which === 37) {
       e.preventDefault()
-      console.log(index)
       if (index - 1 >= 0) {
         d = data[index - 1]
-        console.log(x(d.date))
-        if(x(d.date) < margin.left) {
+        if(x(d.date) < margin.right) {
           startDay--
-          console.log(startDay)
           updateData(false, null, data, index - 1)
         }
         index--
@@ -183,20 +197,20 @@ function generateChart(w, h, t, r, b, l, timeD, accuracyD) {
         d = data[index + 1]
         if (x(d.date) > w) {
           startDay++
-          console.log(startDay)
           updateData(false, null, data, index + 1)
         }
         index++
       }
-    } else if (e.which === 38) {
+    } else if (e.which === 40) {
       e.preventDefault()
       data = timeD; d = data[index]
       updateData(true, true, data, index)
-    } else if (e.which === 40) {
+    } else if (e.which === 38) {
       data = accuracyD; d = data[index]
       e.preventDefault()
       updateData(true, false, data, index)
     }
     focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.value) + ')').ease('elastic', 2, 3.5)
+    updateTooltip(250, d)
   })
 }

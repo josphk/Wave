@@ -1,21 +1,25 @@
-.graph-container {
+.graph-flexbox {
   @include box-sizing(border-box);
   @include display(flex);
-  @include flex-direction(row);
+  @include flex-direction(column);
   @include align-items(center);
   @include justify-content(center);
 
   width: 100%;
   height: 300px;
-  padding: 25px;
-}
 
-.graph {
-  width: 100%;
-  height: 100%;
-  fill: #888;
-  font-size: 0.8em;
-  font-family: quicksand;
+  & .graph-container {
+    width: 770px;
+    height: 100%;
+
+    & .graph {
+      width: 100%;
+      height: 100%;
+      fill: #888;
+      font-size: 0.8em;
+      font-family: quicksand;
+    }
+  }
 }
 
 .line {
@@ -42,3 +46,72 @@
     width: 100%;
   }
 }
+
+  $tooltip-color: $base-font-color;
+  $tooltip-max-width: 670px;
+  $tooltip-arrow-width: 8px;
+  $tooltip-shadow: 0 2px 2px silver;
+  $tooltip-distance-from-item: 3em;
+  $tooltip-arrow-distance-from-box: -1.3em;
+
+.tooltip-container {
+  position: relative;
+  max-width: $tooltip-max-width
+}
+
+.tooltip {
+  // @include position(absolute, null 0 $tooltip-distance-from-item 0);
+  @include outer-container($tooltip-max-width);
+  @include display(flex);
+  @include flex-direction(row);
+  border-radius: $base-border-radius;
+  box-shadow: $tooltip-shadow;
+  color: $tooltip-color;
+  font-size: 1em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
+  line-height: 1.5em;
+  margin: 0 auto;
+  width: $tooltip-max-width;
+  left: 0px;
+  padding: 1.2em;
+  text-align: center;
+  z-index: 10;
+
+  p {
+    @include span-columns(6);
+    color: $base-font-color;
+    line-height: $base-line-height;
+    margin: 0;
+  }
+
+  &:after {
+    @include position(absolute);
+    left: inherit;
+    border: $tooltip-arrow-width solid transparent;
+    bottom: $tooltip-arrow-distance-from-box;
+    color: inherit;
+    content: '▼';
+    font-size: 1.4em;
+    margin-left: -$tooltip-arrow-width;
+    text-align: center;
+    text-shadow: $tooltip-shadow;
+  }
+}
+
+// .tooltip-item {
+
+//   background: $tooltip-background;
+//   border-radius: $base-border-radius;
+//   border: 1px solid $base-border-color;
+//   display: inline-block;
+//   padding: 0.5em 1em;
+//   position: relative;
+//   text-align: center;
+
+//   &:focus,
+//   &:hover .tooltip {
+//     opacity: 1;
+//     visibility: visible;
+//   }
+
+//
+// }
