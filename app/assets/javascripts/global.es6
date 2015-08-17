@@ -14,11 +14,10 @@ $(document).on('ready page:load', function() {
       if (!$('.friend-requests').hasClass('hidden')) {
         var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('friend_requests').once('value', function(snapshot) {
           snapshot.forEach(function(req){
-            req.forEach(function(r) {
-              r.ref().update({ 'checked': true }, function(error) { if (!error) $('.notifications.friends p').removeClass('notified') })
-            })
+            req.ref().update({ 'checked': true })
           })
         })
+        $('.notifications.friends p').removeClass('notified')
       }
     }
   })

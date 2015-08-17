@@ -1,6 +1,6 @@
 function getData(userPath) {
   $.ajax({
-    url: `http://localhost:3000/${ userPath }/stats`,
+    url: `${ userPath }/stats`,
     type: 'get',
     dataType: 'json',
     success: function(response) {

@@ -1,3 +1,21 @@
+<%= javascript_tag do %>
+  var firebase = new Firebase(firebaseUrl)
+  firebase.child('users').child(gon.userId).child('notifications').child('friend_requests').child(currentUser.id).on('child_removed', function(removed) {
+    $.ajax({
+      url: `/users/${ gon.userId }/update_friends`,
+      method: 'get',
+      dataType: 'script'
+    })
+  })
+  firebase.child('users').child(gon.userId).child('notifications').child('friend_requests').child(currentUser.id).on('child_changed', function(changed) {
+    $.ajax({
+      url: `/users/${ gon.userId }/update_friends`,
+      method: 'get',
+      dataType: 'script'
+    })
+  })
+<% end %>
+
 <div class="avatar">
   <div class="image">
     <%= image_tag image_path(@user.avatar.profile) %>
