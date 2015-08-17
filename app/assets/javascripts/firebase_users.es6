@@ -54,6 +54,7 @@ $(document).on('ready', function() {
         method: 'get',
         dataType: 'script'
       })
+      $('.notifications.sessions p').removeClass('notified')
     })
   }
 })

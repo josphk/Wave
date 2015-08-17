@@ -40,9 +40,9 @@ $(document).on('ready page:load', function() {
 
   $('.modal a[data-type=html]').on('ajax:success', function(e, d, s, x) {
     $('#modal-1').prop('checked', true)
+    $("body").addClass("modal-open");
 
     // if ($('#modal-1').is(":checked")) {
-    //   $("body").addClass("modal-open");
     // } else {
     //   $("body").removeClass("modal-open");
     // }

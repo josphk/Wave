@@ -108,6 +108,7 @@
   // initWave()
 
   function closeSession() {
+    $('.modal-content').empty()
     $.ajax({
       url: '/users/' + currentUser.id + '/wave_sessions/' + gon.userId,
       type: 'DELETE',
@@ -126,7 +127,8 @@
   })
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
-    closeSession()
+    if (currentUser.id !== gon.userId) closeSession()
+    else $('.modal-content').empty()
   });
 
   $(window).on('page:before-change', function() { closeSession() })
