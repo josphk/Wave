@@ -31,7 +31,8 @@ class FriendshipsController < ApplicationController
   def destroy
     @user = User.find(params[:user_id])
     @friendship = Friendship.find(params[:id])
-    @friendship.destroy
+    response = @firebase.delete("users/#{ @friendship.friend_id }/notifications/friend_requests/#{ @friendship.user_id }")
+    @friendship.destroy if response.success?
 
     respond_to do |format|
       format.html { redirect_to session[:current_url], alert: "Friend request cancelled" }
