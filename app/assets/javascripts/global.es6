@@ -22,9 +22,20 @@ $(document).on('ready page:load', function() {
     }
   })
 
-  $('.notifications.messages').on('click', function(e) {
+  $('.notifications.sessions').on('click', function(e) {
     e.preventDefault()
-    $('.conversations').toggleClass('hidden')
+    $('.wave-sessions').toggleClass('hidden')
+
+    if ($('.notifications.sessions p').hasClass('notified')) {
+      if (!$('.wave-sessions').hasClass('hidden')) {
+        var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('wave_sessions').once('value', function(snapshot) {
+          snapshot.forEach(function(req){
+            req.ref().update({ 'checked': true })
+          })
+        })
+        $('.notifications.sessions p').removeClass('notified')
+      }
+    }
   })
 
   $('.modal a[data-type=html]').on('ajax:success', function(e, d, s, x) {

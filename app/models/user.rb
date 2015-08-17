@@ -4,11 +4,13 @@ class User < ActiveRecord::Base
 
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
-  has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id, dependent: :destroy
+  has_many :inverse_friendships, class_name: 'Friendship', foreign_key: :friend_id, dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user
 
   has_many :wave_sessions, dependent: :destroy
   has_many :wavers, through: :wave_sessions
+  has_many :inverse_wave_sessions, class_name: 'WaveSession', foreign_key: :waver_id, dependent: :destroy
+  has_many :inverse_wavers, through: :inverse_wave_sessions, source: :user
 
   validates :first_name, presence: true
   validates :last_name, presence: true

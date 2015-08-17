@@ -38,11 +38,7 @@
 </div>
 
 <div class="modal">
-  <% if current_user.trackers.any? %>
-    <%= link_to "Test", user_wave_sessions_path(@user.id), method: :post, remote: true, 'data-type' => :html %>
-  <% else %>
-    <%= link_to "Test", sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %>
-  <% end %>
+  <%= link_to "Wave!", user_wave_sessions_path(@user.id), method: :post, remote: true, 'data-type' => :html %>
   <input class="hidden modal-state" id="modal-1" type="checkbox" />
   <div class="modal-fade-screen">
     <div class="modal-inner">
