@@ -5,9 +5,9 @@
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
 
+
   function tester() { // For user who started test
-    var clickCounter = 0,
-        pointer
+    var clickCounter = 0
         // t1, t2,
         // coordinates,
         // timeData = [],
@@ -105,17 +105,29 @@
 
   // initWave()
 
+  function closeSession() {
+    $.ajax({
+      url: '/users/' + currentUser.id + '/wave_sessions/' + gon.userId,
+      type: 'DELETE',
+      dataType: 'script',
+      data: { waver_id: gon.userId },
+      success: function() {
+        pushRef.remove()
+      }
+    })
+  }
+
   $('.wave-test-start, .canvas-text').one('click', function() {
     clear()
     pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
     setTimeout(function() { clickForTarget() }, 2000)
   })
 
-  // $(".modal-fade-screen, .modal-close").on("click", function() {
-  //   if (!$('#modal-1').checked) eventSource.close()
-  // });
+  $(".modal-fade-screen, .modal-close").on("click", function() {
+    if (!$('#modal-1').checked) closeSession()
+  });
 
-  // $(window).on('page:before-change', function() { eventSource.close() })
+  $(window).on('page:before-change', function() { closeSession() })
 }
 
 tester()

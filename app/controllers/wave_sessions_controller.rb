@@ -10,12 +10,20 @@ class WaveSessionsController < ApplicationController
   end
 
   def show
-    @user = current_user.accepted_friends.find(params[:id])
+    @session = current_user.wave_sessions.find(params[:id])
+
     @stat = Stat.new
-    gon.userId = @user.id
+
+
+
+  end
+
+  def destroy
+    @session = current_user.wave_sessions.find_by(waver_id: params[:waver_id])
+    @session.destroy
 
     respond_to do |format|
-      format.html { render layout: !request.xhr? }
+      format.js {}
     end
   end
 end
