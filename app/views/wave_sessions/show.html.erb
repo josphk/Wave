@@ -6,133 +6,164 @@
 
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
+  var waver = currentUser.id === gon.waverId // if true => waver, else => tester
 
+  if (currentUser.id === gon.testerId || currentUser.id === gon.waverId) {
+    var firebase = new Firebase(firebaseUrl)
 
-  function tester() { // For user who started test
-    var clickCounter = 0
-        // t1, t2,
-        // coordinates,
-        // timeData = [],
-        // accuracyData = []
-        // trackerOffline = false
-    // var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`),
-        var firebase = new Firebase(firebaseUrl),
-        pushRef = firebase.child('users').child(gon.userId).child('wave_sessions').child(currentUser.id),
-        seeRef = firebase.child('users').child(currentUser.id).child('wave_sessions').child(gon.userId)
+    var ref = firebase.child('users').child(gon.testerId).child('wave_sessions').child(gon.waverId)
 
-    clear()
-    start('#b6f5cb', '#befed2')
+    function closeSession() {
+      $('.modal-content').empty()
+      $.ajax({
+        url: '/users/' + currentUser.id + '/wave_sessions/' + gon.userId,
+        type: 'DELETE',
+        dataType: 'script',
+        data: { waver_id: gon.userId },
+        success: function() {
+          ref.remove()
+        }
+      })
+    }
 
-    seeRef.child('clear').on('child_added', function(clear) { // clear whenever waver's screen clears
-      clear()
-    })
+    if (!waver) trackerReady()
+    else waverReady()
 
-    seeRef.child('tracker').on('child_added', function (tracker) {
-      var x = tracker.x,
-          y = tracker.y,
-          r = tracker.r
+    function tester() { // For user who started test
+      var clickCounter = 0
 
-      if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
-      pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
-    })
+      ref.child('clear').on('child_added', function(clear) { // clear whenever waver's screen clears
+        clear()
+      })
 
-  // var waveTracker = function(e) {
-  //   var rawData = JSON.parse(e.data),
-  //       parsedData = JSON.parse(rawData.data),
-  //       x = width * parsedData.X / 1000,
-  //       y = height * parsedData.Y / 800,
-  //       r = parsedData.Size * 7
-  //   var minDistance = r + coordinates.r,
-  //       newDistance = distance(x, y, coordinates.x, coordinates.y)
+      ref.child('tracker').on('child_added', function (tracker) {
+        var x = tracker.x,
+            y = tracker.y,
+            r = tracker.r
 
-  //   if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
-  //   pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
+        if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
+        pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
+      })
 
-  //   setTimeout(function() {
-  //     if (newDistance < minDistance) {
-  //       t2 = performance.now()
-  //       timeData.push(timer(t1, t2))
-  //       accuracyData.push(accuracy(newDistance, minDistance))
-  //       pointer = undefined
-  //       clear()
-  //       test(5)
-  //     }
-  //   }, 500)
-  // }
-
-
-  function clickForTarget() {
-    var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2'],
-        circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ],
-        coordinatePush = pushRef.child('target')
-
-    $('.canvas').on('click', function(e) {
-      clickCounter++
-      var x = e.pageX - $('.canvas').offset().left,
-          y = e.pageY - $('.canvas').offset().top
-      coordinatePush.push({'x': x, 'y': y})
-
-      var s = (Math.random() * 75) + 25,
-      r = s + 25
-      pulse(x, y, s, r, 300, 3000, true, circleColor[clickCounter % 5], waveColor[clickCounter % 5])
-    })
-  }
-
-
-          // r = 10
-      // var minDistance = r + coordinates.r,
-      //     newDistance = distance(x, y, coordinates.x, coordinates.y)
-
-      // if (newDistance < minDistance) {
-      //   // eventSource.close()
-      //   t2 = performance.now()
-      //   timeData.push(timer(t1, t2))
-      //   accuracyData.push(accuracy(newDistance, minDistance))
-      //   clear()
-      //   test(5)
-      // }
-    // })
-
-    // if (counter == iterations) {
-    //   eventSource.close()
-    //   submitResults(timeData, accuracyData)
-    //   return
-    // } else {
-    //   t1 = performance.now()
-    //   coordinates = generateTarget(width, height, circleColor[counter % 5], waveColor[counter % 5])
-    //   eventSource.addEventListener('Coordinates', waveTracker, false)
-    //   counter++
-    // }
-  // }
-
-  // initWave()
-
-  function closeSession() {
-    $('.modal-content').empty()
-    $.ajax({
-      url: '/users/' + currentUser.id + '/wave_sessions/' + gon.userId,
-      type: 'DELETE',
-      dataType: 'script',
-      data: { waver_id: gon.userId },
-      success: function() {
-        seeRef.remove()
+      if (clickCounter >= 7) {
+        submitResults()
+      } else {
+        clickForTarget
       }
-    })
+
+      function clickForTarget() {
+        var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2'],
+            circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ],
+            coordinatePush = ref.child('target')
+
+        $('.canvas').on('click', function(e) {
+          clickCounter++
+          var x = e.pageX - $('.canvas').offset().left,
+              y = e.pageY - $('.canvas').offset().top
+          coordinatePush.push({'x': x, 'y': y})
+
+          var s = (Math.random() * 75) + 25,
+          r = s + 25
+          pulse(x, y, s, r, 300, 3000, true, circleColor[clickCounter % 5], waveColor[clickCounter % 5])
+        })
+      }
+    }
+
+    function trackerReady() {
+      ref.on('value', function(r) {
+        if (r.val().ready) {
+          clear()
+          pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
+          tester()
+        } else {
+          pulse(width / 2, height / 2, 40, 50, 150, 5000, true, '#f5f5f5', '#f5f5f5')
+          var status = canvas.append('text')
+          .text('Waiting on ' + gon.waverName + '...')
+          .attr('class', 'canvas-text asleep')
+          .attr('x', width / 2)
+          .attr('y', height / 2)
+          .attr('dy', '7')
+          .style('text-anchor', 'middle')
+        }
+      })
+
+      $(".modal-fade-screen, .modal-close").on("click", function() {
+        if (!waver) closeSession()
+        else $('.modal-content').empty()
+      });
+
+      $(window).on('page:before-change', function() { closeSession() })
+    }
+
+    function waverReady() {
+      clear()
+      start('#b6f5cb', '#befed2')
+
+      $('.wave-test-start, .canvas-text').one('click', function() {
+        clear()
+        pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
+
+        ref.update({ready: true}, function(error) {
+          if (!error) setTimeout(function() { alert('start') }, 2000)
+        })
+      })
+    }
   }
 
-  $('.wave-test-start, .canvas-text').one('click', function() {
-    clear()
-    pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
-    setTimeout(function() { clickForTarget() }, 2000)
-  })
 
-  $(".modal-fade-screen, .modal-close").on("click", function() {
-    if (currentUser.id !== gon.userId) closeSession()
-    else $('.modal-content').empty()
-  });
 
-  $(window).on('page:before-change', function() { closeSession() })
-}
+    // var waveTracker = function(e) {
+    //   var rawData = JSON.parse(e.data),
+    //       parsedData = JSON.parse(rawData.data),
+    //       x = width * parsedData.X / 1000,
+    //       y = height * parsedData.Y / 800,
+    //       r = parsedData.Size * 7
+    //   var minDistance = r + coordinates.r,
+    //       newDistance = distance(x, y, coordinates.x, coordinates.y)
 
-tester()
+    //   if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
+    //   pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
+
+    //   setTimeout(function() {
+    //     if (newDistance < minDistance) {
+    //       t2 = performance.now()
+    //       timeData.push(timer(t1, t2))
+    //       accuracyData.push(accuracy(newDistance, minDistance))
+    //       pointer = undefined
+    //       clear()
+    //       test(5)
+    //     }
+    //   }, 500)
+    // }
+
+
+
+
+            // r = 10
+        // var minDistance = r + coordinates.r,
+        //     newDistance = distance(x, y, coordinates.x, coordinates.y)
+
+        // if (newDistance < minDistance) {
+        //   // eventSource.close()
+        //   t2 = performance.now()
+        //   timeData.push(timer(t1, t2))
+        //   accuracyData.push(accuracy(newDistance, minDistance))
+        //   clear()
+        //   test(5)
+        // }
+      // })
+
+      // if (counter == iterations) {
+      //   eventSource.close()
+      //   submitResults(timeData, accuracyData)
+      //   return
+      // } else {
+      //   t1 = performance.now()
+      //   coordinates = generateTarget(width, height, circleColor[counter % 5], waveColor[counter % 5])
+      //   eventSource.addEventListener('Coordinates', waveTracker, false)
+      //   counter++
+      // }
+    // }
+
+    // initWave()
 <% end %>

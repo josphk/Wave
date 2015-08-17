@@ -167,7 +167,7 @@ function initTest() {
     pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
   }
 
-  $('.wave-test-start, .canvas-text').one('click', function() {
+  $('.wave-test-start, .start').one('click', function() {
     clear()
     pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
     eventSource.addEventListener('Coordinates', waveTracker, false)
@@ -175,6 +175,7 @@ function initTest() {
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
     if (!$('#modal-1').checked) eventSource.close()
+    $('.modal-content').empty()
   });
 
   $(window).on('page:before-change', function() { eventSource.close() })

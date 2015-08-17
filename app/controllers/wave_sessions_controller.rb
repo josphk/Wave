@@ -5,7 +5,9 @@ class WaveSessionsController < ApplicationController
     @session = current_user.wave_sessions.new(waver_id: params[:user_id])
     notification = @firebase.set("users/#{ params[:user_id] }/notifications/wave_sessions/#{ current_user.id }", { checked: false, published_at: Firebase::ServerValue::TIMESTAMP })
     response = @firebase.set("users/#{ current_user.id }/wave_sessions/#{ params[:user_id] }", { ready: false })
-    gon.userId = params[:user_id]
+    gon.testerId = @session.user_id.to_s
+    gon.waverId = params[:user_id]
+    gon.waverName = User.find(params[:user_id]).first_name
 
     respond_to do |format|
       if response.success? && notification.success? && @session.save
@@ -16,7 +18,10 @@ class WaveSessionsController < ApplicationController
 
   def show
     @stat = Stat.new
-    gon.userId = params[:user_id]
+    @session = WaveSession.find_by(waver_id: params[:user_id])
+    gon.testerId = @session.user_id.to_s
+    gon.waverId = params[:user_id]
+    gon.waverName = User.find(params[:user_id]).first_name
 
     respond_to do |format|
       format.html { render layout: !request.xhr? }
