@@ -1,4 +1,4 @@
-svg = true
+motion = true
 var trackerOffline = true
 
 $(window).resize(function() {
@@ -16,72 +16,72 @@ var width = $('.canvas').width(),
     canvas = d3.select('.canvas').attr('viewBox', '0 0 ' + width + ' ' + height).attr("preserveAspectRatio", "xMidYMid"),
     pointer
 
-function clear() {
-  canvas.selectAll('*').remove()
-}
+// function clear() {
+//   canvas.selectAll('*').remove()
+// }
 
-function checkStatus(id, accessToken) {
-  var url = 'https://api.spark.io/v1/devices/' + id + '?access_token=' + accessToken
+// function checkStatus(id, accessToken) {
+//   var url = 'https://api.spark.io/v1/devices/' + id + '?access_token=' + accessToken
 
-  $.ajax({
-    type: 'GET',
-    url: url,
-    beforeSend: function() {
-      $('.modal-inner').append('<div class="loading"></div>')
-    },
-    success: function(data) {
-      $('.modal-inner .loading').remove()
-      if (data.connected) init()
-      else trackerAsleep()
-    },
-    error: function() {
-      $('.modal-inner .loading').remove()
-      trackerAsleep()
-    },
-    dataType: 'json'
-  })
-}
+//   $.ajax({
+//     type: 'GET',
+//     url: url,
+//     beforeSend: function() {
+//       $('.modal-inner').append('<div class="loading"></div>')
+//     },
+//     success: function(data) {
+//       $('.modal-inner .loading').remove()
+//       if (data.connected) init()
+//       else trackerAsleep()
+//     },
+//     error: function() {
+//       $('.modal-inner .loading').remove()
+//       trackerAsleep()
+//     },
+//     dataType: 'json'
+//   })
+// }
 
-function trackerAsleep() {
-  trackerOffline = true
+// function trackerAsleep() {
+//   trackerOffline = true
 
-  pulse(width / 2, height / 2, 40, 50, 150, 5000, true, '#f5f5f5', '#f5f5f5')
-  var status = canvas.append('text')
-  .text('Your Wave Motion seems to be asleep')
-        .attr('class', 'canvas-text asleep')
-        .attr('x', width / 2)
-        .attr('y', height / 2)
-        .attr('dy', '7')
-        .style('text-anchor', 'middle')
-}
+//   pulse(width / 2, height / 2, 40, 50, 150, 5000, true, '#f5f5f5', '#f5f5f5')
+//   var status = canvas.append('text')
+//   .text('Your Wave Motion seems to be asleep')
+//         .attr('class', 'canvas-text asleep')
+//         .attr('x', width / 2)
+//         .attr('y', height / 2)
+//         .attr('dy', '7')
+//         .style('text-anchor', 'middle')
+// }
 
-function makeCircle(cx, cy, r, color) {
-  canvas.attr('viewBox', '0 0 ' + width + ' ' + height)
-  var circle = canvas.append('circle')
+// function makeCircle(cx, cy, r, color) {
+//   canvas.attr('viewBox', '0 0 ' + width + ' ' + height)
+//   var circle = canvas.append('circle')
 
-  circle.attr('cx', cx)
-        .attr('cy', cy)
-        .attr('r', r)
-        .attr('fill', color)
-  return circle
-}
+//   circle.attr('cx', cx)
+//         .attr('cy', cy)
+//         .attr('r', r)
+//         .attr('fill', color)
+//   return circle
+// }
 
-function generateArc(innerR, outerR, startA, x, y, fill) {
-  function arcTween(transition, newAngle) {
-    transition.attrTween('d', function(d) {
-      var interpolate = d3.interpolate(d.endAngle, newAngle)
-      return function(t) {
-        d.endAngle = interpolate(t)
-        return arc(d)
-      }
-    })
-  }
-  var arc = d3.svg.arc().innerRadius(innerR).outerRadius(outerR).startAngle(startA)
-  var g = canvas.append('g').attr('transform', 'translate(' + x + ',' + y + ')')
-  var p = g.append('path').datum({endAngle: 0}).attr('d', arc).attr('fill', fill)
-  p.attr('opacity', 0).transition().duration(2500).ease('cubic-out').attr('opacity', 1).call(arcTween, Math.PI * 2)
-  return g
-}
+// function generateArc(innerR, outerR, startA, x, y, fill) {
+//   function arcTween(transition, newAngle) {
+//     transition.attrTween('d', function(d) {
+//       var interpolate = d3.interpolate(d.endAngle, newAngle)
+//       return function(t) {
+//         d.endAngle = interpolate(t)
+//         return arc(d)
+//       }
+//     })
+//   }
+//   var arc = d3.svg.arc().innerRadius(innerR).outerRadius(outerR).startAngle(startA)
+//   var g = canvas.append('g').attr('transform', 'translate(' + x + ',' + y + ')')
+//   var p = g.append('path').datum({endAngle: 0}).attr('d', arc).attr('fill', fill)
+//   p.attr('opacity', 0).transition().duration(2500).ease('cubic-out').attr('opacity', 1).call(arcTween, Math.PI * 2)
+//   return g
+// }
 
 // function materialBorder() {
 //   var defs = canvas.append('defs')
@@ -114,105 +114,105 @@ function generateArc(innerR, outerR, startA, x, y, fill) {
 //          .attr('in', 'SourceGraphic')
 // }
 
-function pulse(x, y, initSize, circleMax, waveMax, waveSpeed, infinite, circleColor, waveColor, circleClass) {
-  var wave = makeCircle(x, y, 0, waveColor)
-  var circle = makeCircle(x, y, 50, circleColor)
-      circle.attr('class', circleClass)
+// function pulse(x, y, initSize, circleMax, waveMax, waveSpeed, infinite, circleColor, waveColor, circleClass) {
+//   var wave = makeCircle(x, y, 0, waveColor)
+//   var circle = makeCircle(x, y, 50, circleColor)
+//       circle.attr('class', circleClass)
 
-  function wavePulse() {
-    wave.attr('r', initSize)
-        .attr('opacity', 0.7)
-        .transition().duration(waveSpeed).ease('cubic-out')
-        .attr('r', waveMax)
-        .attr('opacity', 0)
-  }
+//   function wavePulse() {
+//     wave.attr('r', initSize)
+//         .attr('opacity', 0.7)
+//         .transition().duration(waveSpeed).ease('cubic-out')
+//         .attr('r', waveMax)
+//         .attr('opacity', 0)
+//   }
 
-  function circlePulse() {
-    if (infinite) {
-      circle.attr('r', initSize)
-            .attr('fill', circleColor)
-            .transition().duration(2000).ease('cubic-out').each(wavePulse)
-            .attr('r', circleMax)
-            .attr('fill', waveColor)
-            .transition().duration(3000).ease('cubic-in')
-            .attr('r', initSize)
-            .attr('fill', circleColor)
-            .each('end', circlePulse)
-    } else {
-      circle.attr('r', initSize)
-            .attr('fill', circleColor)
-            .attr('opacity', 1)
-            .transition().duration(2000).ease('cubic-out').each(wavePulse)
-            .attr('r', circleMax)
-            .attr('fill', waveColor)
-            .attr('opacity', 0)
-    }
-  }
-  circlePulse()
-}
+//   function circlePulse() {
+//     if (infinite) {
+//       circle.attr('r', initSize)
+//             .attr('fill', circleColor)
+//             .transition().duration(2000).ease('cubic-out').each(wavePulse)
+//             .attr('r', circleMax)
+//             .attr('fill', waveColor)
+//             .transition().duration(3000).ease('cubic-in')
+//             .attr('r', initSize)
+//             .attr('fill', circleColor)
+//             .each('end', circlePulse)
+//     } else {
+//       circle.attr('r', initSize)
+//             .attr('fill', circleColor)
+//             .attr('opacity', 1)
+//             .transition().duration(2000).ease('cubic-out').each(wavePulse)
+//             .attr('r', circleMax)
+//             .attr('fill', waveColor)
+//             .attr('opacity', 0)
+//     }
+//   }
+//   circlePulse()
+// }
 
-function start(buttonColor, waveColor) {
-  pulse(width / 2, height / 2, 75, 85, 700, 5000, true, buttonColor, waveColor, 'wave-test-start')
-  var text =  canvas.append('text').text('Start')
-             .attr('class', 'canvas-text start')
-             .attr('x', width / 2)
-             .attr('y', (height / 2) + 10)
-             .style('text-anchor', 'middle')
-}
+// function start(buttonColor, waveColor) {
+//   pulse(width / 2, height / 2, 75, 85, 700, 5000, true, buttonColor, waveColor, 'wave-test-start')
+//   var text =  canvas.append('text').text('Start')
+//              .attr('class', 'canvas-text start')
+//              .attr('x', width / 2)
+//              .attr('y', (height / 2) + 10)
+//              .style('text-anchor', 'middle')
+// }
 
-function distance(x1, y1, x2, y2) {
-  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
-}
+// function distance(x1, y1, x2, y2) {
+//   return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+// }
 
-function timer(t1, t2) {
-  return t2 - t1
-}
+// function timer(t1, t2) {
+//   return t2 - t1
+// }
 
-function accuracy(d1, d2) {
-  d2 *= 2
-  return (d2 - d1) / d2
-}
+// function accuracy(d1, d2) {
+//   d2 *= 2
+//   return (d2 - d1) / d2
+// }
 
-function results(timeD, accuracyD) {
-  var time = generateArc(40, 50, 0, width / 3, height / 3, '#b6f5cb')
-  var accuracy = generateArc(40, 50, 0, width / 3, height / 3 * 2, '#f58d9a')
-  time.append('text').text('Average Time: ' + timeD + 's').attr('class', 'canvas-text').attr('dy', '11').attr('dx', '100')
-  accuracy.append('text').text('Accuracy: ' + accuracyD + '%').attr('class', 'canvas-text').attr('dy', '11').attr('dx', '100')
-}
+// function results(timeD, accuracyD) {
+//   var time = generateArc(40, 50, 0, width / 3, height / 3, '#b6f5cb')
+//   var accuracy = generateArc(40, 50, 0, width / 3, height / 3 * 2, '#f58d9a')
+//   time.append('text').text('Average Time: ' + timeD + 's').attr('class', 'canvas-text').attr('dy', '11').attr('dx', '100')
+//   accuracy.append('text').text('Accuracy: ' + accuracyD + '%').attr('class', 'canvas-text').attr('dy', '11').attr('dx', '100')
+// }
 
-function submitResults(timeData, accuracyData) {
-  function average(dataArray) {
-    var sum = dataArray.reduce(function(a, b) { return a + b })
-    return sum / dataArray.length
-  }
+// function submitResults(timeData, accuracyData) {
+//   function average(dataArray) {
+//     var sum = dataArray.reduce(function(a, b) { return a + b })
+//     return sum / dataArray.length
+//   }
 
-  var averageTime = Math.round(average(timeData) / 10) / 100
-      averageAccuracy = Math.round(average(accuracyData) * 10000) / 100
+//   var averageTime = Math.round(average(timeData) / 10) / 100,
+//       averageAccuracy = Math.round(average(accuracyData) * 10000) / 100
 
-  $.ajax({
-    type: 'POST',
-    url: '/users/' + currentUser.id + '/stats',
-    dataType: 'script',
-    data: { average_time: averageTime, accuracy: averageAccuracy, user_id: currentUser.id },
-    beforeSend: function() {
-      $('.modal-inner').append('<div class="loading"></div>')
-    },
-    success: function(data) {
-      $('.modal-inner .loading').remove()
-      results(averageTime, averageAccuracy)
-    },
-    error: function() {
-      $('.modal-inner .loading').remove()
-      var status = canvas.append('text')
-        .text('Something went wrong')
-        .attr('class', 'canvas-text asleep')
-        .attr('x', width / 2)
-        .attr('y', height / 2)
-        .attr('dy', '7')
-        .style('text-anchor', 'middle')
-    }
-  })
-}
+//   $.ajax({
+//     type: 'POST',
+//     url: '/users/' + currentUser.id + '/stats',
+//     dataType: 'script',
+//     data: { average_time: averageTime, accuracy: averageAccuracy, user_id: currentUser.id },
+//     beforeSend: function() {
+//       $('.modal-inner').append('<div class="loading"></div>')
+//     },
+//     success: function(data) {
+//       $('.modal-inner .loading').remove()
+//       results(averageTime, averageAccuracy)
+//     },
+//     error: function() {
+//       $('.modal-inner .loading').remove()
+//       var status = canvas.append('text')
+//         .text('Something went wrong')
+//         .attr('class', 'canvas-text asleep')
+//         .attr('x', width / 2)
+//         .attr('y', height / 2)
+//         .attr('dy', '7')
+//         .style('text-anchor', 'middle')
+//     }
+//   })
+// }
 
 
 

@@ -47,7 +47,10 @@ $(document).on('ready', function() {
       if (notifyTrackerStatus(currentUser.trackers, added)) {
         notifyAnimation('online')
         currentUser.onlineTracker = added.val().coreid
-        if (svg) init()
+        if (motion) {
+          if (wave) initWave()
+          else initTest()
+        }
       }
     });
 
@@ -55,7 +58,7 @@ $(document).on('ready', function() {
       if (notifyTrackerStatus(currentUser.trackers, removed)) {
         notifyAnimation('offline')
         currentUser.onlineTracker = undefined
-        if (svg) trackerAsleep()
+        if (motion) trackerAsleep()
       }
     })
   }

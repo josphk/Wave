@@ -5,26 +5,25 @@
 
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
-  function init() {
-    trackerOffline = false
-    clear()
-    start('#b6f5cb', '#befed2')
+  // function initTest() {
+  //   trackerOffline = false
+  //   var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
+  //   clear()
+  //   start('#b6f5cb', '#befed2')
 
-    $('.wave-test-start, .canvas-text').one('click', function() {
-      clear()
-      // pulse(width / 2, height / 2, 75, 300, 700, 2500, false, '#b6f5cb', '#befed2')
+  //   var waveTracker = function(e) {
+  //     var rawData = JSON.parse(e.data),
+  //         parsedData = JSON.parse(rawData.data),
+  //         x = width * parsedData.X / 1000,
+  //         y = height * parsedData.Y / 800,
+  //         r = parsedData.Size * 7
+  //     var minDistance = r + coordinates.r,
+  //         newDistance = distance(x, y, coordinates.x, coordinates.y)
 
-      // var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ gon.id }/events/?access_token=${ gon.token }`)
-      // eventSource.addEventListener('Coordinates', waveTracker, false)
-
-      // $(window).on('page:before-change', function() {
-      //   eventSource.close()
-      // })
-      //
-      results(10, 10)
-    })
-
-  }
-  init()
-  // checkStatus(gon.id, gon.token)
+  //     if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
+  //     pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
+  //   }
+  //   eventSource.addEventListener('Coordinates', waveTracker, false)
+  // }
+  checkStatus(gon.id, gon.token, false)
 <% end %>

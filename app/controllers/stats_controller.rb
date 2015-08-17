@@ -1,5 +1,13 @@
 class StatsController < ApplicationController
   # before_action :require_tracker_authenticated, only: :new
+  def index
+    @user = User.find(request.original_fullpath[/\d+/, 0])
+    get_stats(@user)
+
+    respond_to do |format|
+      format.json { render json: { average_time: @average_times, accuracy: @accuracy_rates } }
+    end
+  end
 
   def new
     @stat = Stat.new
@@ -25,10 +33,6 @@ class StatsController < ApplicationController
         format.js {}
       end
     end
-  end
-
-  def show
-    @stat = Stat.find(params[:id])
   end
 
   private

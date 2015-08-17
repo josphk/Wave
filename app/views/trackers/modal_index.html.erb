@@ -1,7 +1,11 @@
 <div class="particle-sign-in-container">
-  <div class="particle-sign-in">
-    <p>Looks like you haven't registered a Wave Motion yet...</p>
-    <p>Sign in with Particle</p>
-    <%= render 'particle_form' %>
-  </div>
+  <p>Looks like you haven't registered a Wave Motion yet...</p>
+  <% if @trackers %>
+    <%= render 'trackers' %>
+  <% else %>
+    <div class="particle-sign-in">
+      <p>Sign in with Particle</p>
+      <%= render 'particle_form' %>
+    </div>
+  <% end %>
 </div>

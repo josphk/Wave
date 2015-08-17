@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     end
 
     resources :friendships, only: [:destroy]
-    resources :stats, only: [:create, :show]
+    resources :stats, only: [:index, :create, :show]
     get 'test', to: 'stats#new'
   end
 

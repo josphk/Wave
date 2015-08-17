@@ -9,7 +9,8 @@
 <body>
   <%= Gon::Base.render_data %>
   <%= javascript_tag do %>
-    var svg = false
+    var motion = false
+    var wave = false
     var trackerOffline = false
     var currentUser
     var loggedIn
@@ -57,7 +58,7 @@
         </li>
         <ul class="user-links hidden">
           <li><%= link_to "Profile", user_path(current_user)%></li>
-          <li><%= link_to "My Wave Trackers", user_trackers_path(current_user) %></li>
+          <li><%= link_to "My Wave Motions", user_trackers_path(current_user) %></li>
           <li><%= link_to "Logout", :logout %></li>
         </ul>
         <li><%= render 'shared/tracker_modal' %></li>

@@ -1,6 +1,6 @@
 class TrackersController < ApplicationController
-  before_action :get_trackers, only: :index
-  before_action :registered_trackers, only: :index
+  before_action :get_trackers, only: [:index, :modal_index]
+  before_action :registered_trackers, only: [:index, :modal_index]
   before_action :firebase, only: [:create, :destroy]
 
   def index

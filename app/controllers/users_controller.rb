@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_logout, except: [:show, :update_avatar]
-  before_action :get_user, only: [:show, :update_avatar]
+  before_action :get_user, only: [:show, :update_avatar, :stats]
   skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
 
