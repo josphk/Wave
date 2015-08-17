@@ -26,6 +26,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :wave_sessions, only: [:create, :show, :destroy]
+
     resources :friendships, only: [:destroy]
     resources :stats, only: [:index, :create, :show]
     get 'test', to: 'stats#new'

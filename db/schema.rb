@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150809051915) do
+ActiveRecord::Schema.define(version: 20150817172330) do
 
   create_table "friendships", force: :cascade do |t|
     t.integer  "user_id"
@@ -57,5 +57,14 @@ ActiveRecord::Schema.define(version: 20150809051915) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token"
+
+  create_table "wave_sessions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "waver_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "wave_sessions", ["waver_id"], name: "index_wave_sessions_on_waver_id"
 
 end

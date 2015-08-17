@@ -15,9 +15,10 @@
       <li>
         <%= link_to user_path(user) do %>
           <div>
-            <%= image_tag image_path(user.avatar.thumb) %> <%= user.first_name %> <%= user.last_name %> accepted your friend request</span>
+            <%= image_tag image_path(user.avatar.thumb) %> <%= user.first_name %> <%= user.last_name %></span>
           </div>
         <% end %>
+        <span>You are now friends</span>
       </li>
     <% end %>
   <% end %>
