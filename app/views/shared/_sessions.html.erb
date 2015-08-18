@@ -24,9 +24,8 @@
         <% if current_user.trackers.any? %>
           <%= link_to "Wave back!", user_wave_session_path(current_user.id, user.id), remote: true, 'data-type' => :html %>
         <% else %>
-          <span><%= link_to "Get a Wave Motion to wave back!", sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %></span>
+          <span><%= link_to "Register to wave back!", sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %></span>
         <% end %>
-        <span>Ignore</span>
         <input class="hidden modal-state" id="modal-1" type="checkbox" />
         <div class="modal-fade-screen">
           <div class="modal-inner">

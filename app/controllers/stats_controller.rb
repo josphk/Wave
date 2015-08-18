@@ -25,7 +25,7 @@ class StatsController < ApplicationController
         format.html { redirect_to user_path(current_user) }
         format.js {
           user_id = request.referer[/\d+$/, 0]
-          @user = User.find(user_id)
+          @user = User.find(params[:user_id])
           get_stats(@user)
         }
       else
@@ -37,6 +37,6 @@ class StatsController < ApplicationController
 
   private
   def stat_params
-    params.permit(:average_time, :accuracy)
+    params.permit(:average_time, :accuracy, :user_id)
   end
 end

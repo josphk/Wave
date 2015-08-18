@@ -47,9 +47,13 @@ $(document).on('ready', function() {
       if (notifyTrackerStatus(currentUser.trackers, added)) {
         notifyAnimation('online')
         currentUser.onlineTracker = added.val().coreid
-        if (motion) {
-          if (wave) initWave()
-          else initTest()
+        if (multiUserWave) {
+          waverReady()
+        } else {
+          if (motion) {
+            if (wave) initWave()
+            else initTest()
+          }
         }
       }
     });

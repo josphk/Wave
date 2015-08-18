@@ -1,4 +1,4 @@
-function checkStatus(id, accessToken, test) {
+function checkStatus(id, accessToken, wave, multiWave) {
   var url = 'https://api.spark.io/v1/devices/' + id + '?access_token=' + accessToken
 
   $.ajax({
@@ -10,7 +10,7 @@ function checkStatus(id, accessToken, test) {
     success: function(data) {
       $('.modal-inner .loading').remove()
       if (data.connected) {
-        if (test) initWave()
+        if (wave) initWave()
         else initTest()
       }
       else trackerAsleep()
@@ -145,6 +145,7 @@ function initWave() {
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
     if (!$('#modal-1').checked) eventSource.close()
+    pointer = undefined
   });
 
   $(window).on('page:before-change', function() { eventSource.close() })
@@ -176,6 +177,7 @@ function initTest() {
   $(".modal-fade-screen, .modal-close").on("click", function() {
     if (!$('#modal-1').checked) eventSource.close()
     $('.modal-content').empty()
+    pointer = undefined
   });
 
   $(window).on('page:before-change', function() { eventSource.close() })
