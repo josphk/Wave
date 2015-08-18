@@ -34,6 +34,7 @@ gem 'remotipart'
 # Style with bourbon and neat
 gem 'bourbon'
 gem 'neat'
+gem 'font-awesome-rails'
 
 # For accessing the Particle Cloud API
 gem 'httparty'

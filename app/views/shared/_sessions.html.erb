@@ -1,36 +1,19 @@
-<%= javascript_tag do %>
-  $('.modal a[data-type=html]').on('ajax:success', function(e, d, s, x) {
-    $('#modal-1').prop('checked', true)
-    $("body").addClass("modal-open");
-    $('.modal-content').html(d)
-  });
-
-  $(".modal-fade-screen, .modal-close").on("click", function() {
-    $(".modal-state:checked").prop("checked", false).change()
-    $("body").removeClass("modal-open")
-  });
-
-  $(".modal-inner").on("click", function(e) {
-    e.stopPropagation()
-  });
-<% end %>
-
 <% if logged_in? %>
   <% get_wave_sessions.each do |session| %>
     <% user = User.find(session.user_id) %>
     <li>
       <span><%= image_tag image_path(user.avatar.thumb) %> <%= user.first_name %> <%= user.last_name %> is waving at you!</span>
-      <div class="modal">
+      <div class="wave-session modal">
         <% if current_user.trackers.any? %>
           <%= link_to "Wave back!", user_wave_session_path(current_user.id, user.id), remote: true, 'data-type' => :html %>
         <% else %>
           <span><%= link_to "Register to wave back!", sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %></span>
         <% end %>
-        <input class="hidden modal-state" id="modal-1" type="checkbox" />
+        <input class="hidden modal-state" id="modal-session" type="checkbox" />
         <div class="modal-fade-screen">
           <div class="modal-inner">
-            <div class="modal-close" for="modal-1"></div>
-            <div class="modal-content"></div>
+            <div class="modal-close" for="modal-session"></div>
+            <div class="session-modal-content"></div>
           </div>
         </div>
       </div>

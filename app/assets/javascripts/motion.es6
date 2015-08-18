@@ -21,10 +21,15 @@ function checkStatus(id, accessToken, wave, multiWave) {
     },
     dataType: 'json'
   })
+
+  $(".modal-fade-screen, .modal-close").on("click", function() {
+    $('.modal-content').empty()
+  });
 }
 
 function trackerAsleep() {
   trackerOffline = true
+  clear()
 
   pulse(width / 2, height / 2, 40, 50, 150, 5000, true, '#f5f5f5', '#f5f5f5')
   var status = canvas.append('text')
@@ -34,6 +39,7 @@ function trackerAsleep() {
         .attr('y', height / 2)
         .attr('dy', '7')
         .style('text-anchor', 'middle')
+
 }
 
 function submitResults(timeData, accuracyData) {
@@ -145,6 +151,7 @@ function initWave() {
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
     if (!$('#modal-1').checked) eventSource.close()
+    $('.modal-content').empty()
     pointer = undefined
   });
 

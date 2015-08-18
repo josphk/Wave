@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Wave</title>
+  <%= favicon_link_tag 'favicon.ico' %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -46,45 +47,74 @@
     <% end %>
   <% end %>
 
-  <div class="nav">
-    <ul class="links">
-      <li class="logo"><h3><%= link_to "Wave", root_url %></h3></li>
-      <ul class="tracker-status">
-      </ul>
-      <% if logged_in? %>
-        <li><%= render 'shared/search' %></li>
-        <li>
-          <%= link_to user_path(current_user), id: 'avatar' do %>
-            <%= image_tag image_path(current_user.avatar.thumb) %>
-          <% end %>
-        </li>
-        <ul class="user-links hidden">
-          <li><%= link_to "Profile", user_path(current_user)%></li>
-          <li><%= link_to "My Wave Motions", user_trackers_path(current_user) %></li>
-          <li><%= link_to "Logout", :logout %></li>
-        </ul>
-        <li class="notifications friends"><p>Friend Requests</p></li>
-        <ul class="friend-requests hidden">
-          <%= render 'shared/friend_requests' %>
-        </ul>
-        <li class="notifications sessions"><p>Notifications</p></li>
-        <ul class="wave-sessions hidden">
-          <%= render 'shared/sessions' %>
-        </ul>
-        <li><%= render 'shared/tracker_modal' %></li>
-      <% else %>
-        <li><%= link_to "Sign Up", new_user_path %></li>
-        <li><%= link_to "Login", :login %></li>
+<header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <div class="logo">
+      <%= link_to root_url do %>
+        <%= image_tag('Logo.png') %>
       <% end %>
-    </ul>
+    </div>
+    <% if logged_in? %>
+      <div class="tracker-status"></div>
+      <nav role="navigation">
+        <ul class="navigation-menu show">
+          <li class="nav-link more">
+            <%= link_to user_path(current_user), id: 'avatar' do %>
+              <%= image_tag image_path(current_user.avatar.thumb) %>
+            <% end %>
+            <ul class="user submenu hidden">
+              <li><%= link_to "Profile", user_path(current_user)%></li>
+              <li><%= link_to "My Wave Motions", user_trackers_path(current_user) %></li>
+              <li><%= link_to "Logout", :logout %></li>
+            </ul>
+          </li>
+          <div class="navigation-tools">
+            <div class="search-bar">
+              <%= form_tag users_path, method: :get, authentication: false , class: "user-search" do %>
+                <%= text_field_tag :search, params[:search], placeholder: 'Search Wave', class: "search-input" %>
+                <%= image_submit_tag 'search-icon.png', class: 'search-submit' %>
+              <% end %>
+            </div>
+          </div>
+          <li class="nav-link more notifications friends">
+            <%= fa_icon 'users 1x', id: 'notify-friend' %>
+            <ul class="friend-requests submenu hidden">
+              <%= render 'shared/friend_requests' %>
+            </ul>
+          </li>
+          <li class="nav-link more notifications sessions">
+            <%= fa_icon 'bell-o 1x', id: 'notify-session' %>
+            <ul class="wave-sessions submenu hidden">
+              <%= render 'shared/sessions' %>
+            </ul>
+          </li>
+        </ul>
+        <div class="wave-test">
+          <%= render 'shared/tracker_modal' %>
+        </div>
+      </nav>
+    <% else %>
+      <nav role="navigation">
+        <ul class="navigation-menu show">
+          <li class="nav-link"><%= link_to "Sign Up", new_user_path %></li>
+          <li class="nav-link"><%= link_to "Login", :login %></li>
+        <ul>
+      </nav>
+    <% end %>
   </div>
-
-  <div class="flash">
-    <p id="alert"><%= flash[:alert] %></p>
-  </div>
+</header>
 
 
+
+
+
+<div class="flash">
+  <p id="alert"><%= flash[:alert] %></p>
+</div>
+
+<div class="main-content">
   <%= yield %>
+</div>
 
 </body>
 </html>

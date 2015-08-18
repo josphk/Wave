@@ -11,7 +11,7 @@ $(document).on('ready', function() {
           method: 'get',
           dataType: 'script',
           success: function() {
-            $('.notifications.friends p').addClass('notified')
+            $('#notify-friend').addClass('notified')
           }
         })
       }
@@ -42,7 +42,7 @@ $(document).on('ready', function() {
           method: 'get',
           dataType: 'script',
           success: function() {
-            $('.notifications.sessions p').addClass('notified')
+            $('#notify-session').addClass('notified')
           }
         })
       }
@@ -54,7 +54,7 @@ $(document).on('ready', function() {
         method: 'get',
         dataType: 'script'
       })
-      $('.notifications.sessions p').removeClass('notified')
+      $('#notify-session').removeClass('notified')
     })
   }
 })

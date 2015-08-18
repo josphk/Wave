@@ -3,6 +3,8 @@
     <%= text_field_tag :search, params[:search], placeholder: 'Search Wave' %>
   </div>
   <div class="search-submit">
-    <%= submit_tag "Search" %>
+    <%= submit_tag do %>
+      <%= fa_icon 'search' %>
+    <% end %>
   </div>
 <% end %>

@@ -1,44 +1,59 @@
+// $(document).ready(function() {
+//   var menuToggle = $('#js-mobile-menu').unbind();
+//   $('#js-navigation-menu').removeClass("show");
+
+//   menuToggle.on('click', function(e) {
+//     e.preventDefault();
+//     $('#js-navigation-menu').slideToggle(function(){
+//       if($('#js-navigation-menu').is(':hidden')) {
+//         $('#js-navigation-menu').removeAttr('style');
+//       }
+//     });
+//   });
+// });
+
+
 $(document).on('ready page:load', function() {
   var firebase = new Firebase(firebaseUrl)
 
   $('#avatar').on('click', function(e) {
     e.preventDefault()
-    $('.user-links').toggleClass('hidden')
+    $('.user.submenu').toggleClass('hidden')
   })
 
-  $('.notifications.friends').on('click', function(e) {
+  $('#notify-friend').on('click', function(e) {
     e.preventDefault();
-    $('.friend-requests').toggleClass('hidden')
+    $('.friend-requests.submenu').toggleClass('hidden')
 
-    if ($('.notifications.friends p').hasClass('notified')) {
-      if (!$('.friend-requests').hasClass('hidden')) {
+    if ($('#notify-friend').hasClass('notified')) {
+      if (!$('.friend-requests.submenu').hasClass('hidden')) {
         var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('friend_requests').once('value', function(snapshot) {
           snapshot.forEach(function(req){
             req.ref().update({ 'checked': true })
           })
         })
-        $('.notifications.friends p').removeClass('notified')
+        $('#notify-friend').removeClass('notified')
       }
     }
   })
 
   $('.notifications.sessions').on('click', function(e) {
     e.preventDefault()
-    $('.wave-sessions').toggleClass('hidden')
+    $('.wave-sessions.submenu').toggleClass('hidden')
 
-    if ($('.notifications.sessions p').hasClass('notified')) {
-      if (!$('.wave-sessions').hasClass('hidden')) {
+    if ($('#notify-session').hasClass('notified')) {
+      if (!$('.wave-sessions.submenu').hasClass('hidden')) {
         var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('wave_sessions').once('value', function(snapshot) {
           snapshot.forEach(function(req){
             req.ref().update({ 'checked': true })
           })
         })
-        $('.notifications.sessions p').removeClass('notified')
+        $('#notify-session').removeClass('notified')
       }
     }
   })
 
-  $('.modal a[data-type=html]').on('ajax:success', function(e, d, s, x) {
+  $('.modal a[data-type=html]').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
     $('#modal-1').prop('checked', true)
     $("body").addClass("modal-open");
 
@@ -51,7 +66,7 @@ $(document).on('ready page:load', function() {
   });
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
-    $(".modal-state:checked").prop("checked", false).change()
+    $('#modal-1').prop("checked", false).change()
     $("body").removeClass("modal-open")
   });
 
@@ -59,6 +74,23 @@ $(document).on('ready page:load', function() {
     e.stopPropagation()
   });
 })
+
+$('.wave-session.modal a[data-type=html]').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
+  $('#modal-session').prop('checked', true)
+  $("body").addClass("modal-open");
+
+  $('.session-modal-content').html(d)
+});
+
+$(".modal-fade-screen, .modal-close").on("click", function() {
+  $('#modal-session').prop("checked", false).change()
+  $("body").removeClass("modal-open")
+  $('.session-modal-content').empty()
+});
+
+$(".modal-inner").on("click", function(e) {
+  e.stopPropagation()
+});
 
 
 
