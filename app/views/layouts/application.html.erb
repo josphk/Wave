@@ -49,18 +49,28 @@
 
 <header class="navigation" role="banner">
   <div class="navigation-wrapper">
-    <div class="logo">
+    <div class="logo wave">
       <%= link_to root_url do %>
         <%= image_tag('Logo.png') %>
       <% end %>
     </div>
     <% if logged_in? %>
       <div class="tracker-status"></div>
+      <div class="navigation-tools">
+        <div class="search-bar">
+          <%= form_tag users_path, method: :get, authentication: false , class: "user-search" do %>
+            <%= text_field_tag :search, params[:search], placeholder: 'Search Wave', class: "search-input" %>
+            <%= image_submit_tag 'search-icon.png', class: 'search-submit' %>
+          <% end %>
+        </div>
+      </div>
       <nav role="navigation">
         <ul class="navigation-menu show">
           <li class="nav-link more">
             <%= link_to user_path(current_user), id: 'avatar' do %>
-              <%= image_tag image_path(current_user.avatar.thumb) %>
+              <div class="avatar-clip">
+                <%= image_tag image_path(current_user.avatar.thumb), class: 'avatar-clip' %>
+              </div>
             <% end %>
             <ul class="user submenu hidden">
               <li><%= link_to "Profile", user_path(current_user)%></li>
@@ -68,31 +78,28 @@
               <li><%= link_to "Logout", :logout %></li>
             </ul>
           </li>
-          <div class="navigation-tools">
-            <div class="search-bar">
-              <%= form_tag users_path, method: :get, authentication: false , class: "user-search" do %>
-                <%= text_field_tag :search, params[:search], placeholder: 'Search Wave', class: "search-input" %>
-                <%= image_submit_tag 'search-icon.png', class: 'search-submit' %>
-              <% end %>
-            </div>
-          </div>
           <li class="nav-link more notifications friends">
-            <%= fa_icon 'users 1x', id: 'notify-friend' %>
+            <%= fa_icon 'users', id: 'notify-friend' %>
             <ul class="friend-requests submenu hidden">
               <%= render 'shared/friend_requests' %>
             </ul>
           </li>
           <li class="nav-link more notifications sessions">
-            <%= fa_icon 'bell-o 1x', id: 'notify-session' %>
+            <%= fa_icon 'bell', id: 'notify-session' %>
             <ul class="wave-sessions submenu hidden">
               <%= render 'shared/sessions' %>
             </ul>
           </li>
         </ul>
-        <div class="wave-test">
-          <%= render 'shared/tracker_modal' %>
-        </div>
       </nav>
+    <div class="wave-test">
+      <% if current_user.trackers.any? %>
+        <%= link_to "Test", user_test_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html %>
+      <% else %>
+        <%= link_to "Test", sign_in_with_particle_user_trackers_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html %>
+      <% end %>
+    </div>
+    <%= render 'shared/modal' %>
     <% else %>
       <nav role="navigation">
         <ul class="navigation-menu show">

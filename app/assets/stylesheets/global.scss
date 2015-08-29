@@ -6,7 +6,9 @@ $light-gray: #ddd !default;
 $em-base: 14px !default;
 $base-font-size: 1em !default;
 $base-font-color: $dark-gray !default;
+$base-font-weight: 300 !default;
 $base-line-height: 1.5em !default;
+$base-font: quicksand;
 $base-border-color: gainsboro !default;
 $base-border-radius: 3px !default;
 
@@ -27,8 +29,8 @@ $base-border-radius: 3px !default;
         @keyframes rotate-forever { @include rotate-forever; }
 
 @mixin wave {
-  0% { @include transform(rotate(-5deg)); }
-  100% { @include transform(rotate(25deg)); }
+  0% { @include transform(rotate(0deg)); }
+  100% { @include transform(rotate(20deg)); }
 }
 
 @-webkit-keyframes wave { @include wave; }
@@ -40,6 +42,8 @@ body {
   color: $base-font-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
+  font-weight: $base-font-weight;
+  font-family: $base-font;
   margin: 0;
 }
 
@@ -54,8 +58,8 @@ body {
 .notified::after {
   width: 12px;
   height: 12px;
-  top: -10px;
-  right: -4px;
+  top: -9px;
+  right: 0;
   position: absolute;
   background-color: tomato;
   border-radius: 50%;
@@ -65,6 +69,11 @@ body {
 
 .fa {
   font-size: 1.3em;
+  opacity: 0.9;
+}
+
+.avatar-clip {
+  border-radius: 50%;
 }
 
 .loading {
@@ -90,6 +99,7 @@ body {
 }
 
 $navigation-height: 5em;
+
 header.navigation {
   $base-border-color: #ddd !default;
   $base-border-radius: 3px !default;
@@ -99,7 +109,7 @@ header.navigation {
   $navigation-padding: 1em;
   $navigation-background: white;
   $navigation-color: $dark-gray;
-  $navigation-color-hover: white;
+  $navigation-color-hover: #555;
   $navigation-nav-button-background: $action-color;
   $navigation-nav-button-background-hover: lighten($navigation-background, 10%);
   $navigation-nav-button-border: 1px solid lighten($navigation-nav-button-background, 20%);
@@ -111,33 +121,104 @@ header.navigation {
   $horizontal-bar-mode: $large-screen;
 
   background-color: $navigation-background;
-  // border-bottom: 1px solid darken($navigation-background, 10);
   box-shadow: 0 2px 2px rgba(125, 125, 125, 0.5);
   height: $navigation-height;
   width: 100%;
   top: 0;
   position: fixed;
   z-index: 999;
+  font-size: 400;
   @include user-select(none);
 
   .navigation-wrapper {
     @include clearfix;
-    @include outer-container;
+    @include display(flex);
+    @include justify-content(space-around);
+    @include align-items(center);
+    @include flex-wrap(nowrap);
+    height: 100%;
     position: relative;
-    z-index: 9999;
+    z-index: 10;
   }
 
   .logo {
-    float: left;
-    max-height: 4.5em;
+    @include transform-origin(50% 75%);
     padding-left: $navigation-padding;
-    padding-right: 2em;
-    transform: rotate(-3deg);
-    transform-origin: bottom;
+    padding-right: $navigation-padding;
 
     img {
-      max-height: 4.5em;
-      padding: 0.8em 0;
+      height: $navigation-height;
+      padding: 1em 0;
+      opacity: 0.8;
+    }
+  }
+
+  .tracker-status {
+    // opacity: 0;
+    padding: $navigation-padding;
+    width: 200px;
+    font-size: 0.8em;
+  }
+
+  // Search bar
+
+  .navigation-tools {
+    @include display(flex);
+    @include justify-content(center);
+    @include align-items(center);
+    background: transparent;
+    height: 100%;
+    clear: none;
+
+    .search-bar {
+      $search-bar-border-color: #aaa;
+      $search-bar-border: 1px solid $search-bar-border-color;
+
+      @include display(flex);
+      @include justify-content(center);
+      @include align-items(center);
+      padding: $navigation-padding;
+      width: 15em;
+      height: 100%;
+
+      .user-search {
+        position: relative;
+        width: 100%;
+
+        .search-input {
+          @include box-sizing(border-box);
+          border-radius: $base-border-radius;
+          border: $search-bar-border;
+          color: $navigation-color;
+          font-family: $base-font;
+          font-size: 0.9em;
+          margin: 0;
+          padding: 0.5em 0.8em;
+          width: 100%;
+
+        }
+
+        .search-submit {
+          background: $navigation-search-background;
+          border: none;
+          bottom: 0.3em;
+          left: auto;
+          outline: none;
+          margin: 4px 4px;
+          position: absolute;
+          right: 0.3em;
+          top: 0.3em;
+          height: 1.5em;
+          width: 1.5em;
+          opacity: 0.7;
+        }
+      }
+
+      input {
+        @include box-sizing(border-box);
+        display: block;
+        outline: none;
+      }
     }
   }
 
@@ -166,69 +247,47 @@ header.navigation {
   // Nav menu
 
   nav {
-    float: none;
     min-height: $navigation-height;
-    z-index: 9999999;
-
-    @include media ($horizontal-bar-mode) {
-      float: left;
-    }
+    z-index: 100;
   }
 
   ul.navigation-menu {
     -webkit-transform-style: preserve-3d; // stop webkit flicker
     clear: both;
-    display: none;
+    display: inline;
     margin: 0 auto;
     overflow: visible;
     padding: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 10;
 
     &.show {
       display: block;
-    }
-
-    @include media ($horizontal-bar-mode) {
-      display: inline;
-      margin: 0;
-      padding: 0;
     }
   }
 
   // The nav items
 
   ul li.nav-link {
-    background: $navigation-background;
-    display: block;
+    background: transparent;
+    display: inline;
     line-height: $navigation-height;
+    text-decoration: none;
     overflow: hidden;
     padding-right: 0.8em;
     text-align: right;
     width: 100%;
     z-index: 9999;
 
-    @include media ($horizontal-bar-mode) {
-      background: transparent;
-      display: inline;
-      line-height: $navigation-height;
-      text-decoration: none;
-      width: auto;
-    }
-
     a {
       color: $navigation-color;
       display: inline-block;
       text-decoration: none;
+      padding-right: 1em;
+    }
 
-      @include media ($horizontal-bar-mode) {
-        padding-right: 1em;
-      }
-
-      &:focus,
-      &:hover {
-        color: $navigation-color-hover;
-      }
+    &:focus, &:hover {
+      color: $navigation-color-hover;
     }
   }
 
@@ -241,10 +300,7 @@ header.navigation {
 
   li.more.nav-link {
     padding-right: 0;
-
-    @include media($horizontal-bar-mode) {
-      margin-right: $navigation-submenu-padding;
-    }
+    margin-right: $navigation-submenu-padding;
 
     > ul > li:first-child a  {
       padding-top: 1em;
@@ -257,17 +313,12 @@ header.navigation {
     > a {
       padding-right: 0.6em;
     }
-
-    // > a:after {
-    //   @include position(absolute, auto -0.4em auto auto);
-    //   content: '\25BE';
-    //   color: $navigation-color;
-    // }
   }
 
   li.more {
     overflow: visible;
-    padding-right: 0;
+    position: relative;
+    padding-right: 0.8em;
 
     a {
       padding-right: 0.8em;
@@ -276,151 +327,45 @@ header.navigation {
     > a {
       padding-right: 1.6em;
       position: relative;
-
-      @include media($horizontal-bar-mode) {
-        margin-right: $navigation-submenu-padding;
-      }
-
-      // &:after {
-      //   content: '›';
-      //   font-size: 1.2em;
-      //   position: absolute;
-      //   right: $navigation-submenu-padding / 2;
-      // }
-    }
-
-    // &:focus > .submenu,
-    // &:hover > .submenu {
-    //   display: block;
-    // }
-
-    @include media($horizontal-bar-mode) {
-      padding-right: 0.8em;
-      position: relative;
+      margin-right: $navigation-submenu-padding;
     }
   }
 
   ul.submenu {
     padding-left: 0;
-
-    @include media($horizontal-bar-mode) {
-      left: -$navigation-submenu-padding;
-      position: absolute;
-      top: 1.5em;
-    }
+    position: absolute;
+    left: -$navigation-submenu-padding;
+    top: 1.5em;
 
     .submenu {
-      @include media($horizontal-bar-mode) {
-        left: $navigation-submenu-width - 0.2em;
-        top: 0;
-      }
+      left: $navigation-submenu-width - 0.2em;
+      top: 0;
     }
 
     li {
       display: block;
       padding-right: 0;
+      line-height: $navigation-height / 1.3;
 
-      @include media($horizontal-bar-mode) {
-        line-height: $navigation-height / 1.3;
+      &:first-child > a {
+        border-top-left-radius: $base-border-radius;
+        border-top-right-radius: $base-border-radius;
+      }
 
-        &:first-child > a {
-          border-top-left-radius: $base-border-radius;
-          border-top-right-radius: $base-border-radius;
-        }
-
-        &:last-child > a {
-          border-bottom-left-radius: $base-border-radius;
-          border-bottom-right-radius: $base-border-radius;
-          padding-bottom: 0.7em;
-        }
+      &:last-child > a {
+        border-bottom-left-radius: $base-border-radius;
+        border-bottom-right-radius: $base-border-radius;
+        padding-bottom: 0.7em;
       }
 
       a {
-        background-color: darken($navigation-background, 3%);
-        display: inline-block;
-        text-align: right;
-        width: 100%;
-
-        @include media($horizontal-bar-mode) {
-          background-color: $navigation-background;
-          padding-left: $navigation-submenu-padding;
-          text-align: left;
-          width: $navigation-submenu-width;
-        }
+        background-color: $navigation-background;
+        padding-left: $navigation-submenu-padding;
+        text-align: left;
+        width: $navigation-submenu-width;
       }
     }
   }
-
-  // Elements on the far right
-
-  .navigation-tools {
-    background: #505050;
-    clear: both;
-    display: block;
-    height: $navigation-height;
-
-    @include media($horizontal-bar-mode) {
-      background: transparent;
-      clear: none;
-      float: right;
-    }
-  }
-
-  // Search bar
-
-  .search-bar {
-    $search-bar-border-color: #aaa;
-    $search-bar-border: 1px solid $search-bar-border-color;
-
-    float: left;
-    padding: 0.85em 0.85em 0.7em 0.6em;
-    width: 60%;
-
-    .user-search {
-      position: relative;
-
-      .search-input {
-        @include box-sizing(border-box);
-        border-radius: $base-border-radius;
-        border: $search-bar-border;
-        color: $navigation-color;
-        font-size: 0.9em;
-        margin: 0;
-        padding: 0.5em 0.8em;
-        width: 100%;
-
-        @include media($horizontal-bar-mode) {
-          width: 100%;
-        }
-      }
-
-      .search-submit {
-        background: $navigation-search-background;
-        border: none;
-        bottom: 0.3em;
-        left: auto;
-        outline: none;
-        margin: 4px 4px;
-        position: absolute;
-        right: 0.3em;
-        top: 0.3em;
-        height: 1.5em;
-        opacity: 0.8;
-      }
-    }
-
-    @include media($horizontal-bar-mode) {
-      display: inline-block;
-      position: relative;
-      width: 16em;
-
-      input {
-        @include box-sizing(border-box);
-        display: block;
-      }
-    }
-  }
-
 }
 
 .main-content {
@@ -441,10 +386,6 @@ header.navigation {
 }
 
 // Navigation //
-
-.tracker-status {
-  opacity: 0;
-}
 
 .notify {
   @include animation(fadeIn 0.75s $ease-out-quart);
@@ -520,7 +461,7 @@ header.navigation {
     padding: 4em;
     text-align: left;
     visibility: hidden;
-    z-index: 100;
+    z-index: 100000000;
 
     // @include media($medium-screen)
     // @include media($large-screen)

@@ -53,44 +53,23 @@ $(document).on('ready page:load', function() {
     }
   })
 
-  $('.modal a[data-type=html]').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
-    $('#modal-1').prop('checked', true)
+  $('.open-modal').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
+    console.log('test')
+    $('#wave-modal').prop('checked', true)
     $("body").addClass("modal-open");
-
-    // if ($('#modal-1').is(":checked")) {
-    // } else {
-    //   $("body").removeClass("modal-open");
-    // }
-
     $('.modal-content').html(d)
   });
 
   $(".modal-fade-screen, .modal-close").on("click", function() {
-    $('#modal-1').prop("checked", false).change()
+    $('#wave-modal').prop("checked", false).change()
     $("body").removeClass("modal-open")
+    $('.modal-content').empty()
   });
 
   $(".modal-inner").on("click", function(e) {
     e.stopPropagation()
   });
 })
-
-$('.wave-session.modal a[data-type=html]').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
-  $('#modal-session').prop('checked', true)
-  $("body").addClass("modal-open");
-
-  $('.session-modal-content').html(d)
-});
-
-$(".modal-fade-screen, .modal-close").on("click", function() {
-  $('#modal-session').prop("checked", false).change()
-  $("body").removeClass("modal-open")
-  $('.session-modal-content').empty()
-});
-
-$(".modal-inner").on("click", function(e) {
-  e.stopPropagation()
-});
 
 
 

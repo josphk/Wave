@@ -49,6 +49,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def friends?(user)
+    if current_user.accepted_inverse_friends.include?(user) ||current_user.accepted_friends.include?(user)
+      true
+    else
+      false
+    end
+  end
+  helper_method :friends?
+
   def get_stats(user)
     @stats = user.stats.order(created_at: :desc)
     @average_times = []

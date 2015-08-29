@@ -1,0 +1,10 @@
+{
+  "eventName": "login",
+  "url": "https://wave-motion-development.firebaseio.com/wave_motions.json",
+  "requestType": "POST",
+  "json":
+  {
+    "status": "online"
+  },
+  "mydevices": true
+}

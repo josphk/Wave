@@ -23,16 +23,7 @@
         <p>Name: <%= current_user.trackers.find_by(core_id: tracker["id"]).name %></p>
       </div>
       <div class="submit">
-        <div class="modal">
-          <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), remote: true, 'data-type' => :html %>
-          <input class="hidden modal-state" id="modal-1" type="checkbox" />
-          <div class="modal-fade-screen">
-            <div class="modal-inner">
-              <div class="modal-close" for="modal-1"></div>
-              <div class="modal-content"></div>
-            </div>
-          </div>
-        </div>
+        <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal', remote: true, 'data-type' => :html %>
       </div>
       <div class="delete">
         <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>

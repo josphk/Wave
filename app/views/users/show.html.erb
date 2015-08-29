@@ -1,5 +1,6 @@
 <%= javascript_tag do %>
   var firebase = new Firebase(firebaseUrl)
+
   firebase.child('users').child(gon.userId).child('notifications').child('friend_requests').child(currentUser.id).on('child_removed', function(removed) {
     $.ajax({
       url: `/users/${ gon.userId }/update_friends`,
@@ -7,6 +8,7 @@
       dataType: 'script'
     })
   })
+
   firebase.child('users').child(gon.userId).child('notifications').child('friend_requests').child(currentUser.id).on('child_changed', function(changed) {
     $.ajax({
       url: `/users/${ gon.userId }/update_friends`,
@@ -18,7 +20,7 @@
 
 <div class="avatar">
   <div class="image">
-    <%= image_tag image_path(@user.avatar.profile) %>
+    <%= image_tag image_path(@user.avatar.profile), class: 'avatar-clip' %>
   </div>
   <% if @user == current_user %>
     <div class="update-photo">
@@ -37,17 +39,6 @@
   <h3><%= @user.first_name %> <%= @user.last_name %></h3>
 </div>
 
-<div class="modal">
-  <%= link_to "Wave!", user_wave_sessions_path(@user.id), method: :post, remote: true, 'data-type' => :html %>
-  <input class="hidden modal-state" id="modal-1" type="checkbox" />
-  <div class="modal-fade-screen">
-    <div class="modal-inner">
-      <div class="modal-close" for="modal-1"></div>
-      <div class="modal-content"></div>
-    </div>
-  </div>
-</div>
-
 <% unless @user == current_user || current_user.nil? %>
   <div class="friend-status">
     <%= render 'friend_status' %>
@@ -55,7 +46,14 @@
 <% end %>
 
 <% if !current_user.nil? %>
+    <% if @user != current_user && friends?(@user) %>
+      <div class="start-waving">
+        <%= link_to "Wave!", user_wave_sessions_path(@user.id), method: :post, class: 'open-modal', remote: true, 'data-type' => :html %>
+      </div>
+    <% end %>
   <div class="user-progress">
     <%= render 'stats/progress' %>
   </div>
 <% end %>
+
+

@@ -31,7 +31,7 @@ $(document).on('ready', function() {
 
     function notifyAnimation(status) {
       $('.logo').addClass('wave')
-      $('.tracker-status').html(`<li>Wave Motion is ${ status }</li>`)
+      $('.tracker-status').html(`Wave is ${ status }`)
       $('.tracker-status').addClass('notify').css('opacity', 1).delay(2000).queue(function() {
         $(this).removeClass('notify').delay(1).queue(function() {
           // $('.logo').removeClass('red')
