@@ -28,7 +28,9 @@ function getData(userPath) {
 
 function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
   var data = timeD,
-      startDay = -1
+      startDay = -1,
+      last = data.length - 1,
+      latestDate = data[last].date
   var margin = {top: t, right: r, bottom: b, left: l},
       w = width - margin.left - margin.right,
       h = height - margin.bottom - margin.top
@@ -44,7 +46,7 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
      .append('rect').attr('width', w + margin.left).attr('height', h)
 
   var x = d3.time.scale()
-      .domain([d3.time.day.offset(new Date, startDay), d3.time.day.offset(new Date, startDay + 2)])
+      .domain([d3.time.day.offset(latestDate, startDay), d3.time.day.offset(latestDate, startDay + 2)])
       .nice(d3.time.day)
       .range([margin.left, w]);
 
@@ -95,14 +97,16 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
 
   var focus = svg.append('g').append('circle').attr('class', 'focus')
                  .attr('r', 3).attr('fill', '#8ed89c')
-                 .attr('transform', 'translate(' + x(data[data.length - 1].date) + ',' + y(data[data.length - 1].value) +')')
-  updateTooltip(250, data[data.length - 1])
+                 .attr('transform', 'translate(' + x(data[last].date) + ',' + y(data[last].value) +')')
+  updateTooltip(250, data[last])
 
-  // $('.tooltip').css('left', -330 + x(data[data.length - 1].date) + 'px')
+  // $('.tooltip').css('left', -330 + x(data[last].date) + 'px')
 
   var mouseBoundary = svg.append('rect')
-                         .attr('width', w)
+                         .attr('class', 'mouse-boundary')
+                         .attr('width', w - margin.left)
                          .attr('height', h)
+                         .attr('transform', 'translate(' + margin.left + ', 0)')
                          .style('fill', 'none')
                          .style('pointer-events', 'all')
                          .on('mousemove', mousemove)
@@ -121,16 +125,20 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
     }
   }
 
-  function mousemove() {
-    var x0 = x.invert(d3.mouse(this)[0]),
-    i = bisectDate(data, x0, 1),
-    d0 = data[i - 1],
-    d1 = data[i],
-    d = x0 - d0.date > d1.date - x0 ? d1 : d0
-    index = data.indexOf(d)
+  var index = last
 
-    focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.value) + ')').ease('elastic', 2, 3.5)
-    updateTooltip(15, d)
+  function mousemove() {
+    var xMouse = d3.mouse(this)[0],
+        x0 = x.invert(xMouse),
+        i = bisectDate(data, x0, 1),
+        d0 = data[i - 1],
+        d1 = data[i],
+        d = x0 - d0.date > d1.date - x0 ? d1 : d0
+
+    if (xMouse > 96) {
+      focus.transition().duration(500).attr('transform', 'translate(' + x(d.date) + ',' + y(d.value) + ')').ease('elastic', 2, 3.5)
+      updateTooltip(15, d)
+    }
   }
 
   function update() {
@@ -163,7 +171,7 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
       updateTooltip(250, d)
     }
 
-    x.domain([d3.time.day.offset(new Date, startDay), d3.time.day.offset(new Date, startDay + 2)]).nice(d3.time.day)
+    x.domain([d3.time.day.offset(dat[i].date, startDay), d3.time.day.offset(dat[i].date, startDay + 2)]).nice(d3.time.day)
 
     svg.select('.x.axis')
         .duration(750)
@@ -177,8 +185,6 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
     svg.selectAll('.y.axis .tick').select('line').duration(750).attr('x2', w + margin.left)
   }
 
-  var index = data.length - 1
-
   $(document).unbind('keydown').keydown(function(e) {
     var d
     if (e.which === 37) {
@@ -186,7 +192,7 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
       if (index - 1 >= 0) {
         d = data[index - 1]
         if(x(d.date) < margin.right) {
-          startDay--
+          // startDay--
           updateData(false, null, data, index - 1)
         }
         index--
@@ -196,7 +202,7 @@ function generateChart(width, height, t, r, b, l, timeD, accuracyD) {
       if (index + 1 < data.length) {
         d = data[index + 1]
         if (x(d.date) > w) {
-          startDay++
+          // startDay++
           updateData(false, null, data, index + 1)
         }
         index++
