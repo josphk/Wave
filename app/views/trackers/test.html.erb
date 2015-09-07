@@ -6,6 +6,6 @@
 <%= javascript_tag do %>
   <%= render partial: 'shared/svg.js.erb' %>
 
-  // initTest()
-  checkStatus(gon.id, gon.token, false)
+  if (debug) initTest()
+  else checkStatus(gon.id, gon.token, false)
 <% end %>

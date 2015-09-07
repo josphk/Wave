@@ -10,12 +10,13 @@
 <body>
   <%= Gon::Base.render_data %>
   <%= javascript_tag do %>
-    var motion = false
-    var wave = false
-    var multiUserWave = false
-    var trackerOffline = false
-    var currentUser
-    var loggedIn
+    var motion = false,
+        wave = false,
+        multiUserWave = false,
+        trackerOffline = false,
+        debug = false,
+        currentUser,
+        loggedIn
 
     <% if logged_in? %>
       loggedIn = true

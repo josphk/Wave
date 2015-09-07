@@ -45,13 +45,15 @@
 
     function tester() { // For user who started test
       var clickCounter = 0
+      var lock = false
 
       ref.child('clear').on('child_added', function() { // clear whenever waver's screen clears
         clear()
         pointer = undefined
+        lock = false
       })
 
-      ref.child('tracker').on('child_added', function (tracker) {
+      ref.child('tracker').on('child_added', function (tracker) { // trackers waver's pointer
         var x = tracker.val().x,
             y = tracker.val().y,
             r = tracker.val().r
@@ -60,7 +62,7 @@
         pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
       })
 
-      function getResults() {
+      function getResults() { // BUG
         clear()
         ref.child('results').push({'request': true}, function(error) {
           if (!error) {
@@ -71,30 +73,39 @@
         })
       }
 
-      if (clickCounter >= 7) {
-        console.log('getting results')
-        getResults()
-        return
-      } else {
-        clickForTarget()
+      function targetCycle() {
+        if (clickCounter >= 7) {
+          console.log('getting results')
+          // getResults()
+          return
+        } else {
+          console.log(clickCounter)
+          clickForTarget()
+        }
+
+        function clickForTarget() {
+          var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2'],
+              circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ],
+              coordinatePush = ref.child('target')
+
+          $('.canvas').unbind('click').on('click', function(e) {
+            if (!lock) {
+              lock = true
+              clickCounter++
+              var x = e.pageX - $('.canvas').offset().left,
+                  y = e.pageY - $('.canvas').offset().top,
+                  s = (Math.random() * 75) + 25,
+                  r = s + 25
+              pulse(x, y, s, r, 300, 3000, true, circleColor[clickCounter % 5], waveColor[clickCounter % 5])
+
+              coordinatePush.push({'x': x, 'y': y, 's': s, 'r': r, 'circleColor': circleColor[clickCounter % 5], 'waveColor': waveColor[clickCounter % 5]})
+              targetCycle()
+            }
+          })
+        }
       }
 
-      function clickForTarget() {
-        var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2'],
-            circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ],
-            coordinatePush = ref.child('target')
-
-        $('.canvas').unbind('click').on('click', function(e) {
-          clickCounter++
-          var x = e.pageX - $('.canvas').offset().left,
-              y = e.pageY - $('.canvas').offset().top,
-              s = (Math.random() * 75) + 25,
-              r = s + 25
-          pulse(x, y, s, r, 300, 3000, true, circleColor[clickCounter % 5], waveColor[clickCounter % 5])
-
-          coordinatePush.push({'x': x, 'y': y, 's': s, 'r': r, 'circleColor': circleColor[clickCounter % 5], 'waveColor': waveColor[clickCounter % 5]})
-        })
-      }
+      targetCycle()
     }
 
     function trackerReady() {
@@ -135,7 +146,7 @@
 
       function startWave() {
         clear()
-        start()
+        startSession()
 
         var counter = 0,
             t1, t2,
@@ -151,6 +162,31 @@
           clear()
         }
 
+        if (debug) {
+          $('.canvas').on('click', function(e) {
+            console.log('click')
+            var x = e.pageX - $('.canvas').offset().left,
+                y = e.pageY - $('.canvas').offset().top,
+                r = 10
+
+            if (coordinates !== undefined) {
+              var minDistance = r + coordinates.r,
+                  currentDistance = distance(x, y, coordinates.x, coordinates.y)
+            }
+
+            if (currentDistance < minDistance) {
+              t2 = performance.now()
+              timeData.push(timer(t1, t2))
+              console.log('time:' + timeData)
+              accuracyData.push(accuracy(currentDistance, minDistance))
+              console.log('accr:' + accuracyData)
+              pointer = undefined
+              sendClear()
+              startSession()
+            }
+          })
+        }
+
         var waveTracker = function(e) {
           var rawData = JSON.parse(e.data),
               parsedData = JSON.parse(rawData.data),
@@ -162,29 +198,29 @@
 
           if (coordinates !== undefined) {
             var minDistance = r + coordinates.r,
-                newDistance = distance(x, y, coordinates.x, coordinates.y)
+                currentDistance = distance(x, y, coordinates.x, coordinates.y)
           }
 
           if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
           pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
 
           setTimeout(function() {
-            if (newDistance < minDistance) {
+            if (currentDistance < minDistance) {
               t2 = performance.now()
               timeData.push(timer(t1, t2))
               console.log('time:' + timeData)
-              accuracyData.push(accuracy(newDistance, minDistance))
+              accuracyData.push(accuracy(currentDistance, minDistance))
               console.log('accr:' + accuracyData)
               pointer = undefined
               sendClear()
-              start()
+              startSession()
             }
           }, 500)
         }
 
         eventSource.addEventListener('Coordinates', waveTracker, false)
 
-        function start() {
+        function startSession() {
           if (counter >= 7) {
 
             eventSource.close()
@@ -206,7 +242,7 @@
             return
           } else {
 
-            ref.child('target').on('child_added', function(target) {
+            ref.child('target').once('child_added', function(target) {
               t1 = performance.now()
               console.log(t1)
               pulse(target.val().x, target.val().y, target.val().s, target.val().r, 300, 3000, true, target.val().waveColor, target.val().circleColor)
@@ -235,7 +271,7 @@
         },
         success: function(data) {
           $('.modal-inner .loading').remove()
-          if (data.connected) { waverReady() }
+          if (data.connected) waverReady()
           else trackerAsleep()
         },
         error: function() {
