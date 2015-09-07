@@ -216,17 +216,15 @@
             eventSource.close()
             console.log('closed')
 
-            ref.child('results').on('value', function(skeleton) {
-              function average(dataArray) {
-                var sum = dataArray.reduce(function(a, b) { return a + b })
-                return sum / dataArray.length
-              }
+            function average(dataArray) {
+              var sum = dataArray.reduce(function(a, b) { return a + b })
+              return sum / dataArray.length
+            }
 
-              var averageTime = Math.round(average(timeData) / 10) / 100,
-              averageAccuracy = Math.round(average(accuracyData) * 10000) / 100
+            var averageTime = Math.round(average(timeData) / 10) / 100,
+            averageAccuracy = Math.round(average(accuracyData) * 10000) / 100
 
-              ref.child('results').push({'average_time': averageTime, 'accuracy': averageAccuracy})
-            })
+            ref.child('results').push({'average_time': averageTime, 'accuracy': averageAccuracy})
 
             submitResults(timeData, accuracyData)
             return
