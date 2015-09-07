@@ -9,6 +9,7 @@
   multiUserWave = true
   var waver = currentUser.id === gon.waverId // if true => waver, else => tester
   var eventSource = new EventSource(`https://api.particle.io/v1/devices/${ currentUser.onlineTracker }/events/?access_token=${ currentUser.token }`)
+  var iterations = 7
 
   if (currentUser.id === gon.testerId || currentUser.id === gon.waverId) {
     var firebase = new Firebase(firebaseUrl)
@@ -51,6 +52,13 @@
         clear()
         pointer = undefined
         lock = false
+
+        if (clickCounter >= iterations) {
+          getResults()
+          return
+        } else {
+          clickForTarget()
+        }
       })
 
       ref.child('tracker').on('child_added', function (tracker) { // trackers waver's pointer
@@ -62,50 +70,32 @@
         pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
       })
 
-      function getResults() { // BUG
+      function getResults() {
         clear()
-        ref.child('results').push({'request': true}, function(error) {
-          if (!error) {
-            ref.child('results').once('child_added', function(r) {
-              results(r.average_time, r.accuracy)
-            })
-          }
+        ref.child('results').once('child_added', function(r) {
+          results(r.val().average_time, r.val().accuracy)
         })
       }
 
-      function targetCycle() {
-        if (clickCounter >= 7) {
-          console.log('getting results')
-          // getResults()
-          return
-        } else {
-          console.log(clickCounter)
-          clickForTarget()
-        }
+      function clickForTarget() {
+        var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2'],
+            circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ],
+            coordinatePush = ref.child('target')
 
-        function clickForTarget() {
-          var waveColor = ['#f58d9a', '#88eef3', '#f3ec95', '#f2a9f5', '#befed2'],
-              circleColor = ['#dc7d88', '#7edbdf', '#f1ea93', '#e797e9', '#b6f5cb' ],
-              coordinatePush = ref.child('target')
+        $('.canvas').unbind('click').one('click', function(e) {
+            lock = true
+            clickCounter++
+            var x = e.pageX - $('.canvas').offset().left,
+                y = e.pageY - $('.canvas').offset().top,
+                s = (Math.random() * 75) + 25,
+                r = s + 25
+            pulse(x, y, s, r, 300, 3000, true, circleColor[clickCounter % 5], waveColor[clickCounter % 5])
 
-          $('.canvas').unbind('click').on('click', function(e) {
-            if (!lock) {
-              lock = true
-              clickCounter++
-              var x = e.pageX - $('.canvas').offset().left,
-                  y = e.pageY - $('.canvas').offset().top,
-                  s = (Math.random() * 75) + 25,
-                  r = s + 25
-              pulse(x, y, s, r, 300, 3000, true, circleColor[clickCounter % 5], waveColor[clickCounter % 5])
-
-              coordinatePush.push({'x': x, 'y': y, 's': s, 'r': r, 'circleColor': circleColor[clickCounter % 5], 'waveColor': waveColor[clickCounter % 5]})
-              targetCycle()
-            }
-          })
-        }
+            coordinatePush.push({'x': x, 'y': y, 's': s, 'r': r, 'circleColor': circleColor[clickCounter % 5], 'waveColor': waveColor[clickCounter % 5]})
+        })
       }
 
-      targetCycle()
+      clickForTarget()
     }
 
     function trackerReady() {
@@ -221,8 +211,8 @@
         eventSource.addEventListener('Coordinates', waveTracker, false)
 
         function startSession() {
-          if (counter >= 7) {
-
+          if (counter >= iterations) {
+            counter = 0
             eventSource.close()
             console.log('closed')
 
