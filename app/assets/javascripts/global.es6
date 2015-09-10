@@ -18,15 +18,22 @@ $(document).on('ready page:load', function() {
 
   $('#avatar').on('click', function(e) {
     e.preventDefault()
-    $('.user.submenu').toggleClass('hidden')
+    $('#user').toggleClass('hidden')
+
+    if(!$('#friend-requests').hasClass('hidden')) {
+      $('#friend-requests').toggleClass('hidden')
+    }
+    if(!$('#wave-sessions').hasClass('hidden')) {
+      $('#wave-sessions').toggleClass('hidden')
+    }
   })
 
   $('#notify-friend').on('click', function(e) {
     e.preventDefault();
-    $('.friend-requests.submenu').toggleClass('hidden')
+    $('#friend-requests').toggleClass('hidden')
 
     if ($('#notify-friend').hasClass('notified')) {
-      if (!$('.friend-requests.submenu').hasClass('hidden')) {
+      if (!$('#friend-requests').hasClass('hidden')) {
         var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('friend_requests').once('value', function(snapshot) {
           snapshot.forEach(function(req){
             req.ref().update({ 'checked': true })
@@ -35,14 +42,21 @@ $(document).on('ready page:load', function() {
         $('#notify-friend').removeClass('notified')
       }
     }
+
+    if(!$('#user').hasClass('hidden')) {
+      $('#user').toggleClass('hidden')
+    }
+    if(!$('#wave-sessions').hasClass('hidden')) {
+      $('#wave-sessions').toggleClass('hidden')
+    }
   })
 
   $('.notifications.sessions').on('click', function(e) {
     e.preventDefault()
-    $('.wave-sessions.submenu').toggleClass('hidden')
+    $('#wave-sessions').toggleClass('hidden')
 
     if ($('#notify-session').hasClass('notified')) {
-      if (!$('.wave-sessions.submenu').hasClass('hidden')) {
+      if (!$('#wave-sessions').hasClass('hidden')) {
         var allRequests = firebase.child('users').child(currentUser.id).child('notifications').child('wave_sessions').once('value', function(snapshot) {
           snapshot.forEach(function(req){
             req.ref().update({ 'checked': true })
@@ -50,6 +64,13 @@ $(document).on('ready page:load', function() {
         })
         $('#notify-session').removeClass('notified')
       }
+    }
+
+    if(!$('#user').hasClass('hidden')) {
+      $('#user').toggleClass('hidden')
+    }
+    if(!$('#friend-requests').hasClass('hidden')) {
+      $('#friend-requests').toggleClass('hidden')
     }
   })
 

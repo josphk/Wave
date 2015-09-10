@@ -8,11 +8,15 @@
 <% end %>
 
 <% if logged_in? %>
-  <% get_wave_sessions.each do |session| %>
-    <% user = User.find(session.user_id) %>
-    <li>
-      <span><%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %> <%= user.first_name %> <%= user.last_name %> is waving at you!</span>
-      <%= link_to "Wave back!", user_wave_session_path(current_user.id, user.id), class: 'open-modal', remote: true, 'data-type' => :html %>
-    </li>
+  <% if get_wave_sessions.any? %>
+    <% get_wave_sessions.each do |session| %>
+      <% user = User.find(session.user_id) %>
+      <li>
+        <span><%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %> <%= user.first_name %> <%= user.last_name %> is waving at you!</span>
+        <%= link_to "Wave back!", user_wave_session_path(current_user.id, user.id), class: 'open-modal', remote: true, 'data-type' => :html %>
+      </li>
+    <% end %>
+  <% else %>
+    <li>No one seems to be waving</li>
   <% end %>
 <% end %>
