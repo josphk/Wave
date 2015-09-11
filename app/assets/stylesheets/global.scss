@@ -350,7 +350,7 @@ header.navigation {
       text-align: left;
       line-height: 2.5em;
 
-      .no-friends {
+      &.default {
         text-align: center;
       }
 
