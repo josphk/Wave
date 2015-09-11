@@ -1,7 +1,7 @@
 // Global Variables //
 $visual-grid: true;
 $dark-gray: #333 !default;
-$light-gray: #ddd !default;
+$light-gray: #eee !default;
 
 $em-base: 14px !default;
 $base-font-size: 1em !default;
@@ -9,13 +9,13 @@ $base-font-color: $dark-gray !default;
 $base-font-weight: 300 !default;
 $base-line-height: 1.5em !default;
 $base-font: quicksand;
-$base-border-color: #ddd !default;
+$base-border-color: $light-gray !default;
 $base-border-radius: 3px !default;
 
 // Mixins //
 
 @mixin material-borders {
-  border: 0.5px solid #ddd;
+  border: 0.5px solid $light-gray;
   box-shadow: 0px 1px 2px #aaa;
   border-radius: 1px;
 }
@@ -91,7 +91,7 @@ body {
   @include size(75px);
   @include position(absolute, 50% 0 0 50%);
   margin: -37.5px 0 0 -37.5px;
-  border: 5px solid #eee;
+  border: 5px solid $light-gray;
   border-right-color: transparent;
   border-radius: 50%;
   display: inline-block;
@@ -130,7 +130,7 @@ header.navigation {
   $navigation-background: white;
   $navigation-color: $dark-gray;
   $navigation-color-hover: #555;
-  $navigation-border-color: #eee;
+  $navigation-border-color: $light-gray;
   $navigation-search-background: lighten($navigation-background, 5);
   $navigation-search-border: 1px solid darken($navigation-background, 5);
   $navigation-active-link-color: transparentize(white, 0.5);
@@ -279,6 +279,8 @@ header.navigation {
   ul.submenu {
     $tooltip-height: 0.7em;
     $tooltip-size: 1.5em;
+    $submenu-line-height: 2.5em;
+    $submenu-max-height: 20em;
 
     margin: 0;
     padding: 0;
@@ -286,10 +288,38 @@ header.navigation {
     left: 0;
     top: 5em;
     width: 100%;
-    border: 0.5px solid #ddd;
+    max-height: $submenu-max-height;
+    border: 0.5px solid $light-gray;
     box-shadow: 0px 1px 2px #aaa;
     border-radius: $base-border-radius;
     background-color: $navigation-background;
+
+    .title {
+      border-bottom: 1px solid $navigation-border-color;
+      font-size: 1em;
+      text-align: center;
+      margin: 0 10% 0 10%;
+    }
+
+    ul.scrollable {
+      margin: 0;
+      padding: 0;
+      max-height: $submenu-max-height - $submenu-line-height;
+
+      li.hoverable {
+        .request {
+          padding: 5% 0 5% 0;
+          border-top: 1px solid $light-gray;
+          border-bottom: 1px solid $light-gray;
+        }
+
+        &:first-child, &:last-child {
+          .request {
+            border: 0;
+          }
+        }
+      }
+    }
 
     &#user {
       width: 160px;
@@ -308,12 +338,6 @@ header.navigation {
         text-align: center;
         text-shadow: 0px 1px 2px #aaa;
         overflow: hidden;
-      }
-
-      .name {
-        border-bottom: 1px solid $navigation-border-color;
-        font-size: 1em;
-        text-align: center;
       }
     }
 
@@ -343,20 +367,25 @@ header.navigation {
         overflow: hidden;
     }
 
+    a {
+        text-decoration: none;
+        color: $base-font-color;
+    }
+
     li {
       display: block;
-      margin: 0 10% 0 10%;
+      padding: 0 10% 0 10%;
       font-size: 0.9em;
       text-align: left;
-      line-height: 2.5em;
+      line-height: $submenu-line-height;
+      cursor: default;
 
       &.default {
         text-align: center;
       }
 
-      a {
-        text-decoration: none;
-        color: $base-font-color;
+      &.hoverable:hover {
+          background-color: $light-gray;
       }
     }
   }
