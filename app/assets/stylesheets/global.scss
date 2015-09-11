@@ -8,8 +8,8 @@ $base-font-size: 1em !default;
 $base-font-color: $dark-gray !default;
 $base-font-weight: 300 !default;
 $base-line-height: 1.5em !default;
-$base-font: 'Source Sans Pro';
-$base-border-color: gainsboro !default;
+$base-font: quicksand;
+$base-border-color: #ddd !default;
 $base-border-radius: 3px !default;
 
 // Mixins //
@@ -77,7 +77,6 @@ body {
 
 .fa {
   font-size: 1.3em;
-  opacity: 0.9;
 }
 
 .avatar-clip {
@@ -106,21 +105,32 @@ body {
   @include animation-direction(alternate);
 }
 
-$navigation-height: 5em;
+.flash {
+  background-color: #FF8686;
+  text-align: center;
+  font-size: 1em;
+  line-height: 3em;
+
+  & > p {
+    margin: 0;
+  }
+}
+
+
+$navigation-height: 4em;
+.main-content {
+  top: 0;
+  padding-top: $navigation-height;
+}
 
 header.navigation {
-  $base-border-color: #ddd !default;
-  $base-border-radius: 3px !default;
+  $base-border-radius: 5px !default;
   $action-color: #477DCA !default;
-  $dark-gray: #333 !default;
   $large-screen: em(860) !default;
-  $navigation-padding: 1em;
   $navigation-background: white;
   $navigation-color: $dark-gray;
   $navigation-color-hover: #555;
-  $navigation-nav-button-background: $action-color;
-  $navigation-nav-button-background-hover: lighten($navigation-background, 10%);
-  $navigation-nav-button-border: 1px solid lighten($navigation-nav-button-background, 20%);
+  $navigation-border-color: #eee;
   $navigation-search-background: lighten($navigation-background, 5);
   $navigation-search-border: 1px solid darken($navigation-background, 5);
   $navigation-active-link-color: transparentize(white, 0.5);
@@ -130,12 +140,34 @@ header.navigation {
 
   @include box-sizing(border-box);
   @include user-select(none);
+  @include display(flex);
+  @include justify-content(space-between);
   width: 100%;
   height: $navigation-height;
   top: 0;
   position: fixed;
+  padding: 0 10% 0 10%;
   z-index: 999;
   background-color: $navigation-background;
+  border-bottom: 1px solid $navigation-border-color;
+
+  .first {
+    order: 1;
+  }
+
+  .second {
+    order: 2;
+    width: 100%;
+    border-left: 1px solid $navigation-border-color;
+    border-right: 1px solid $navigation-border-color;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+  }
+
+  .third {
+    order: 3;
+    width: 500px;
+  }
 
   .nav-item {
     @include clearfix;
@@ -153,13 +185,34 @@ header.navigation {
 
       img {
         height: 100%;
-        padding: 1em;
+        padding: 0.7em;
       }
     }
 
     .tracker-status {
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(center);
       width: 100px;
       font-size: 0.8em;
+      margin-right: 1em;
+      cursor: default;
+
+      .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        margin-right: 1em;
+
+      }
+
+      .asleep {
+        background-color: #ddd;
+      }
+
+      .awake {
+        background-color: #b6f5cb;
+      }
     }
 
     // Search bar
@@ -177,14 +230,12 @@ header.navigation {
 
         .search-input {
           @include box-sizing(border-box);
-          border-radius: $base-border-radius;
-          border: $search-bar-border;
+          border: none;
           color: $navigation-color;
           font-family: $base-font;
           font-size: 0.9em;
           font-weight: 300;
-          margin: 0;
-          padding: 0.5em 0.8em;
+          padding: 0.5em 0 0.5em 3em;
           width: 100%;
 
         }
@@ -193,11 +244,10 @@ header.navigation {
           background: $navigation-search-background;
           border: none;
           bottom: 0.3em;
-          left: auto;
           outline: none;
           margin: 4px 4px;
           position: absolute;
-          right: 0.3em;
+          left: 0.3em;
           top: 0.3em;
           height: 1.5em;
           width: 1.5em;
@@ -212,118 +262,15 @@ header.navigation {
       }
     }
 
-    .nav-link {
-      position: relative;
-    }
-  }
-
-
-  // Mobile view
-
-  .navigation-menu-button {
-    color: $navigation-color;
-    display: block;
-    float: right;
-    line-height: $navigation-height;
-    margin: 0;
-    padding-right: 1em;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    @include media ($horizontal-bar-mode) {
-      display: none;
-    }
-
-    &:focus,
-    &:hover {
-      color: $navigation-color-hover;
-    }
-  }
-
-  // Nav menu
-
-  nav {
-    min-height: $navigation-height;
-    z-index: 100;
-  }
-
-  ul.navigation-menu {
-    // -webkit-transform-style: preserve-3d; // stop webkit flicker
-    // clear: both;
-    // display: inline;
-    // margin: 0 auto;
-    // overflow: visible;
-    // padding: 0;
-    // width: 100%;
-    // z-index: 10;
-
-    &.show {
-      display: block;
-    }
   }
 
   // The nav items
 
-  ul li.nav-link {
-    // background: transparent;
-    display: inline;
-    // line-height: $navigation-height;
-    // text-decoration: none;
-    // overflow: hidden;
-    // padding-right: 0.8em;
-    // text-align: right;
-    // width: 100%;
-    // z-index: 9999;
-
-    a {
-      color: $navigation-color;
-      display: inline-block;
-      text-decoration: none;
-      padding-right: 1em;
-    }
+  .nav-link {
+    position: relative;
 
     &:focus, &:hover {
       color: $navigation-color-hover;
-    }
-  }
-
-  .active-nav-item a {
-    border-bottom: 1px solid $navigation-active-link-color;
-    padding-bottom: 3px;
-  }
-
-  // Sub menus
-
-  li.more.nav-link {
-    padding-right: 0;
-    margin-right: $navigation-submenu-padding;
-
-    > ul > li:first-child a  {
-      padding-top: 1em;
-    }
-
-    a {
-      margin-right: $navigation-submenu-padding;
-    }
-
-    > a {
-      padding-right: 0.6em;
-    }
-  }
-
-  li.more {
-    overflow: visible;
-    position: relative;
-    padding-right: 0.8em;
-
-    a {
-      padding-right: 0.8em;
-    }
-
-    > a {
-      padding-right: 1.6em;
-      position: relative;
-      margin-right: $navigation-submenu-padding;
     }
   }
 
@@ -336,11 +283,11 @@ header.navigation {
     position: absolute;
     left: 0;
     top: 5em;
-    width: 150px;
-    text-align: center;
+    width: 100%;
     border: 0.5px solid #ddd;
     box-shadow: 0px 1px 2px #aaa;
-    border-radius: 5px;
+    border-radius: $base-border-radius;
+    background-color: $navigation-background;
 
     &#user {
       width: 160px;
@@ -359,6 +306,12 @@ header.navigation {
         text-align: center;
         text-shadow: 0px 1px 2px #aaa;
         overflow: hidden;
+      }
+
+      .name {
+        border-bottom: 1px solid $navigation-border-color;
+        font-size: 1em;
+        text-align: center;
       }
     }
 
@@ -395,58 +348,38 @@ header.navigation {
 
     li {
       display: block;
-      // padding-right: 0;
-      line-height: 2em;
+      margin: 0 10% 0 10%;
+      font-size: 0.9em;
+      text-align: left;
+      line-height: 2.5em;
 
-      // &:first-child > a {
-      //   border-top-left-radius: $base-border-radius;
-      //   border-top-right-radius: $base-border-radius;
-      // }
-
-      // &:last-child > a {
-      //   border-bottom-left-radius: $base-border-radius;
-      //   border-bottom-right-radius: $base-border-radius;
-      //   padding-bottom: 0.7em;
-      // }
-
-      // a {
-      //   background-color: $navigation-background;
-      //   padding-left: $navigation-submenu-padding;
-      //   text-align: left;
-      //   width: $navigation-submenu-width;
-      // }
+      a {
+        text-decoration: none;
+        color: $base-font-color;
+      }
     }
   }
-}
 
-.main-content {
-  padding-top: $navigation-height;
-}
+  .wave-test {
 
-// Animation Keyframes //
+    & > a {
+      color: white;
+      text-decoration: none;
+    }
 
-@include keyframes(fadeIn) {
-  from {
-    @include transform(translateX(-20px));
-    opacity: 0;
+    .wave-link {
+      width: 70px;
+      padding: 3px;
+      border-radius: $base-border-radius;
+      background-color: #333;
+      // opacity: 0.8;
+      text-align: center;
+
+      &:hover, &:focus {
+        background-color: $navigation-color-hover;
+      }
+    }
   }
-  to {
-    @include transform(translateX(0));
-    opacity: 1;
-  }
-}
-
-// Navigation //
-
-.notify {
-  @include animation(fadeIn 0.75s $ease-out-quart);
-  opacity: 1;
-}
-
-.unnotify {
-  @include animation(fadeIn 2s $ease-in-quart);
-  @include animation-direction(reverse);
-  opacity: 0;
 }
 
 // Canvas Styling with Modal //

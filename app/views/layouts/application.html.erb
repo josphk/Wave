@@ -50,15 +50,18 @@
 
 <header class="navigation" role="banner">
   <% if logged_in? %>
-    <div class="nav-item">
+    <div class="first nav-item">
       <div class="logo wave">
         <%= link_to root_url do %>
           <%= image_tag('Logo.png') %>
         <% end %>
       </div>
-      <div class="tracker-status"></div>
+      <div class="tracker-status">
+        <div class="indicator asleep"></div>
+        <p>Asleep</p>
+      </div>
     </div>
-    <div class="nav-item">
+    <div class="second nav-item">
       <div class="search-bar">
         <%= form_tag users_path, method: :get, authentication: false , class: "user-search" do %>
           <%= text_field_tag :search, params[:search], placeholder: 'Search Wave', class: "search-input" %>
@@ -66,24 +69,25 @@
         <% end %>
       </div>
     </div>
-    <div class="nav-item">
-      <div class="nav-link more profile">
+    <div class="third nav-item">
+      <div class="nav-link profile">
         <%= link_to user_path(current_user), id: 'avatar' do %>
           <%= image_tag image_path(current_user.avatar.thumb), class: 'avatar-clip' %>
         <% end %>
         <ul id="user" class="submenu hidden">
+          <li class="name"><%= current_user.first_name %></li>
           <li><%= link_to "Profile", user_path(current_user)%></li>
           <li><%= link_to "My Wave Motions", user_trackers_path(current_user) %></li>
           <li><%= link_to "Logout", :logout %></li>
         </ul>
       </div>
-      <div class="nav-link more notifications friends">
+      <div class="nav-link notifications friends">
         <%= fa_icon 'users', id: 'notify-friend' %>
       </div>
       <ul id="friend-requests" class="submenu hidden">
         <%= render 'shared/friend_requests' %>
       </ul>
-      <div class="nav-link more notifications sessions">
+      <div class="nav-link notifications sessions">
         <%= fa_icon 'bell', id: 'notify-session' %>
       </div>
       <ul id="wave-sessions" class="submenu hidden">
@@ -91,16 +95,17 @@
       </ul>
       <div class="wave-test">
         <% if current_user.trackers.any? %>
-          <%= link_to "Test", user_test_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html %>
+          <%= link_to user_test_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html do %>
+            <div class="wave-link">Wave</div>
+          <% end %>
         <% else %>
-          <%= link_to "Test", sign_in_with_particle_user_trackers_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html %>
+          <%= link_to sign_in_with_particle_user_trackers_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html do %>
+            <div class="wave-link">Wave</div>
+          <% end %>
         <% end %>
       </div>
+      </div>
     </div>
-    <nav role="navigation">
-      <ul class="navigation-menu show">
-      </ul>
-    </nav>
   <% else %>
     <div class="nav-item">
       <div class="logo wave">
@@ -119,17 +124,12 @@
     </nav>
   <% end %>
 </header>
-<%= render 'shared/modal' %>
-
-
-
-
-
-<div class="flash">
-  <p id="alert"><%= flash[:alert] %></p>
-</div>
 
 <div class="main-content">
+  <%= render 'shared/modal' %>
+  <div class="flash">
+    <p id="alert"><%= flash[:alert] %></p>
+  </div>
   <%= yield %>
 </div>
 

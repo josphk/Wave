@@ -1,10 +1,10 @@
 var form = $('.signup')
 var formToggle = $('#toggle-form')
 
-if (formToggle.text() === "Don't have a tracker?") {
+if (formToggle.text() === "Don't have a Wave Motion?") {
   form.html("<%= j(render 'regular') %>")
-  formToggle.text('Got a tracker?')
+  formToggle.text('Got a Wave Motion?')
 } else {
   form.html("<%= j(render 'particle') %>")
-  formToggle.text("Don't have a tracker?")
+  formToggle.text("Don't have a Wave Motion?")
 }

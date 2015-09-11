@@ -4,6 +4,6 @@ class Tracker < ActiveRecord::Base
   before_save :default_name
 
   def default_name
-    self.name = 'My Wave Tracker' if self.name.blank?
+    self.name = 'My Wave Motion' if self.name.blank?
   end
 end

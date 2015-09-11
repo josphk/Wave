@@ -1,4 +1,4 @@
-$(document).on('ready', function() {
+$(document).on('ready page:load', function() {
   if (loggedIn) {
     var firebase = new Firebase(firebaseUrl)
 
@@ -31,23 +31,19 @@ $(document).on('ready', function() {
 
     function notifyAnimation(status) {
       $('.logo').addClass('wave')
-      $('.tracker-status').html(`Wave is ${ status }`)
-      $('.tracker-status').addClass('notify').css('opacity', 1).delay(2000).queue(function() {
-        $(this).removeClass('notify').delay(1).queue(function() {
-          // $('.logo').removeClass('red')
+      $('.tracker-status > p').html(status)
 
-          $(this).addClass('unnotify').removeClass('notify').delay(2000).queue(function() {
-            $(this).removeClass('unnotify').css('opacity', 0)
-            $('.logo').removeClass('wave').dequeue()
-          }).dequeue()
-        }).dequeue()
-      })
+      if (status === 'Awake') {
+        $('.indicator').removeClass('asleep').addClass('awake')
+      } else {
+        $('.indicator').removeClass('awake').addClass('asleep')
+      }
     }
 
     firebase.child('wave_motions').on('child_added', function(added) {
       refreshDatabase(added)
       if (notifyTrackerStatus(currentUser.trackers, added)) {
-        notifyAnimation('online')
+        notifyAnimation('Awake')
         currentUser.onlineTracker = added.val().coreid
         if (multiUserWave) {
           waverReady()
@@ -62,7 +58,7 @@ $(document).on('ready', function() {
 
     firebase.child('wave_motions').on('child_removed', function(removed) {
       if (notifyTrackerStatus(currentUser.trackers, removed)) {
-        notifyAnimation('offline')
+        notifyAnimation('Asleep')
         currentUser.onlineTracker = undefined
         if (motion) trackerAsleep()
       }
