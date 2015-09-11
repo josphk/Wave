@@ -1,18 +1,3 @@
-// $(document).ready(function() {
-//   var menuToggle = $('#js-mobile-menu').unbind();
-//   $('#js-navigation-menu').removeClass("show");
-
-//   menuToggle.on('click', function(e) {
-//     e.preventDefault();
-//     $('#js-navigation-menu').slideToggle(function(){
-//       if($('#js-navigation-menu').is(':hidden')) {
-//         $('#js-navigation-menu').removeAttr('style');
-//       }
-//     });
-//   });
-// });
-
-
 $(document).on('ready page:load', function() {
   var firebase = new Firebase(firebaseUrl)
 
@@ -72,6 +57,14 @@ $(document).on('ready page:load', function() {
     if(!$('#friend-requests').hasClass('hidden')) {
       $('#friend-requests').toggleClass('hidden')
     }
+  })
+
+  $('.search-input').on('focus', function() {
+    $('.search-submit').fadeTo(300, 0.9)
+  })
+
+  $('.search-input').on('focusout', function() {
+    $('.search-submit').fadeTo(300, 0.3)
   })
 
   $('.open-modal').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
