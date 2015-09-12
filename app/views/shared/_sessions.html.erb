@@ -8,19 +8,28 @@
 <% end %>
 
 <% if logged_in? %>
+  <li class="title">Notifications</li>
   <% if get_wave_sessions.any? %>
     <ul class="scrollable">
       <% get_wave_sessions.each do |session| %>
         <% user = User.find(session.user_id) %>
         <li class="hoverable">
-          <span><%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %> <%= user.first_name %> <%= user.last_name %> is waving at you!</span>
-          <%= link_to "Wave back!", user_wave_session_path(current_user.id, user.id), class: 'open-modal', remote: true, 'data-type' => :html %>
+          <div class="request wave-session">
+            <%= link_to user_path(user) do %>
+              <div class="name-tag wave-session">
+                <%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %>
+                <p><%= user.first_name %> <%= user.last_name %><br>is waving at you!</p>
+              </div>
+            <% end %>
+            <%= link_to user_wave_session_path(current_user.id, user.id), class: 'open-modal', remote: true, 'data-type' => :html do %>
+              <div class="wave-link">Wave back!</div>
+            <% end %>
+          </div>
         </li>
       <% end %>
-      <li>blah</li>
-      <li>blah</li>
     </ul>
   <% else %>
     <li class="default">No one seems to be waving</li>
   <% end %>
+  <li class="footer"></li>
 <% end %>

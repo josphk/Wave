@@ -85,14 +85,12 @@
         <%= fa_icon 'users', id: 'notify-friend' %>
       </div>
       <ul id="friend-requests" class="submenu hidden">
-        <li class="title">Friend Requests</li>
         <%= render 'shared/friend_requests' %>
       </ul>
       <div class="nav-link notifications sessions">
         <%= fa_icon 'bell', id: 'notify-session' %>
       </div>
       <ul id="wave-sessions" class="submenu hidden">
-        <li class="title">Notifications</li>
         <%= render 'shared/sessions' %>
       </ul>
       <div class="wave-test">
@@ -117,13 +115,9 @@
       </div>
     </div>
     <div class="nav-item">
-      <div class="nav-link"><%= link_to "Sign Up", new_user_path %></div>
-      <div class="nav-link"><%= link_to "Login", :login %></div>
+      <div class="nav-link wave-link"><%= link_to "Sign Up", new_user_path %></div>
+      <div class="nav-link wave-link"><%= link_to "Login", :login %></div>
     </div>
-    <nav role="navigation">
-      <ul class="navigation-menu show">
-      <ul>
-    </nav>
   <% end %>
 </header>
 

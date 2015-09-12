@@ -59,6 +59,18 @@ $(document).on('ready page:load', function() {
     }
   })
 
+  $('.main-content').on('click', function() {
+    if(!$('#user').hasClass('hidden')) {
+      $('#user').toggleClass('hidden')
+    }
+    if(!$('#friend-requests').hasClass('hidden')) {
+      $('#friend-requests').toggleClass('hidden')
+    }
+    if(!$('#wave-sessions').hasClass('hidden')) {
+      $('#wave-sessions').toggleClass('hidden')
+    }
+  })
+
   $('.search-input').on('focus', function() {
     $('.search-submit').fadeTo(300, 0.9)
   })

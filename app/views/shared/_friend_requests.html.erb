@@ -1,4 +1,5 @@
 <% if logged_in? %>
+  <li class="title">Friend Requests</li>
   <% if get_friend_requests.any? %>
     <ul class="scrollable">
       <% get_friend_requests.each do |request| %>
@@ -7,31 +8,41 @@
           <li class="hoverable">
             <div class="request">
               <%= link_to user_path(user) do %>
-                <span><%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %> <%= user.first_name %> <%= user.last_name %></span>
+                <div class="name-tag">
+                  <%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %>
+                  <p><%= user.first_name %> <%= user.last_name %></p>
+                </div>
               <% end %>
-              <span><%= link_to 'Confirm', accept_user_path(user), method: :post, remote: true %></span>
-              <span><%= link_to 'Delete Request', user_friendship_path(user, request), method: :delete, remote: true %></span>
+              <ul class="friend-actions">
+                <li>
+                  <%= link_to accept_user_path(user), method: :post, remote: true do %>
+                    <div class="action confirm"></div>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to user_friendship_path(user, request), method: :delete, remote: true do %>
+                    <div class="action delete"></div>
+                  <% end %>
+                </li>
+              </ul>
             </div>
           </li>
         <% else %>
-          <li class="request hoverable">
-            <%= link_to user_path(user) do %>
-              <div>
-                <%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %> <%= user.first_name %> <%= user.last_name %></span>
-              </div>
-            <% end %>
-            <span>You are now friends</span>
+          <li class="hoverable">
+            <div class="request">
+              <%= link_to user_path(user) do %>
+                <div class="name-tag">
+                  <%= image_tag image_path(user.avatar.thumb), class: 'avatar-clip' %>
+                  <p><%= user.first_name %> <%= user.last_name %></p>
+                </div>
+              <% end %>
+            <div>Friends</div>
           </li>
         <% end %>
       <% end %>
-      <li class="hoverable">
-        <div class="request">blah</div>
-      </li>
-      <li class="hoverable">
-        <div class="request">blah</div>
-      </li>
     </ul>
   <% else %>
     <li class="default">No friend requests</li>
   <% end %>
+  <li class="footer"></li>
 <% end %>
