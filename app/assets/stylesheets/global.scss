@@ -125,19 +125,10 @@ $navigation-height: 4em;
 }
 
 header.navigation {
-  $base-border-radius: 5px !default;
-  $action-color: #477DCA !default;
-  $large-screen: em(860) !default;
   $navigation-background: white;
   $navigation-color: $dark-gray;
   $navigation-color-hover: #555;
   $navigation-border-color: $light-gray;
-  $navigation-search-background: lighten($navigation-background, 5);
-  $navigation-search-border: 1px solid darken($navigation-background, 5);
-  $navigation-active-link-color: transparentize(white, 0.5);
-  $navigation-submenu-padding: 1em;
-  $navigation-submenu-width: 12em;
-  $horizontal-bar-mode: $large-screen;
 
   @include box-sizing(border-box);
   @include user-select(none);
@@ -167,13 +158,12 @@ header.navigation {
   }
 
   .third {
+    @include justify-content(flex-end);
     order: 3;
-    width: 500px;
     padding-left: 2em;
   }
 
   .nav-item {
-    @include clearfix;
     @include display(flex);
     @include align-items(center);
     @include flex-wrap(nowrap);
@@ -242,7 +232,7 @@ header.navigation {
         }
 
         .search-submit {
-          background: $navigation-search-background;
+          background: $navigation-background;
           border: none;
           bottom: 0.3em;
           outline: none;
@@ -262,7 +252,6 @@ header.navigation {
         outline: none;
       }
     }
-
   }
 
   // The nav items
