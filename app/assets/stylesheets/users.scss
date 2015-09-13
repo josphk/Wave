@@ -1,40 +1,263 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+$avatar-size: 200px;
+$avatar-radius: $avatar-size / 2;
+
+.user-profile-container {
+  @include outer-container;
+  max-width: 100%;
+  width: 100%;
+  padding: 0 10% 0 10%;
+  background-color: white;
+  position: relative;
+  z-index: 10;
+}
+
+.button {
+  background-color: $dark-gray;
+  border-radius: $base-border-radius;
+  padding: 0 10px;
+  line-height: 2em;
+  color: white;
+}
+
+.user-info {
+  padding-top: $avatar-radius + 25px;
+}
 
 .avatar {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  overflow: hidden;
+  $avatar-padding: 5px;
 
-  & .update-photo {
-    @include box-sizing(border-box);
-    @include display(flex);
-    @include flex-direction(row);
-    @include align-items(center);
-    @include justify-content(center);
-    @include transition(bottom 0.5s $ease-out-quart);
-    position: absolute;
-    width: 100%;
-    height: 50px;
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  margin: 0;
+  position: absolute;
+  top: -$avatar-radius;
+  left: 50%;
+  right: 50%;
+
+  .photo {
+    position: relative;
+    @include size($avatar-size + 2 * $avatar-padding);
     z-index: 10;
-    bottom: -50px;
-    background-color: rgba(10, 10, 20, 0.5);
-    cursor: pointer;
 
-    & p {
-      color: white;
+    .avatar-clip {
+      padding: $avatar-padding;
+      box-shadow: 0px 1px 2px silver;
+      background-color: white;
+    }
+
+    .avatar-hover {
+      @include transition(opacity 0.3s $ease-out-quart);
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(center);
+      @include size($avatar-size);
+      position: absolute;
+      top: $avatar-padding;
+      left: $avatar-padding;
+      border-radius: 100%;
+      background-color: black;
+      opacity: 0;
+
+      &:hover {
+        opacity: 0.5;
+      }
+
+      .update-avatar {
+        margin-top: 6em;
+        z-index: 5;
+        font-size: 0.9em;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #555;
+        }
+      }
     }
   }
 }
 
-.avatar:hover {
-  & .update-photo {
-    bottom: 0;
+.cover {
+  position: relative;
+
+  .photo {
+    width: 100%;
+    height: 300px;
+    background-color: $dark-gray;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+
+  .cover-hover {
+    @include transition(opacity 0.3s $ease-out-quart);
+    width: 100%;
+    height: 300px;
+    position: absolute;
+    top: 0;
+    background-color: black;
+    opacity: 0;
+    z-index: 5;
+
+    &:hover {
+      opacity: 0.5;
+    }
+
+    .update-cover {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      z-index: 5;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #555;
+      }
+    }
+  }
+}
+
+.name {
+  @include span-columns(4);
+  @include shift(4);
+
+  h1 {
+    text-align: center;
+    font-size: 3em;
+    line-height: 2em;
   }
 }
 
 .friend-status {
+  @include span-columns(4);
+  @include shift(4);
+  text-align: center;
   cursor: pointer;
+
+  a {
+    text-decoration: none;
+  }
+
+  .button {
+    color: $base-font-color;
+    background-color: white;
+    box-shadow: 0px 1px 2px silver;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    .down-arrow {
+      color: #ddd;
+      font-size: 0.6em;
+      margin-left: 5px;
+    }
+  }
+
+  .add-friend {
+    @include span-columns(2 of 4);
+    @include shift(1);
+  }
+
+  .friends {
+    @include span-columns(2 of 4);
+  }
+
+  .start-waving {
+    @include span-columns(2 of 4);
+    color: white;
+    background-color: $dark-gray;
+
+    &:hover {
+      background-color: #555;
+    }
+  }
+
+  .options {
+    margin: 5px 0 0 0;
+    padding: 0;
+    box-shadow: 0px 1px 2px silver;
+    border-radius: $base-border-radius;
+    list-style: none;
+    text-decoration: none;
+
+    a {
+      color: $base-font-color;
+      line-height: 2em;
+    }
+
+    .accept:hover {
+      background-color: $flat-green;
+    }
+
+    .delete:hover {
+      background-color: $flat-red;
+    }
+  }
 }
+
+.user-progress {
+  @include span-columns(12);
+  margin: 2em 0;
+  padding: 2em 0;
+  border-top: 1px solid #eee;
+
+  .progress {
+    .graph-flexbox {
+      margin-top: 4em;
+      border-bottom: 1px solid #eee;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    p {
+      margin-top: -5em;
+    }
+  }
+
+  .recent-activities-container {
+    margin-top: 2em;
+
+    .stat-log {
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(space-between);
+      width: 100%;
+      height: 150px;
+      margin-top: 2em;
+
+      .stat {
+        @include display(flex);
+        @include flex-direction(column);
+        @include align-items(center);
+        @include justify-content(center);
+        width: 18%;
+        height: 100%;
+        padding: 10px;
+        box-shadow: 0px 1px 2px silver;
+        border-radius: $base-border-radius;
+
+        &:hover {
+          background-color: #fafafa;
+        }
+
+        p {
+          font-size: 1em;
+          line-height: 2em;
+        }
+      }
+    }
+
+    .centered {
+      @include justify-content(center);
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+  }
+}
+
+
+

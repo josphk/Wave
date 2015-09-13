@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
   mount_uploader :avatar, AvatarUploader
+  mount_uploader :cover, CoverUploader
 
   def is_not_particle_authenticated(params)
     HTTParty.post('https://api.particle.io/oauth/token', body: params)["error_description"] == "User credentials are invalid"
@@ -71,5 +72,15 @@ class User < ActiveRecord::Base
     ids = []
     self.trackers.each { |tracker| ids << tracker.core_id }
     return ids
+  end
+
+  def recent_stats
+    stat_list = []
+    self.stats.each do |stat|
+      if (stat.created_at > 5.days.ago)
+        stat_list << stat
+      end
+    end
+    return stat_list
   end
 end

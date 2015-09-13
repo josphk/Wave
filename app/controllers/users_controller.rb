@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_logout, except: [:index, :show, :update_avatar, :notify]
-  before_action :get_user, only: [:show, :update_avatar, :stats]
+  before_action :require_logout, except: [:index, :show, :update_avatar, :update_cover, :notify]
+  before_action :get_user, only: [:show, :update_avatar, :update_cover, :stats]
   skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
 
@@ -63,6 +63,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_cover
+    respond_to do |format|
+      if @user.update_attributes(cover_params)
+        format.html { redirect_to session[:current_url], alert: "Cover Photo updated" }
+        format.js {}
+      else
+        format.html { render session[:current_url], alert: "Update failed" }
+        format.js {}
+      end
+    end
+  end
+
   def notify
     respond_to do |format|
       format.js {}
@@ -76,6 +88,10 @@ class UsersController < ApplicationController
 
   def avatar_params
     params.require(:user).permit(:avatar)
+  end
+
+  def cover_params
+    params.require(:user).permit(:cover)
   end
 
   def get_user

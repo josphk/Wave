@@ -7,7 +7,8 @@ class SorceryCore < ActiveRecord::Migration
       t.string :access_token
       t.string :crypted_password
       t.string :salt
-      t.string :avatar
+      t.string :avatar,           default: nil
+      t.string :cover,            default: nil
 
       t.timestamps
     end

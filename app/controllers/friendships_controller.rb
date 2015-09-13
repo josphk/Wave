@@ -31,7 +31,7 @@ class FriendshipsController < ApplicationController
 
     respond_to do |format|
       if response.success?
-        format.html { redirect_to session[:current_url], alert: "You are now friends" }
+        format.html { redirect_to session[:current_url] }
         format.js { get_friendships(@user); get_stats(@user)}
       end
     end

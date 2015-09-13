@@ -7,11 +7,17 @@ $flat-red: #ff8686 !default;
 $em-base: 14px !default;
 $base-font-size: 1em !default;
 $base-font-color: $dark-gray !default;
-$base-font-weight: 300 !default;
+$base-font-weight: 100 !default;
 $base-line-height: 1.5em !default;
-$base-font: quicksand;
+$base-font: museo-sans;
 $base-border-color: $light-gray !default;
 $base-border-radius: 3px !default;
+$navigation-height: 4em;
+
+// Global Fonts //
+
+@include font-face("museo-sans", "MuseoSans/MuseoSans_500-webfont", 500, $asset-pipeline: true, $file-formats: eot woff ttf);
+@include font-face("museo-sans", "MuseoSans/MuseoSans_100-webfont", 100, $asset-pipeline: true, $file-formats: eot woff ttf);
 
 // Mixins //
 
@@ -41,6 +47,7 @@ $base-border-radius: 3px !default;
 // Global Styles //
 
 body {
+  -webkit-font-smoothing: subpixel-antialiased;
   color: $base-font-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
@@ -49,8 +56,23 @@ body {
   margin: 0;
 }
 
+p, h1, h3 {
+  font-weight: $base-font-weight;
+  margin: 0;
+}
+
+.main-content {
+  top: 0;
+  padding-top: $navigation-height;
+}
+
 .hidden {
   display: none;
+}
+
+.hoverable:hover {
+  background-color: #fafafa;
+  border-radius: $base-border-radius;
 }
 
 .profile {
@@ -81,7 +103,7 @@ body {
 }
 
 .avatar-clip {
-  border-radius: 50%;
+  border-radius: 100%;
 }
 
 .loading {
@@ -117,400 +139,20 @@ body {
   }
 }
 
+// Parallax Styling //
 
-$navigation-height: 4em;
-.main-content {
-  top: 0;
-  padding-top: $navigation-height;
-}
+.parallax {
+  perspective: 1px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 
-header.navigation {
-  $navigation-background: white;
-  $navigation-color: $dark-gray;
-  $navigation-color-hover: #555;
-  $navigation-border-color: $light-gray;
-
-  @include box-sizing(border-box);
-  @include user-select(none);
-  @include display(flex);
-  @include justify-content(space-between);
-  width: 100%;
-  height: $navigation-height;
-  top: 0;
-  position: fixed;
-  padding: 0 10% 0 10%;
-  z-index: 999;
-  background-color: $navigation-background;
-  border-bottom: 1px solid $navigation-border-color;
-
-  .first {
-    order: 1;
-    margin-right: 1em;
-  }
-
-  .second {
-    order: 2;
-    width: 100%;
-    border-left: 1px solid $navigation-border-color;
-    border-right: 1px solid $navigation-border-color;
-    padding-left: 0.8em;
-    padding-right: 0.8em;
-  }
-
-  .third {
-    @include justify-content(flex-end);
-    order: 3;
-    padding-left: 2em;
-  }
-
-  .nav-item {
-    @include display(flex);
-    @include align-items(center);
-    @include flex-wrap(nowrap);
-    height: 100%;
-    float: left;
-    position: relative;
-
-    .logo {
-      @include transform-origin(50% 75%);
-      height: 100%;
-
-      img {
-        height: 100%;
-        padding: 0.7em;
-      }
-    }
-
-    .tracker-status {
-      @include display(flex);
-      @include align-items(center);
-      @include justify-content(center);
-      width: 100px;
-      font-size: 0.8em;
-      cursor: default;
-
-      .indicator {
-        width: 10px;
-        height: 10px;
-        border-radius: 100%;
-        margin-right: 1em;
-      }
-
-      .asleep {
-        background-color: #ddd;
-      }
-
-      .awake {
-        background-color: $flat-green;
-      }
-    }
-
-    // Search bar
-
-    .search-bar {
-      $search-bar-border-color: #aaa;
-      $search-bar-border: 1px solid $search-bar-border-color;
-
-      width: 100%;
-      max-width: 25em;
-      min-width: 10em;
-
-      .user-search {
-        position: relative;
-        width: 100%;
-
-        .search-input {
-          @include box-sizing(border-box);
-          border: none;
-          color: $navigation-color;
-          font-family: $base-font;
-          font-size: 0.9em;
-          font-weight: 300;
-          padding: 0.5em 0 0.5em 3em;
-          width: 100%;
-
-        }
-
-        .search-submit {
-          background: $navigation-background;
-          border: none;
-          bottom: 0.3em;
-          outline: none;
-          margin: 4px 4px;
-          position: absolute;
-          left: 0.3em;
-          top: 0.3em;
-          height: 1.5em;
-          width: 1.5em;
-          opacity: 0.3;
-        }
-      }
-
-      input {
-        @include box-sizing(border-box);
-        display: block;
-        outline: none;
-      }
-    }
-  }
-
-  // The nav items
-
-  .nav-link {
-    position: relative;
-    margin-right: 1em;
-
-    &:focus, &:hover {
-      color: $navigation-color-hover;
-    }
-  }
-
-  ul.submenu {
-    $tooltip-height: 0.7em;
-    $tooltip-size: 1.5em;
-    $submenu-line-height: 2.5em;
-    $submenu-max-height: 20em;
-
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    left: 0;
-    top: 5em;
-    width: 100%;
-    max-height: $submenu-max-height;
-    border: 0.5px solid $light-gray;
-    box-shadow: 0px 1px 2px #aaa;
-    border-radius: $base-border-radius;
-    background-color: $navigation-background;
-
-    .title {
-      border-bottom: 1px solid $navigation-border-color;
-      font-size: 1em;
-      text-align: center;
-      margin: 0 10% 0 10%;
-      cursor: default;
-    }
-
-    .footer {
-      height: $submenu-line-height;
-      border-top: 1px solid $navigation-border-color;
-      margin: 0 10% 0 10%;
-    }
-
-    ul.scrollable {
-      margin: 0;
-      padding: 0;
-      max-height: $submenu-max-height - (2 * $submenu-line-height);
-      overflow: scroll;
-
-      li.hoverable {
-        .request {
-          @include display(flex);
-          @include align-items(center);
-          @include justify-content(space-between);
-          padding: 5% 5% 5% 5%;
-          border-top: 1px solid $light-gray;
-          font-size: 0.9em;
-
-          ul {
-            padding: 0;
-          }
-
-          .name-tag {
-            @include display(flex);
-            @include align-items(center);
-
-            p {
-              margin-left: 0.5em;
-            }
-          }
-
-          .action {
-            @include position(relative);
-            @include size(20px);
-            background-color: transparent;
-            border: 1px solid $dark-gray;
-            border-radius: 100%;
-
-            &:hover {
-              &:after, &:before {
-                background-color: #fafafa;
-              }
-            }
-          }
-
-          .delete {
-            &:after, &:before {
-              @include position(absolute, 3px 0 0 8px);
-              @include transform(rotate(45deg));
-              @include size(2px 12px);
-              background: $dark-gray;
-              content: '';
-              display: block;
-            }
-
-            &:before {
-              @include transform(rotate(-45deg));
-            }
-
-            &:hover {
-              border-color: $flat-red;
-              background-color: $flat-red;
-            }
-          }
-
-          .confirm {
-            margin-bottom: 1em;
-
-            &:after, &:before {
-              @include position(absolute, 4px 0 0 9px);
-              @include transform(rotate(45deg));
-              @include size(2px 10px);
-              background: $dark-gray;
-              content: '';
-              display: block;
-            }
-
-            &:before {
-              @include transform(rotate(-45deg));
-              top: 8px;
-              left: 5px;
-              height: 5px;
-            }
-
-            &:hover {
-              border-color: $flat-green;
-              background-color: $flat-green;
-            }
-          }
-        }
-
-        .wave-session {
-          @include flex-direction(column);
-
-          p {
-            text-align: center;
-            margin: 0 !important;
-          }
-
-          .wave-link {
-            line-height: 2em;
-            background-color: transparent;
-            border: 1px solid $dark-gray;
-            color: $base-font-color;
-
-            &:hover {
-              border-color: $dark-gray;
-              background-color: $dark-gray;
-              color: white;
-            }
-          }
-        }
-
-        &:first-child {
-          .request {
-            border: 0;
-          }
-        }
-      }
-    }
-
-    &#user {
-      width: 160px;
-      margin-left: -64px;
-      top: 3.5em;
-
-      &:before {
-        @include position(absolute);
-        height: $tooltip-height;
-        left: 0;
-        right: 0;
-        top: -$tooltip-height;
-        color: white;
-        content: '▲';
-        font-size: $tooltip-size;
-        text-align: center;
-        text-shadow: 0px 1px 2px #aaa;
-        overflow: hidden;
-      }
-    }
-
-    &#friend-requests:before {
-        @include position(absolute);
-        height: $tooltip-height;
-        left: 79px;
-        top: -$tooltip-height;
-        color: white;
-        content: '▲';
-        font-size: $tooltip-size;
-        text-align: center;
-        text-shadow: 0px 1px 2px #aaa;
-        overflow: hidden;
-    }
-
-    &#wave-sessions:before {
-        @include position(absolute);
-        height: $tooltip-height;
-        left: 118px;
-        top: -$tooltip-height;
-        color: white;
-        content: '▲';
-        font-size: $tooltip-size;
-        text-align: center;
-        text-shadow: 0px 1px 2px #aaa;
-        overflow: hidden;
-    }
-
-    a {
-        text-decoration: none;
-        color: $base-font-color;
-    }
-
-    li {
-      display: block;
-      padding: 0 10% 0 10%;
-      font-size: 0.9em;
-      text-align: left;
-      line-height: $submenu-line-height;
-
-      &.default {
-        text-align: center;
-      }
-
-      &.hoverable:hover {
-          background-color: #fafafa;
-      }
-    }
-  }
-
-
-  .wave-test {
-
-    & > a {
-      color: white;
-      text-decoration: none;
-    }
-  }
-
-  .wave-link {
-    padding: 3px 10px;
-    border-radius: $base-border-radius;
-    background-color: #333;
-    color: white;
-    text-align: center;
-
-    &:hover, &:focus {
-      background-color: $navigation-color-hover;
-    }
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
+  .parallax-back {
+    transform: translateZ(-1px) scale(2);
   }
 }
 
-// Canvas Styling with Modal //
+// Canvas Styling //
 
 .canvas-container {
   @include display(flex);
@@ -544,118 +186,4 @@ header.navigation {
   &.asleep {
     fill: $canvas-text-asleep;
   }
-}
-
-.wave-test-start {
-  cursor: pointer;
-}
-
-.modal {
-  $base-border-color: #dcdcdc !default;
-  $base-border-radius: 3px !default;
-  $base-background-color: #fff !default;
-  $action-color: #477dca !default;
-  $medium-screen: em(640) !default;
-  $large-screen: em(860) !default;
-  $modal-padding: 3em;
-  $modal-background: $base-background-color;
-  $modal-close-color: $light-gray;
-
-  .modal-state {
-    display: none;
-  }
-
-  .modal-fade-screen { // overlay
-    @include transition(opacity 0.25s ease);
-    @include position(fixed, 0);
-    background-color: rgba(#000, 0.8);
-    opacity: 0;
-    padding: 4em;
-    text-align: left;
-    visibility: hidden;
-    z-index: 100000000;
-
-    // @include media($medium-screen)
-    // @include media($large-screen)
-  }
-
-  .modal-close {
-    @include position(absolute, ($modal-padding /2) ($modal-padding /2) null null);
-    @include size(1.5em);
-    cursor: pointer;
-
-    &:after,
-    &:before {
-      @include position(absolute, 3px 3px 0 50%);
-      @include transform(rotate(45deg));
-      @include size(0.15em 1.5em);
-      background: $modal-close-color;
-      content: '';
-      display: block;
-      margin: -3px 0 0 -1px;
-    }
-
-    &:hover:after,
-    &:hover:before {
-      background: darken($modal-close-color, 10%);
-    }
-
-    &:before {
-      @include transform(rotate(-45deg));
-    }
-  }
-
-  .modal-inner {
-    @include transition(opacity 0.25s ease);
-    background: $modal-background;
-    border-radius: $base-border-radius;
-    margin-top: 0;
-    margin: auto;
-    width: 100%;
-    min-width: 550px;
-    height: 100%;
-    overflow: auto;
-    position: relative;
-
-    h1 {
-      color: $base-font-color;
-      margin-bottom: 0 0 0.6em 0;
-      text-align: left;
-      text-transform: capitalize;
-    }
-
-    p {
-      color: $base-font-color;
-      line-height: $base-line-height;
-    }
-
-    .modal-content {
-      color: $base-font-color;
-      height: 100%;
-    }
-
-    a.cta {
-      color: $base-background-color;
-      display: inline-block;
-      margin-right: 0.5em;
-      margin-top: 1em;
-
-      &:last-child {
-        padding: 0 2em;
-      }
-    }
-  }
-
-  .modal-state:checked + .modal-fade-screen {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .modal-state:checked + .modal-fade-screen .modal-inner {
-    height: 100%
-  }
-}
-
-.modal-open {
-  overflow: hidden;
 }

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       post 'add', to: 'friendships#create'
       post 'accept', to: 'friendships#accept'
       patch 'update_avatar', to: 'users#update_avatar'
+      patch 'update_cover', to: 'users#update_cover'
     end
 
     collection do

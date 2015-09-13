@@ -28,7 +28,7 @@
             </div>
           </div>
         <% else %>
-          <p>No progress has been made</p>
+          <p> - No progress has been made - </p>
         <% end %>
       <% end %>
     </div>
@@ -40,6 +40,14 @@
 
   <div class="recent-activities-container">
     <h3>Recent Activities</h3>
-    <%= render 'stats/recent_activities' %>
+    <% if @user.recent_stats.any? %>
+      <div class="stat-log">
+        <%= render 'stats/recent_activities' %>
+      </div>
+    <% else %>
+      <div class="stat-log centered">
+        <p> - No recent activities - </p>
+      </div>
+    <% end %>
   </div>
 <% end %>

@@ -1,16 +1,24 @@
 <% if current_user.accepted_friends.include?(@user) || current_user.accepted_inverse_friends.include?(@user) %>
-  <p>Friends</p>
+  <p class="button friends">Friends</p>
 <% elsif current_user.pending_friends.include?(@user) %>
-  <p class="status">Awaiting Response</p>
+  <p class="status button">Awaiting Response <span class="down-arrow">▼</span></p>
   <ul class="options hidden">
-    <li><%= link_to 'Cancel Request', user_friendship_path(@user, @friendship), method: :delete, remote: true %></li>
+    <%= link_to user_friendship_path(@user, @friendship), method: :delete, remote: true do %>
+      <li class="delete hoverable">Cancel Request</li>
+    <% end %>
   </ul>
 <% elsif current_user.pending_inverse_friends.include?(@user) %>
-  <p class="status">Respond to Friend Request</p>
+  <p class="status button">Respond to Friend Request <span class="down-arrow">▼</span></p>
   <ul class="options hidden">
-    <li><%= link_to 'Accept Request', accept_user_path(@user), method: :post, remote: true %></li>
-    <li><%= link_to 'Delete Request', user_friendship_path(@user, @inverse_friendship), method: :delete, remote: true %></li>
+    <%= link_to accept_user_path(@user), method: :post do %>
+      <li class="accept hoverable">Accept Request</li>
+    <% end %>
+    <%= link_to user_friendship_path(@user, @inverse_friendship), method: :delete, remote: true do %>
+      <li class="delete hoverable">Delete Request</li>
+    <% end %>
   </ul>
 <% else %>
-  <%= link_to 'Add Friend', add_user_path(@user), method: :post, remote: true %>
+  <%= link_to add_user_path(@user), method: :post, remote: true do %>
+    <p class="button add-friend">Add Friend</p>
+  <% end %>
 <% end %>
