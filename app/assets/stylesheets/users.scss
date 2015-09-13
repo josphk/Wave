@@ -205,6 +205,10 @@ $avatar-radius: $avatar-size / 2;
     .graph-flexbox {
       margin-top: 4em;
       border-bottom: 1px solid #eee;
+
+      p {
+        margin-top: 0;
+      }
     }
 
     h3 {
@@ -227,7 +231,7 @@ $avatar-radius: $avatar-size / 2;
       height: 150px;
       margin-top: 2em;
 
-      .stat {
+      .stat-container {
         @include display(flex);
         @include flex-direction(column);
         @include align-items(center);

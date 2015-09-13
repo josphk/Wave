@@ -1,8 +1,8 @@
 <% @stats.first(5).each do |stat| %>
-  <div class="stat">
-    <%= fa_icon 'clock-o', id: 'average-time' %>
-    <p><%= sprintf('%.2f', stat.average_time) %>s</p>
-    <%= fa_icon 'bullseye', id: 'accuracy' %>
-    <p><%= stat.accuracy %>%</p>
+  <div class="stat-container">
+    <div class="stats">
+      <p><%= fa_icon 'clock-o', id: 'average-time' %> <%= sprintf('%.2f', stat.average_time) %>s</p>
+      <p><%= fa_icon 'bullseye', id: 'accuracy' %> <%= stat.accuracy %>%</p>
+    </div>
   </div>
 <% end %>
