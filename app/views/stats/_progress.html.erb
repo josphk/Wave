@@ -1,10 +1,12 @@
 <% if @user == current_user || current_user.friends?(@user) %>
   <div class="progress">
     <h3>Progress</h3>
-
     <div class="graph-flexbox">
       <% if @user.stats.any? %>
         <div class="tooltip-container">
+          <div class="keyboard">
+            <p>Use <kbd class="left key">←</kbd> and <kbd class="right key">→</kbd> to navigate</p>
+          </div>
           <div class="tooltip"></div>
         </div>
         <div class="graph-container"></div>

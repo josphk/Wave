@@ -203,7 +203,7 @@ $avatar-radius: $avatar-size / 2;
 
   .progress {
     .graph-flexbox {
-      margin-top: 4em;
+      margin-top: 2.5em;
       border-bottom: 1px solid #eee;
 
       p {
@@ -244,6 +244,10 @@ $avatar-radius: $avatar-size / 2;
 
         &:hover {
           background-color: #fafafa;
+        }
+
+        .fa {
+          margin-right: 0.5em;
         }
 
         p {

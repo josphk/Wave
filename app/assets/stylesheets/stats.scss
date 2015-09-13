@@ -56,47 +56,67 @@
 
 .tooltip-container {
   position: relative;
-  max-width: $tooltip-max-width
-}
+  max-width: $tooltip-max-width;
 
-.tooltip {
-  // @include position(absolute, null 0 $tooltip-distance-from-item 0);
-  @include outer-container($tooltip-max-width);
-  @include display(flex);
-  @include flex-direction(row);
-  border-radius: $base-border-radius;
-  box-shadow: $tooltip-shadow;
-  color: $tooltip-color;
-  font-size: 0.85em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
-  line-height: 1.5em;
-  margin: 0 auto;
-  width: $tooltip-max-width;
-  left: 0px;
-  padding: 1.2em;
-  text-align: center;
-  font-family: 'museo-sans';
-  z-index: 10;
+  .keyboard {
+    font-size: 0.8em;
+    float: right;
 
-  p {
-    @include span-columns(6);
-    color: $base-font-color;
-    line-height: $base-line-height;
-    margin: 0;
+    p {
+      line-height: 3.5em;
+    }
+
+    .key {
+      border: 1px solid silver;
+      border-radius: 3px;
+      padding: 0 5px;
+      color: $base-font-color;
+      background-color: #fdfdfd;
+      box-shadow: inset 0 -1px silver;
+      font-family: sans-serif;
+    }
   }
 
-  &:after {
-    @include position(absolute);
-    left: inherit;
-    border: $tooltip-arrow-width solid transparent;
-    bottom: $tooltip-arrow-distance-from-box;
-    color: inherit;
-    content: '▼';
-    font-size: 1.4em;
-    margin-left: -$tooltip-arrow-width;
+  .tooltip {
+    // @include position(absolute, null 0 $tooltip-distance-from-item 0);
+    @include outer-container($tooltip-max-width);
+    @include display(flex);
+    @include flex-direction(row);
+    border-radius: $base-border-radius;
+    box-shadow: $tooltip-shadow;
+    color: $tooltip-color;
+    font-size: 0.85em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
+    line-height: 1.5em;
+    margin: 0 auto;
+    width: $tooltip-max-width;
+    left: 0px;
+    padding: 1.2em;
     text-align: center;
-    text-shadow: $tooltip-shadow;
+    font-family: 'museo-sans';
+    z-index: 10;
+
+    p {
+      @include span-columns(6);
+      color: $base-font-color;
+      line-height: $base-line-height;
+      margin: 0;
+    }
+
+    &:after {
+      @include position(absolute);
+      left: inherit;
+      border: $tooltip-arrow-width solid transparent;
+      bottom: $tooltip-arrow-distance-from-box;
+      color: inherit;
+      content: '▼';
+      font-size: 1.4em;
+      margin-left: -$tooltip-arrow-width;
+      text-align: center;
+      text-shadow: $tooltip-shadow;
+    }
   }
 }
+
 
 // .tooltip-item {
 
