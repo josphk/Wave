@@ -1,10 +1,12 @@
-<h1>My Wave Motions</h1>
-
-<div class="trackers">
-  <% if @trackers %>
-    <%= render 'trackers' %>
-  <% else %>
-    <div>Sign in with Particle</div>
-    <%= render 'particle_form' %>
+<div class="my-wave-motions">
+  <h1>My Wave Motions</h1>
+  <% if @registered_trackers != 0  %>
+    <h3>You currently have <%= pluralize(@registered_trackers, 'unregistered Wave Motion') %></h3>
   <% end %>
 </div>
+<% if @trackers.any? %>
+  <%= render 'trackers' %>
+<% else %>
+  <div>Sign in with Particle</div>
+  <%= render 'particle_form' %>
+<% end %>

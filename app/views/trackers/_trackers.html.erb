@@ -1,33 +1,35 @@
-<% if @registered_trackers != 0  %>
-  <h3>You currently have <%= pluralize(@registered_trackers, 'unregistered Wave Motion') %></h3>
-<% end %>
-
-<% @trackers.each do |tracker| %>
-  <div class="tracker">
-    <% unless registered? tracker["id"] %>
-      <%= form_tag user_trackers_path do %>
-        <div class="particle-name">
-          <p>Particle Name: <%= tracker["name"] %></p>
-        </div>
-        <div class="field">
-          <%= label_tag :name %>
-          <%= text_field_tag :name, nil, placeholder: 'My Wave Motion' %>
-          <%= hidden_field_tag :core_id, tracker["id"] %>
-        </div>
-        <div class="submit">
-          <%= submit_tag 'Add' %>
+<div class="full-container">
+  <div class="content-container">
+    <div class="tracker-container">
+      <% @trackers.each do |tracker| %>
+        <div class="tracker">
+          <% unless registered? tracker["id"] %>
+            <%= form_tag user_trackers_path do %>
+              <div class="particle-name">
+                <h3><%= tracker["name"] %></h3>
+              </div>
+              <div class="field">
+                <%= label_tag :name, 'Wave Name' %>
+                <%= text_field_tag :name, nil, placeholder: 'My Wave Motion' %>
+                <%= hidden_field_tag :core_id, tracker["id"] %>
+              </div>
+              <div class="submit">
+                <%= submit_tag 'Add', class: 'button' %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="name">
+              <p>Name: <%= current_user.trackers.find_by(core_id: tracker["id"]).name %></p>
+            </div>
+            <div class="submit">
+              <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal', remote: true, 'data-type' => :html %>
+            </div>
+            <div class="delete">
+              <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>
+            </div>
+          <% end %>
         </div>
       <% end %>
-    <% else %>
-      <div class="name">
-        <p>Name: <%= current_user.trackers.find_by(core_id: tracker["id"]).name %></p>
-      </div>
-      <div class="submit">
-        <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal', remote: true, 'data-type' => :html %>
-      </div>
-      <div class="delete">
-        <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>
-      </div>
-    <% end %>
+    </div>
   </div>
-<% end %>
+</div>

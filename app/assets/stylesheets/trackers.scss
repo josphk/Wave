@@ -1,3 +1,73 @@
-// Place all the styles related to the trackers controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.my-wave-motions {
+  @include display(flex);
+  @include flex-direction(column);
+  @include align-items(center);
+  @include justify-content(center);
+  height: 200px;
+  border-bottom: 1px solid #eee;
+
+  h1 {
+    margin-bottom: 1em;
+  }
+}
+
+.tracker-container {
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  @include flex-wrap(wrap);
+
+  .tracker {
+    @include size(250px);
+    @include transition(all 0.2s ease-in-out);
+    margin: 0 3% 50px 3%;
+    padding: 35px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px silver;
+    background-color: lighten($light-gray, 5);
+
+    &:hover {
+      @include size(260px);
+      background-color: white;
+    }
+
+    form {
+      @include display(flex);
+      @include justify-content(space-around);
+      @include flex-direction(column);
+      height: 100%;
+
+      input#name {
+        width: 100%;
+        padding: 0;
+        line-height: 2em;
+        font-size: 0.8em;
+        font-family: museo-sans;
+        font-weight: 100;
+        border: none;
+        border-bottom: 1px solid silver;
+        background-color: transparent;
+        outline: none;
+      }
+
+      .submit {
+        margin-top: 10px;
+
+        .button {
+          @include span-columns(6);
+          @include shift(3);
+          border: none;
+          box-shadow: 0px 1px 2px silver;
+          font-family: museo-sans;
+          font-weight: 100;
+          font-size: 0.9em;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #555;
+          }
+        }
+      }
+    }
+  }
+}

@@ -64,6 +64,26 @@ p, h1, h3 {
 .main-content {
   top: 0;
   padding-top: $navigation-height;
+
+  .content-container {
+    @include outer-container;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 10% 0 10%;
+    background-color: white;
+    position: relative;
+    z-index: 10;
+  }
+
+  .full-container {
+    width: 100%;
+    padding-top: 50px;
+    background-color: $light-gray;
+
+    .content-container {
+      background-color: transparent;
+    }
+  }
 }
 
 .hidden {
