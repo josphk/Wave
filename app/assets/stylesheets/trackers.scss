@@ -71,3 +71,29 @@
     }
   }
 }
+
+.particle-sign-in-container {
+
+  .title-banner {
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(center);
+    height: 4.5em;
+    position: fixed;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    background-color: white;
+    box-shadow: 0px 1px 2px silver;
+    z-index: 5;
+
+    .modal-close {
+      z-index: 10;
+    }
+  }
+
+  .full-container {
+    padding-top: 7.5em;
+    position: absolute;
+    z-index: 0;
+  }
+}

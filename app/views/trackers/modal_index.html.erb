@@ -1,5 +1,29 @@
+<%= javascript_tag do %>
+  $('.modal-content').css('background-color', '#eee')
+  $('.title-banner').width($('.particle-sign-in-container').width())
+
+  $(window).resize(function() {
+    $('.title-banner').width($('.particle-sign-in-container').width())
+
+    if ($(this).width() >= 840 && $(this).width() <= 860) {
+      $('.tracker-container').css('flex-wrap', 'nowrap')
+    } else {
+      $('.tracker-container').removeAttr('style')
+    }
+  })
+
+  $(".modal-fade-screen, .modal-close").on("click", function() {
+    $('#wave-modal').prop("checked", false).change()
+    $("body").removeClass("modal-open")
+    $('.modal-content').empty()
+  });
+<% end %>
+
 <div class="particle-sign-in-container">
-  <p>Looks like you haven't registered a Wave Motion yet...</p>
+  <div class="title-banner">
+    <div class="modal-close" for="wave-modal"></div>
+    <h3>Looks like you haven't registered a Wave Motion yet...</h3>
+  </div>
   <% if @trackers %>
     <%= render 'trackers' %>
   <% else %>
