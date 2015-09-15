@@ -4,7 +4,7 @@
       <% @trackers.each do |tracker| %>
         <div class="tracker">
           <% unless registered? tracker["id"] %>
-            <%= form_tag user_trackers_path do %>
+            <%= form_tag user_trackers_path, class: 'tracker-info' do %>
               <div class="particle-name">
                 <h3><%= tracker["name"] %></h3>
               </div>
@@ -18,14 +18,16 @@
               </div>
             <% end %>
           <% else %>
-            <div class="name">
-              <p>Name: <%= current_user.trackers.find_by(core_id: tracker["id"]).name %></p>
-            </div>
-            <div class="submit">
-              <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal', remote: true, 'data-type' => :html %>
-            </div>
-            <div class="delete">
-              <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>
+            <div class="tracker-info">
+              <div class="particle-name">
+                <h3><%= current_user.trackers.find_by(core_id: tracker["id"]).name %></h3>
+              </div>
+              <div class="submit">
+                <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal', remote: true, 'data-type' => :html %>
+              </div>
+              <div class="delete">
+                <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>
+              </div>
             </div>
           <% end %>
         </div>

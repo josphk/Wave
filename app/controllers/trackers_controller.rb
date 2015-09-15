@@ -36,6 +36,7 @@ class TrackersController < ApplicationController
 
     respond_to do |format|
       if response.success? && @tracker.save
+        current_user.update_attributes(demo: false)
         format.html { redirect_to user_trackers_path(current_user) }
         format.js { get_trackers; registered_trackers }
       else

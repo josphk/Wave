@@ -36,7 +36,8 @@
           "lastName" : "<%= current_user.last_name %>",
           "trackers" : getTrackers(),
           "onlineTracker" : undefined,
-          "token" : "<%= current_user.access_token %>"
+          "token" : "<%= current_user.access_token %>",
+          "demo" : <%= current_user.demo %>
         }
       }
 
@@ -94,7 +95,7 @@
         <%= render 'shared/sessions' %>
       </ul>
       <div class="wave-test">
-        <% if current_user.trackers.any? %>
+        <% if current_user.trackers.any? || current_user.demo %>
           <%= link_to user_test_path(current_user), class: 'open-modal', remote: true, 'data-type' => :html do %>
             <div class="wave-link">Wave</div>
           <% end %>

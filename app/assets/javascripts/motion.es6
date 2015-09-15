@@ -113,7 +113,7 @@ function initWave() {
   }
 
   // Click for Wave Test
-  if (debug) {
+  if (debug || currentUser.demo) {
     $('.canvas').on('click', function(e) {
       var x = e.pageX - $('.canvas').offset().left,
           y = e.pageY - $('.canvas').offset().top,

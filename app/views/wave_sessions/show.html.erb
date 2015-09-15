@@ -152,7 +152,7 @@
           clear()
         }
 
-        if (debug) {
+        if (debug || currentUser.demo) {
           $('.canvas').on('click', function(e) {
             console.log('click')
             var x = e.pageX - $('.canvas').offset().left,

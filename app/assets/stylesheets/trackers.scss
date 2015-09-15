@@ -31,13 +31,13 @@
       background-color: white;
     }
 
-    form {
+    .tracker-info {
       @include display(flex);
       @include justify-content(space-around);
       @include flex-direction(column);
       height: 100%;
 
-      input#name {
+      input#name, {
         width: 100%;
         padding: 0;
         line-height: 2em;
@@ -61,6 +61,7 @@
           font-family: museo-sans;
           font-weight: 100;
           font-size: 0.9em;
+          text-decoration: none;
           cursor: pointer;
 
           &:hover {

@@ -42,9 +42,10 @@ ActiveRecord::Schema.define(version: 20150817172330) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name",                   null: false
-    t.string   "last_name",                    null: false
-    t.string   "email",                        null: false
+    t.string   "first_name",                                   null: false
+    t.string   "last_name",                                    null: false
+    t.string   "email",                                        null: false
+    t.boolean  "demo",                         default: false
     t.string   "access_token"
     t.string   "crypted_password"
     t.string   "salt"

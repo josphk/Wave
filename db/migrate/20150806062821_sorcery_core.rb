@@ -4,6 +4,7 @@ class SorceryCore < ActiveRecord::Migration
       t.string :first_name,       null: false
       t.string :last_name,        null: false
       t.string :email,            null: false
+      t.boolean :demo,            default: false
       t.string :access_token
       t.string :crypted_password
       t.string :salt

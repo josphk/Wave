@@ -6,6 +6,6 @@
   <%= render partial: 'shared/svg.js.erb' %>
   wave = true
 
-  if (debug) initWave()
+  if (debug || currentUser.demo) initWave()
   else checkStatus(currentUser.onlineTracker, currentUser.token, true)
 <% end %>
