@@ -266,7 +266,7 @@ $avatar-radius: $avatar-size / 2;
       background-color: $flat-red;
       margin: 0.5em 0;
       padding: 0 10px;
-      border-radius: 3px;
+      border-radius: $base-border-radius;
       box-shadow: 0px 1px 2px silver;
       line-height: 2em;
       color: white;
@@ -290,6 +290,41 @@ $avatar-radius: $avatar-size / 2;
     #toggle-form {
       width: 240px;
     }
+  }
+}
+
+.users {
+  @include display(flex);
+  @include flex-direction(column);
+  @include align-items(center);
+
+  a {
+    text-decoration: none;
+
+    .user-card {
+      @include transition(all 0.2s ease-in-out);
+      @include display(flex);
+      @include align-items(center);
+      width: 400px;
+      height: 100px;
+      margin: 0 0 50px 0;
+      padding: 25px;
+      background-color: lighten($light-gray, 5);
+      border-radius: $base-border-radius;
+      box-shadow: 0px 1px 2px silver;
+
+      h3 {
+        display: inline;
+        color: $base-font-color;
+        margin-left: 25px;
+      }
+
+      &:hover {
+        width: 410px;
+        height: 105px;
+        background-color: white;
+      }
+  }
   }
 }
 

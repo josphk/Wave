@@ -1,7 +1,12 @@
-<h1>User Results</h1>
-
-<% if @users %>
-  <div class="users">
-    <%= render @users %>
+<div class="page-title">
+  <h1>User Results</h1>
+</div>
+<div class="full-container">
+  <div class="content-container">
+    <% if @users %>
+      <div class="users">
+        <%= render @users %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

@@ -5,7 +5,12 @@ class UsersController < ApplicationController
   skip_before_filter :require_login
 
   def index
-    @users = User.all.where("LOWER(first_name) LIKE LOWER(?)", "%#{params[:search]}%") if params[:search]
+    if params[:search]
+      f_name = params[:search].split(" ").first
+      l_name = params[:search].split(" ").last
+      @users = User.all.where("LOWER(first_name) LIKE LOWER(?)", "%#{f_name}%")
+      # @users << User.all.where("LOWER(last_name) LIKE LOWER(?)", "%#{l_name}%")
+    end
   end
 
   def new

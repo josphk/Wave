@@ -1,8 +1,6 @@
-<div class="user-card">
-  <%= link_to user_path(user) do %>
-    <div class="user-avatar">
-      <%= image_tag image_path(user.avatar.medium), class: 'avatar-clip' %>
-    </div>
-    <p><%= user.first_name %> <%= user.last_name %></p>
-  <% end %>
-</div>
+<%= link_to user_path(user) do %>
+  <div class="user-card">
+  <%= image_tag image_path(user.avatar.medium), class: 'avatar-clip' %>
+  <h3><%= user.first_name %> <%= user.last_name %></h3>
+  </div>
+<% end %>
