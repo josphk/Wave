@@ -1,5 +1,4 @@
-<div class="full-container">
-  <div class="content-container">
+
     <div class="tracker-container">
       <% @trackers.each do |tracker| %>
         <div class="tracker">
@@ -23,15 +22,13 @@
                 <h3><%= current_user.trackers.find_by(core_id: tracker["id"]).name %></h3>
               </div>
               <div class="submit">
-                <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal', remote: true, 'data-type' => :html %>
+                <%= link_to "Test", test_user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'open-modal button', remote: true, 'data-type' => :html %>
               </div>
-              <div class="delete">
-                <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), method: :delete %>
+              <div class="submit">
+                <%= link_to "Delete", user_tracker_path(current_user, current_user.trackers.find_by(core_id: tracker["id"]).id), class: 'delete button', method: :delete %>
               </div>
             </div>
           <% end %>
         </div>
       <% end %>
     </div>
-  </div>
-</div>

@@ -1,20 +1,16 @@
-<div class="my-wave-motions">
+<div class="page-title">
   <h1>My Wave Motions</h1>
-  <% if @registered_trackers != 0  %>
+  <% unless @registered_trackers.nil?  %>
     <h3>You currently have <%= pluralize(@registered_trackers, 'unregistered Wave Motion') %></h3>
   <% end %>
 </div>
-<% if @trackers %>
-  <%= render 'trackers' %>
-<% else %>
-  <h3>Sign in with Particle</h3>
-  <%= render 'particle_form' %>
-  <div class="demo">
-    <% if !current_user.demo  %>
-      <p>or</p>
-      <%= link_to 'Demo', activate_demo_user_path(current_user), method: :patch, remote: true %>
+<div class="full-container">
+  <div class="content-container">
+    <% if @trackers %>
+      <%= render 'trackers' %>
     <% else %>
-      <h3>You are currently in demo</h3>
+      <%= render 'particle_form' %>
     <% end %>
   </div>
-<% end %>
+</div>
+

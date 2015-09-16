@@ -1,24 +1,41 @@
-<h1>Log In</h1>
-
-<%= form_tag user_sessions_path do %>
-
-  <div class="field">
-    <%= label_tag :email %>
-    <%= text_field_tag :email %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :password %>
-    <%= password_field_tag :password %>
-  </div>
-
-  <div class="field remember-me">
-    <%= check_box_tag :remember, params[:remember], true %>
-    <%= label_tag :remember, "Remember me" %>
-  </div>
-
-  <div class="submit">
-    <%= submit_tag "Login" %>
-  </div>
-
+<%= javascript_tag do %>
+  if ($('input').val())
+    $(this).css({
+    'font-size': '1em',
+    'margin-top': '-60px'
+  })
 <% end %>
+
+<div class="page-title">
+  <h1>Log In</h1>
+</div>
+<div class="full-container">
+  <div class="content-container">
+    <div class="particle-form">
+      <div class="sign-in">
+        <%= form_tag user_sessions_path do %>
+
+          <div class="field">
+            <%= text_field_tag :email %>
+            <%= label_tag :email %>
+          </div>
+
+          <div class="field">
+            <%= password_field_tag :password %>
+            <%= label_tag :password %>
+          </div>
+
+          <div class="field remember-me">
+            <%= check_box_tag :remember, params[:remember], true %>
+            <%= label_tag :remember, "Remember me" %>
+          </div>
+
+          <div class="submit">
+            <%= submit_tag "Login", class: :button %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

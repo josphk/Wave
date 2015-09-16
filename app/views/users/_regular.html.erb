@@ -1,5 +1,9 @@
-<div>Don't worry, you can register one later</div>
+<h3>Don't worry - you can register one later</h3>
 
 <%= form_for @user, url: { action: 'create' } do |f| %>
   <%= render partial: 'form', locals: { f: f } %>
 <% end %>
+
+<div class="submit">
+  <%= link_to 'Got a Wave Motion?', new_user_path, id: 'toggle-form', class: :button, remote: true %>
+</div>

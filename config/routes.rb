@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     member do
       get 'notify', to: 'users#notify'
       get 'update_friends', to: 'friendships#update_friends'
+      get 'activate_demo', to: 'users#activate_demo_redirect'
       post 'add', to: 'friendships#create'
       post 'accept', to: 'friendships#accept'
       patch 'update_avatar', to: 'users#update_avatar'

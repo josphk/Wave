@@ -1,7 +1,21 @@
-<h1>Sign up</h1>
+<%= javascript_tag do %>
+  if ($('input').val())
+    $(this).css({
+    'font-size': '1em',
+    'margin-top': '-60px'
+  })
+<% end %>
 
-<div class="signup">
-  <%= render 'particle' %>
+<div class="page-title">
+  <h1>Sign up</h1>
 </div>
 
-<%= link_to "Don't have a Wave Motion?", new_user_path, id: 'toggle-form', remote: true %>
+<div class="full-container">
+  <div class="content-container">
+    <div class="particle-form">
+      <div class="sign-in">
+        <%= render 'particle' %>
+      </div>
+    </div>
+  </div>
+</div>

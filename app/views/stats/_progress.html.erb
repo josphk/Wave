@@ -14,19 +14,12 @@
         <% if @user == current_user %>
           <div>
             <p>Looks like you haven't got any results yet...</p>
-            <div class="modal">
+            <div class="submit">
               <% if current_user.trackers.any? %>
-                <%= link_to 'Start waving now!', user_test_path(current_user), remote: true, 'data-type' => :html %>
+                <%= link_to 'Start waving now!', user_test_path(current_user), class: 'open-modal button', remote: true, 'data-type' => :html %>
               <% else %>
-                <%= link_to 'Start waving now!', sign_in_with_particle_user_trackers_path(current_user), remote: true, 'data-type' => :html %>
+                <%= link_to 'Start waving now!', sign_in_with_particle_user_trackers_path(current_user), class: 'open-modal button', remote: true, 'data-type' => :html %>
               <% end %>
-              <input class="hidden modal-state" id="modal-1" type="checkbox" />
-              <div class="modal-fade-screen">
-                <div class="modal-inner">
-                  <div class="modal-close" for="modal-1"></div>
-                  <div class="modal-content"></div>
-                </div>
-              </div>
             </div>
           </div>
         <% else %>

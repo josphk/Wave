@@ -27,9 +27,6 @@
   <% if @trackers %>
     <%= render 'trackers' %>
   <% else %>
-    <div class="particle-sign-in">
-      <p>Sign in with Particle</p>
-      <%= render 'particle_form' %>
-    </div>
+    <%= render 'particle_form' %>
   <% end %>
 </div>

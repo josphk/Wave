@@ -257,5 +257,39 @@ $avatar-radius: $avatar-size / 2;
   }
 }
 
+.errors {
+  .form-errors {
+    padding: 0;
+    list-style: none;
 
+    .error-message {
+      background-color: $flat-red;
+      margin: 0.5em 0;
+      padding: 0 10px;
+      border-radius: 3px;
+      box-shadow: 0px 1px 2px silver;
+      line-height: 2em;
+      color: white;
+    }
+  }
+}
+
+.sign-in {
+  .remember-me {
+    input {
+      margin: 0;
+    }
+
+    label {
+      position: relative !important;
+      font-size: 0.8em !important;
+    }
+  }
+
+  .submit {
+    #toggle-form {
+      width: 240px;
+    }
+  }
+}
 

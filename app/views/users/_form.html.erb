@@ -1,36 +1,38 @@
 <% if @user.errors.any? %>
-  <ul class="form-errors">
-    <% @user.errors.full_messages.each do |msg| %>
-      <li class="error-message"><%= msg %></li>
-    <% end %>
-  </ul>
+  <div class="errors">
+    <ul class="form-errors">
+      <% @user.errors.full_messages.each do |msg| %>
+        <li class="error-message"><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>
 
 <div class="field">
-  <%= f.label :first_name %>
   <%= f.text_field :first_name %>
+  <%= f.label :first_name %>
 </div>
 
 <div class="field">
-  <%= f.label :last_name %>
   <%= f.text_field :last_name %>
+  <%= f.label :last_name %>
 </div>
 
 <div class="field">
-  <%= f.label :email %>
   <%= f.text_field :email %>
+  <%= f.label :email %>
 </div>
 
 <div class="field">
-  <%= f.label :password %>
   <%= f.password_field :password %>
+  <%= f.label :password %>
 </div>
 
 <div class="field">
-  <%= f.label :password_confirmation %>
   <%= f.password_field :password_confirmation %>
+  <%= f.label :password_confirmation %>
 </div>
 
 <div class="submit">
-  <%= f.submit %>
+  <%= f.submit 'Submit', class: :button %>
 </div>

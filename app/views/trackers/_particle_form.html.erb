@@ -1,21 +1,44 @@
-<%= form_tag authenticate_user_trackers_path(current_user) do %>
-
-  <%= hidden_field_tag :client_id, 'particle' %>
-  <%= hidden_field_tag :client_secret, 'particle' %>
-  <%= hidden_field_tag :grant_type, 'password' %>
-
-  <div class="field">
-    <%= label_tag :username %> <br>
-    <%= text_field_tag :username %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :password %> <br>
-    <%= password_field_tag :password %>
-  </div>
-
-  <div class="submit">
-    <%= submit_tag "Connect" %>
-  </div>
-
+<%= javascript_tag do %>
+  if ($('input').val())
+    $(this).css({
+    'font-size': '1em',
+    'margin-top': '-60px'
+  })
 <% end %>
+
+<div class="particle-form">
+  <div class="sign-in">
+    <h3>Sign in with Particle</h3>
+    <%= form_tag authenticate_user_trackers_path(current_user) do %>
+      <%= hidden_field_tag :client_id, 'particle' %>
+      <%= hidden_field_tag :client_secret, 'particle' %>
+      <%= hidden_field_tag :grant_type, 'password' %>
+
+      <div class="field">
+        <%= text_field_tag :username %>
+        <%= label_tag :username %>
+      </div>
+
+      <div class="field">
+        <%= password_field_tag :password %>
+        <%= label_tag :password %>
+      </div>
+
+      <div class="submit">
+        <%= submit_tag "Connect", class: :button %>
+      </div>
+    <% end %>
+    <div class="demo">
+      <% if !current_user.demo  %>
+        <p>- or -</p>
+        <div class="submit">
+          <%= link_to 'Demo', activate_demo_user_path(current_user), class: 'button', method: :patch, remote: true %>
+        </div>
+        <p>(for users without a Wave Motion)</p>
+      <% else %>
+        <h3>You are currently in demo</h3>
+        <p>(use your mouse to click on targets)</p>
+      <% end %>
+    </div>
+  </div>
+</div>

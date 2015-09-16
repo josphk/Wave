@@ -1,5 +1,9 @@
-<div>Sign in with Particle</div>
+<h3>Sign in with Particle</h3>
 
 <%= form_for @user, url: { action: 'create_with_particle' } do |f| %>
   <%= render partial: 'form', locals: { f: f } %>
 <% end %>
+
+<div class="submit">
+  <%= link_to "Don't have a Wave Motion?", new_user_path, id: 'toggle-form', class: :button, remote: true %>
+</div>

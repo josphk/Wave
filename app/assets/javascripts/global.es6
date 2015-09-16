@@ -80,7 +80,6 @@ $(document).on('ready page:load', function() {
   })
 
   $('.open-modal').unbind('ajax:success').on('ajax:success', function(e, d, s, x) {
-    console.log('test')
     $('#wave-modal').prop('checked', true)
     $("body").addClass("modal-open");
     $('.modal-content').html(d)

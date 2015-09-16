@@ -273,6 +273,8 @@ header.navigation {
             background-color: transparent;
             border: 1px solid $dark-gray;
             color: $base-font-color;
+            box-shadow: 0px 1px 2px silver;
+            cursor: pointer;
 
             &:hover {
               border-color: $dark-gray;
@@ -374,6 +376,8 @@ header.navigation {
     background-color: #333;
     color: white;
     text-align: center;
+    box-shadow: 0px 1px 2px silver;
+    cursor: pointer;
 
     &:hover, &:focus {
       background-color: $navigation-color-hover;

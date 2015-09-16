@@ -86,6 +86,44 @@ p, h1, h3 {
   }
 }
 
+.page-title {
+  @include display(flex);
+  @include flex-direction(column);
+  @include align-items(center);
+  @include justify-content(center);
+  height: 200px;
+  border-bottom: 1px solid #eee;
+
+  h3 {
+    margin-top: 1.5em;
+  }
+}
+
+.submit {
+  margin-top: 10px;
+
+  .button {
+    @include span-columns(6);
+    @include shift(3);
+    border: none;
+    box-shadow: 0px 1px 2px silver;
+    font-family: museo-sans;
+    font-weight: 100;
+    font-size: 0.9em;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #555;
+    }
+  }
+
+  .delete:hover {
+      background-color: $flat-red;
+  }
+}
+
 .hidden {
   display: none;
 }
@@ -152,6 +190,7 @@ p, h1, h3 {
   background-color: $flat-red;
   text-align: center;
   font-size: 1em;
+  color: white;
   line-height: 3em;
 
   & > p {
