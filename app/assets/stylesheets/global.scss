@@ -198,6 +198,29 @@ p, h1, h3 {
   }
 }
 
+.compatible {
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  height: 15em;
+  margin: 2em;
+
+  .particle-logo {
+    text-align: center;
+    margin: 5em;
+
+    img {
+      height: 10em;
+    }
+  }
+
+  p > a {
+    color: $base-font-color;
+    text-decoration: none;
+    font-weight: bold;
+  }
+}
+
 .spacer {
   width: 100%;
   min-height: 200px;
@@ -207,10 +230,15 @@ p, h1, h3 {
   @include display(flex);
   @include align-items(center);
   @include justify-content(center);
-  height: 5em;
-  color: white;
+  height: 4em;
   background-color: #333;
-  font-size: 0.7em;
+
+  a {
+    font-size: 0.7em;
+    text-decoration: none;
+    color: white;
+    line-height: 1em;
+  }
 
   .v-hand {
     font-size: 1.7em;
