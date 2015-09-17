@@ -1,6 +1,6 @@
 {
   "eventName": "login",
-  "url": "https://wave-motion-development.firebaseio.com/wave_motions.json",
+  "url": "https://wave-motion.firebaseio.com/wave_motions.json",
   "requestType": "POST",
   "json":
   {
