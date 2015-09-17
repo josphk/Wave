@@ -134,6 +134,7 @@ header.navigation {
   .nav-link {
     position: relative;
     margin-right: 1em;
+    text-decoration: none;
 
     &:focus, &:hover {
       color: $navigation-color-hover;

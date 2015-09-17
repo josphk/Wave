@@ -1,3 +1,14 @@
+<%= javascript_tag do %>
+  $('.field input').keydown(function() {
+    if ($(this).val()) {
+      $(this).next().css({
+        'font-size': '0.8em',
+        'bottom': '35px'
+      })
+    }
+  })
+<% end %>
+
 <% if @user.errors.any? %>
   <div class="errors">
     <ul class="form-errors">

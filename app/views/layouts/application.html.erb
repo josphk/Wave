@@ -10,6 +10,15 @@
 <body>
   <%= Gon::Base.render_data %>
   <%= javascript_tag do %>
+        $('.field input').keydown(function() {
+      if ($(this).val()) {
+        console.log('blah')
+        $(this).next().css({
+          'font-size': '0.8em',
+          'bottom': '35px'
+        })
+      }
+    })
     var motion = false,
         wave = false,
         multiUserWave = false,
@@ -116,8 +125,12 @@
       </div>
     </div>
     <div class="nav-item">
-      <div class="nav-link wave-link"><%= link_to "Sign Up", new_user_path %></div>
-      <div class="nav-link wave-link"><%= link_to "Login", :login %></div>
+      <%= link_to new_user_path, class: 'nav-link' do %>
+        <div class="wave-link"><p>Sign Up</p></div>
+      <% end %>
+      <%= link_to :login, class: 'nav-link' do %>
+        <div class="wave-link"><p>Login</p></div>
+      <% end %>
     </div>
   <% end %>
 </header>
@@ -128,6 +141,11 @@
     <p id="alert"><%= flash[:alert] %></p>
   </div>
   <%= yield %>
+</div>
+
+<div class="spacer"></div>
+<div class="footer">
+  <p>Made with <span class="v-hand">&nbsp;✌&nbsp;</span> by Joseph</p>
 </div>
 
 </body>

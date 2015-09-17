@@ -42,7 +42,6 @@
 
 .particle-sign-in-container {
   background-color: $light-gray;
-  height: 100%;
 
   .title-banner {
     @include display(flex);
@@ -62,7 +61,7 @@
   }
 
   .tracker-container {
-    width: 75%;
+    width: 100%;
     padding-top: 7.5em;
   }
 
@@ -91,46 +90,57 @@
       margin-bottom: 10px;
     }
 
+
     form {
-      label {
-        @include transition(all 0.5s $ease-out-quart);
-        position: absolute;
-        font-size: 0.9em;
-        margin-top: -40px;
-      }
+      .field {
+        position: relative;
 
-      input[type="text"], input[type="password"] {
-        width: 100%;
-        padding: 0;
-        margin: 2em 0 1em 0;
-        line-height: 2em;
-        font-size: 0.8em;
-        font-family: museo-sans;
-        font-weight: 100;
-        border: none;
-        border-bottom: 1px solid silver;
-        background-color: transparent;
-        outline: none;
-      }
+        label {
+          @include transition(all 0.5s $ease-out-quart);
+          position: absolute;
+          font-size: 0.9em;
+          left: 0;
+          bottom: 15px;
+        }
 
-      input[type="text"]:hover + label {
-        font-size: 1em;
-        margin-top: -60px;
-      }
+        input[type="checkbox"] + label {
+          bottom: 0;
+          font-size: 0.8em;
+        }
 
-      input[type="text"]:focus + label {
-        font-size: 1em;
-        margin-top: -60px;
-      }
+        input[type="text"], input[type="password"] {
+          width: 100%;
+          padding: 3px 0;
+          margin: 2em 0 1em 0;
+          line-height: 1em;
+          font-size: 0.9em;
+          font-family: museo-sans;
+          font-weight: 100;
+          border: none;
+          border-bottom: 1px solid silver;
+          background-color: transparent;
+          outline: none;
+        }
 
-      input[type="password"]:hover + label {
-        font-size: 1em;
-        margin-top: -60px;
-      }
+        input[type="text"]:hover + label {
+          font-size: 0.8em;
+          bottom: 35px;
+        }
 
-      input[type="password"]:focus + label {
-        font-size: 1em;
-        margin-top: -60px;
+        input[type="text"]:focus + label {
+          font-size: 0.8em;
+          bottom: 35px;
+        }
+
+        input[type="password"]:hover + label {
+          font-size: 0.8em;
+          bottom: 35px;
+        }
+
+        input[type="password"]:focus + label {
+          font-size: 0.8em;
+          bottom: 35px;
+        }
       }
     }
 

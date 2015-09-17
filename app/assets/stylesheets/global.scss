@@ -198,6 +198,26 @@ p, h1, h3 {
   }
 }
 
+.spacer {
+  width: 100%;
+  min-height: 200px;
+}
+
+.footer {
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  height: 5em;
+  color: white;
+  background-color: #333;
+  font-size: 0.7em;
+
+  .v-hand {
+    font-size: 1.7em;
+    color: $flat-red;
+  }
+}
+
 // Parallax Styling //
 
 .parallax {
