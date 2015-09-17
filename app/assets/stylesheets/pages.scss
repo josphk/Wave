@@ -3,7 +3,7 @@
   @include align-items(center);
   @include justify-content(center);
   @include flex-direction(column);
-  @include background-image(url(/assets/home-banner.jpg));
+  @include background-image(url(image-path('home-banner.jpg')));
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 60%;

@@ -1,5 +1,5 @@
 .graph-flexbox {
-  @include box-sizing(border-box);
+  box-sizing: border-box;
   @include display(flex);
   @include flex-direction(column);
   @include align-items(center);
