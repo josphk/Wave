@@ -21,6 +21,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# For serving static files
+gem 'rails_12factor'
+
 # For user authorization
 gem 'sorcery'
 
