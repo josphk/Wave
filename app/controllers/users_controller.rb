@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_logout, except: [:index, :show, :activate_demo, :activate_demo_redirect, :update_avatar, :update_cover, :notify]
-  before_action :get_user, only: [:show, :activate_demo, :activate_demo_redirect, :update_avatar, :update_cover, :stats]
+  before_action :require_logout, except: [:index, :show, :activate_demo, :activate_particle, :update_avatar, :update_cover, :notify]
+  before_action :get_user, only: [:show, :activate_demo, :activate_particle, :update_avatar, :update_cover, :stats]
   skip_before_filter :get_current_url, except: :show
   skip_before_filter :require_login
 
@@ -32,16 +32,14 @@ class UsersController < ApplicationController
   end
 
   def activate_demo
-    respond_to do |format|
-      if @user.update_attributes(demo: true)
-        format.js {}
-      end
+    if @user.update_attributes(demo: true)
+      redirect_to session[:current_url]
     end
   end
 
-  def activate_demo_redirect
-    if @user.update_attributes(demo: true)
-      redirect_to user_trackers_url(current_user)
+  def activate_particle
+    if @user.update_attributes(demo: false)
+      redirect_to session[:current_url]
     end
   end
 

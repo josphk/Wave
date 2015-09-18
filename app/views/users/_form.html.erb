@@ -1,14 +1,3 @@
-<%= javascript_tag do %>
-  $('.field input').keydown(function() {
-    if ($(this).val()) {
-      $(this).next().css({
-        'font-size': '0.8em',
-        'bottom': '35px'
-      })
-    }
-  })
-<% end %>
-
 <% if @user.errors.any? %>
   <div class="errors">
     <ul class="form-errors">
@@ -44,6 +33,6 @@
   <%= f.label :password_confirmation %>
 </div>
 
-<div class="submit">
+<div class="user-submit submit">
   <%= f.submit 'Sign Up', class: :button %>
 </div>

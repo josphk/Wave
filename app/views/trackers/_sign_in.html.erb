@@ -1,0 +1,22 @@
+<div class="sign-in">
+  <h3>Sign in with Particle</h3>
+  <%= form_tag authenticate_user_trackers_path(current_user) do %>
+    <%= hidden_field_tag :client_id, 'particle' %>
+    <%= hidden_field_tag :client_secret, 'particle' %>
+    <%= hidden_field_tag :grant_type, 'password' %>
+
+    <div class="field">
+      <%= text_field_tag :username %>
+      <%= label_tag :username %>
+    </div>
+
+    <div class="field">
+      <%= password_field_tag :password %>
+      <%= label_tag :password %>
+    </div>
+
+    <div class="submit">
+      <%= submit_tag "Connect", class: :button %>
+    </div>
+  <% end %>
+</div>

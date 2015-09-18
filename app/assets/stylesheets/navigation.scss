@@ -6,7 +6,7 @@ header.navigation {
   $navigation-color-hover: #555;
   $navigation-border-color: $light-gray;
 
-  box-sizing: border-box;
+  @include box-sizing(border-box);
   @include user-select(none);
   @include display(flex);
   @include justify-content(space-between);
@@ -20,13 +20,17 @@ header.navigation {
   border-bottom: 1px solid $navigation-border-color;
 
   .first {
-    order: 1;
+    -webkit-order: 1;
+       -moz-order: 1;
+            order: 1;
     margin-right: 1em;
   }
 
   .second {
-    order: 2;
-    width: 100%;
+    @include flex-grow(2);
+    -webkit-order: 2;
+       -moz-order: 2;
+            order: 2;
     border-left: 1px solid $navigation-border-color;
     border-right: 1px solid $navigation-border-color;
     padding-left: 0.8em;
@@ -35,7 +39,9 @@ header.navigation {
 
   .third {
     @include justify-content(flex-end);
-    order: 3;
+    -webkit-order: 3;
+       -moz-order: 3;
+            order: 3;
     padding-left: 2em;
   }
 
@@ -95,7 +101,7 @@ header.navigation {
         width: 100%;
 
         .search-input {
-          box-sizing: border-box;
+          @include box-sizing(border-box);
           border: none;
           color: $navigation-color;
           font-family: $base-font;
@@ -122,7 +128,7 @@ header.navigation {
       }
 
       input {
-        box-sizing: border-box;
+        @include box-sizing(border-box);
         display: block;
         outline: none;
       }
@@ -167,7 +173,7 @@ header.navigation {
       cursor: default;
     }
 
-    .footer {
+    .notif-footer {
       height: $submenu-line-height;
       border-top: 1px solid $navigation-border-color;
       margin: 0 10% 0 10%;

@@ -22,8 +22,8 @@ $avatar-radius: $avatar-size / 2;
   margin: 0;
   position: absolute;
   top: -$avatar-radius;
-  left: 50%;
-  right: 50%;
+  left: 0;
+  right: 0;
 
   .photo {
     position: relative;
@@ -193,7 +193,6 @@ $avatar-radius: $avatar-size / 2;
 
   .progress {
     .graph-flexbox {
-      margin-top: 2.5em;
       border-bottom: 1px solid #eee;
 
       p {

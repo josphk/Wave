@@ -10,15 +10,7 @@
 <body>
   <%= Gon::Base.render_data %>
   <%= javascript_tag do %>
-        $('.field input').keydown(function() {
-      if ($(this).val()) {
-        console.log('blah')
-        $(this).next().css({
-          'font-size': '0.8em',
-          'bottom': '35px'
-        })
-      }
-    })
+
     var motion = false,
         wave = false,
         multiUserWave = false,
@@ -141,6 +133,26 @@
     <p id="alert"><%= flash[:alert] %></p>
   </div>
   <%= yield %>
+  <%= javascript_tag do %>
+    if ($('.field input').val()) {
+      for (i = 0; i < $('.field input').length; i++) {
+        if ($($('.field input')[i]).val()) {
+          $($($('.field input')[i])).next().css({
+            'font-size': '0.8em',
+            'bottom': '35px'
+          })
+        }
+      }
+    }
+    $('.field input').keydown(function() {
+        if ($(this).val()) {
+          $(this).next().css({
+            'font-size': '0.8em',
+            'bottom': '35px'
+          })
+        }
+      })
+  <% end %>
 </div>
 
 <div class="footer">
@@ -148,6 +160,7 @@
     <p>Made with <span class="v-hand">&nbsp;✌&nbsp;</span> by Joseph</p>
   <% end %>
 </div>
+
 
 </body>
 </html>

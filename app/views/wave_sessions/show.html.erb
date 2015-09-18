@@ -270,63 +270,12 @@
       })
     }
 
-    if (!waver) trackerReady()
-    else status(currentUser.onlineTracker, currentUser.token)
+    if (!waver) {
+      trackerReady()
+    } else if (currentUser.demo || debug) {
+      waverReady()
+    } else {
+      status(currentUser.onlineTracker, currentUser.token)
+    }
   }
-
-
-    // var waveTracker = function(e) {
-    //   var rawData = JSON.parse(e.data),
-    //       parsedData = JSON.parse(rawData.data),
-    //       x = width * parsedData.X / 1000,
-    //       y = height * parsedData.Y / 800,
-    //       r = parsedData.Size * 7
-    //   var minDistance = r + coordinates.r,
-    //       newDistance = distance(x, y, coordinates.x, coordinates.y)
-
-    //   if (pointer === undefined) pointer = makeCircle(x, y, r, '#ddd')
-    //   pointer.transition().duration(500).attr('cx', x).attr('cy', y).attr('r', r).ease('cubic-in')
-
-    //   setTimeout(function() {
-    //     if (newDistance < minDistance) {
-    //       t2 = performance.now()
-    //       timeData.push(timer(t1, t2))
-    //       accuracyData.push(accuracy(newDistance, minDistance))
-    //       pointer = undefined
-    //       clear()
-    //       test(5)
-    //     }
-    //   }, 500)
-    // }
-
-
-
-
-            // r = 10
-        // var minDistance = r + coordinates.r,
-        //     newDistance = distance(x, y, coordinates.x, coordinates.y)
-
-        // if (newDistance < minDistance) {
-        //   // eventSource.close()
-        //   t2 = performance.now()
-        //   timeData.push(timer(t1, t2))
-        //   accuracyData.push(accuracy(newDistance, minDistance))
-        //   clear()
-        //   test(5)
-        // }
-      // })
-
-      // if (counter == iterations) {
-      //   eventSource.close()
-      //   submitResults(timeData, accuracyData)
-      //   return
-      // } else {
-      //   t1 = performance.now()
-      //   coordinates = generateTarget(width, height, circleColor[counter % 5], waveColor[counter % 5])
-      //   eventSource.addEventListener('Coordinates', waveTracker, false)
-      //   counter++
-      // }
-    // }
-
-    // initWave()
 <% end %>
