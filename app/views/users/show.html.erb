@@ -24,7 +24,6 @@
   <div class="cover">
     <div id="cover-image">
       <% if @user.cover %>
-        <% depend_on_asset @user.cover %>
         <div class="photo" style="background-image: url(<%= image_path(@user.cover) %>);"></div>
       <% else %>
         <div class="photo"></div>
