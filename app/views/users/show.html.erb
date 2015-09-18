@@ -24,7 +24,7 @@
   <div class="cover">
     <div id="cover-image">
       <% if @user.cover %>
-        <div class="photo" style="background-image: url(<%= asset_path(image_path(@user.cover)) %>);"></div>
+        <div class="photo" style="background-image: url(<%= asset_path(@user.cover) %>);"></div>
       <% else %>
         <div class="photo"></div>
       <% end %>
