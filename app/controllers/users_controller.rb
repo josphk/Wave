@@ -33,13 +33,13 @@ class UsersController < ApplicationController
 
   def activate_demo
     if @user.update_attributes(demo: true)
-      redirect_to session[:current_url]
+      redirect_to user_trackers_url(current_user)
     end
   end
 
   def activate_particle
     if @user.update_attributes(demo: false)
-      redirect_to session[:current_url]
+      redirect_to user_trackers_url(current_user)
     end
   end
 

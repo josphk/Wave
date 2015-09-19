@@ -1,5 +1,5 @@
 <%= javascript_tag do %>
-  $('.modal-content').css('background-color', '#eee')
+  $('.modal-inner').css('background-color', '#eee')
   $('.title-banner').width($('.particle-sign-in-container').width())
 
   $(window).resize(function() {
@@ -27,6 +27,7 @@
   <% if @trackers %>
     <%= render 'trackers' %>
   <% else %>
+    <div class="particle-form-spacer"></div>
     <%= render 'particle_form' %>
   <% end %>
 </div>
