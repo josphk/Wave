@@ -5,7 +5,7 @@ and keep track of their fine motor skills using an IoT motion tracker
 
 Try a [demo](http://wavemotion.xyz)!
 
-Learn to build the Wave Motion Tracker [here](https://www.hackster.io/jkim0120/wave)!
+Learn to build a Wave Motion Tracker [here](https://www.hackster.io/jkim0120/wave)!
 
 Software:
 
