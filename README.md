@@ -16,4 +16,4 @@ Software:
 Hardware:
 
 * IoT interfaced with Particle Photon
-* Infrared Sensor taken from a Wii Remote (connected via I2C)
+* Infrared Sensor taken from a Wii Remote (connected via I2C/TWI)
