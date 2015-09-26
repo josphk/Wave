@@ -37,11 +37,11 @@ void loop() {
   result = ircam.read();
   if (init) counter++;
 
-  if (result & BLOB1) {
+  if (result & POINT) {
     init = true;
-    xCoord = ircam.Blob1.X;
-    yCoord = ircam.Blob1.Y;
-    size = ircam.Blob1.Size;
+    xCoord = ircam.Point.X;
+    yCoord = ircam.Point.Y;
+    size = ircam.Point.Size;
   }
 
   same(xCoord, yCoord); // prevents sending an update when no movement was detected
