@@ -1,4 +1,4 @@
-== Wave
+# Wave
 
 Wave is a healthcare and biotech application that helps people with poor motor control maintain
 and keep track of their fine motor skills using an IoT motion tracker
