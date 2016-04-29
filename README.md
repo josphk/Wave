@@ -1,7 +1,6 @@
 # Wave
 
-Wave is a healthcare and biotech application that helps people with poor motor control maintain
-and keep track of their fine motor skills using an IoT motion tracker
+Wave is an RoR application that provides rehabilitation for people with poor motor control. It leverages IoT technology with a custom-made motion sensor to produce and consume positional data in real-time. Every user session processes this data to generate metrics such average time and accuracy, which are visualized to show trends over time using D3.js.
 
 Try a [demo](http://wavemotion.xyz)!
 
