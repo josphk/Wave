@@ -2,7 +2,7 @@
 
 Wave is an RoR application that provides rehabilitation for people with poor motor control. It leverages IoT technology with a custom-made motion sensor to produce and consume positional data in real-time. Every user session processes this data to generate metrics such average time and accuracy, which are visualized to show trends over time using D3.js.
 
-Try a [demo](http://wavemotion.xyz)!
+Watch a [demo](https://youtu.be/VSNmgCS7qPw)!
 
 Learn to build a Wave Motion Tracker [here](https://www.hackster.io/jkim0120/wave)!
 
